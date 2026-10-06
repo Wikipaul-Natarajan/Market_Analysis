@@ -38,10 +38,10 @@ elif page=='Market Analysis':
  else: warn(raw,'02')
 elif page=='Price Forecast':
  if features.exists() and (MODELS/'ml_results.pkl').exists():
-  d=parquet(str(features)); models=ml_models(str(MODELS/'ml_results.pkl')); c=st.selectbox('Commodity',sorted(models)); horizon=st.selectbox('Forecast horizon (days)',[7,14,30]); r=d[d.commodity==c].sort_values('arrival_date').iloc[-1]; future=pd.Timestamp(r.arrival_date)+pd.Timedelta(days=horizon); row=r[models[c]['features']].copy()
+  d=parquet(str(features)); models=ml_models(str(MODELS/'ml_results.pkl')); c=st.selectbox('Commodity',sorted(models)); horizon=st.selectbox('Forecast horizon (days)',[7,14,30]); r=d[d.commodity==c].sort_values('arrival_date').iloc[-1]; future=pd.Timestamp(r.arrival_date)+pd.Timedelta(days=horizon); row=r[models[c]['features']].copy().astype(float)
   for k,v in {'month':future.month,'week_of_year':int(future.isocalendar().week),'quarter':future.quarter,'day_of_week':future.dayofweek,'year':future.year}.items():
    if k in row: row[k]=v
-  val=float(models[c]['model'].predict(row.to_frame().T)[0]); st.metric(f'{c} forecast · {horizon} days',f'₹{val:,.0f}/quintal',f'{(val/r.modal_price-1)*100:+.1f}%'); st.caption('Weather, market count, and cross-commodity features stay at their last known values across this horizon.')
+  val=float(models[c]['model'].predict(row.to_frame().T.astype(float))[0]); st.metric(f'{c} forecast · {horizon} days',f'₹{val:,.0f}/quintal',f'{(val/r.modal_price-1)*100:+.1f}%'); st.caption('Weather, market count, and cross-commodity features stay at their last known values across this horizon.')
  else:
   warn(features,'04')
   if not (MODELS/'ml_results.pkl').exists(): warn(MODELS/'ml_results.pkl','07')

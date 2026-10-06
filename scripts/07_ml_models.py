@@ -37,7 +37,7 @@ def main():
   rows[-2]['best_model']=best; rows[-1]['best_model']=best
   # Refit deployable models on all eligible observations.
   final_rf=rf().fit(g[FEATURES],g.modal_price); final_xgb=xgb().fit(g[FEATURES],g.modal_price)
-  results[c]={'models':{'RF':final_rf,'XGBoost':final_xgb},'model':final_xgb,'features':FEATURES,'latest':g.iloc[-1][FEATURES].to_dict(),
+  results[c]={'models':{'RF':final_rf,'XGBoost':final_xgb},'model':final_rf if best=='RF' else final_xgb,'features':FEATURES,'latest':g.iloc[-1][FEATURES].to_dict(),
    'test_dates':te.arrival_date.astype(str).tolist(),'actual':te.modal_price.tolist(),'predictions':predictions,'best_model':best}
   fig,ax=plt.subplots(2,1,figsize=(12,8)); ax[0].plot(pd.to_datetime(te.arrival_date),te.modal_price,label='Actual')
   for name,p in predictions.items(): ax[0].plot(pd.to_datetime(te.arrival_date),p,label=name)

@@ -29,7 +29,7 @@ def main():
   summary.append(dict(commodity=commodity,order=str(best_order),aic=best.aic,rmse=rmse,mae=mae,mape=mape,naive_mape=nm,walk_forward_rmse=wr,walk_forward_mape=wm))
   fig,ax=plt.subplots(2,1,figsize=(12,8)); ax[0].plot(train.tail(180),label='Train'); ax[0].plot(test,label='Actual'); ax[0].plot(forecast,label='Forecast'); ax[0].fill_between(test.index,lo,hi,alpha=.2); ax[0].legend(); ax[1].plot(test.index,test.values-forecast.values); ax[1].axhline(0,color='black'); fig.tight_layout(); fig.savefig(FIG/f'sarima_{commodity.lower()}.png'); plt.close(fig)
   store[commodity]={'model':best,'forecast':forecast,'lower':lo,'upper':hi,'test':test,'walk_forward':pd.Series(wf,index=test.index)}
- x=pd.DataFrame(summary); x.loc['AVERAGE']=x.select_dtypes('number').mean(); x.to_csv(REPORT/'sarima_summary.csv',index_label='commodity')
+ x=pd.DataFrame(summary); x.loc['AVERAGE']=x.select_dtypes('number').mean(); x.loc['AVERAGE','commodity']='AVERAGE'; x.to_csv(REPORT/'sarima_summary.csv',index=False)
  x.drop(index='AVERAGE',errors='ignore').plot.bar(x='commodity',y=['rmse'],legend=False); plt.tight_layout(); plt.savefig(FIG/'sarima_comparison.png'); plt.close()
  with open(MODELS/'sarima_results.pkl','wb') as f: pickle.dump(store,f)
 if __name__=='__main__': main()

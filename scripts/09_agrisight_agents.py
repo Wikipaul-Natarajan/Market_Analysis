@@ -20,13 +20,13 @@ class PriceForecasterAgent(Agent):
   for c,g in ctx['features'].groupby('commodity'):
    g=g.sort_values('arrival_date'); r=g.iloc[-1]; features=ml[c]['features']; model=ml[c]['model']; today=pd.Timestamp(r.arrival_date); preds={}
    for horizon in (7,14):
-    future=today+pd.Timedelta(days=horizon); row=r[features].copy()
+    future=today+pd.Timedelta(days=horizon); row=r[features].copy().astype(float)
     for k,v in {'month':future.month,'week_of_year':int(future.isocalendar().week),'quarter':future.quarter,'day_of_week':future.dayofweek,'year':future.year,'days_since_start':(future-today).days+int(r.get('days_since_start',0))}.items():
      if k in row: row[k]=v
     row['sw_monsoon']=int(future.month in (6,7,8,9)); row['ne_monsoon']=int(future.month in (10,11,12))
     for k,val in {'pongal':int(future.month==1 and 13<=future.day<=17),'tamil_new_year':int(future.month==4 and 13<=future.day<=15),'diwali':int(future.month in (10,11) and int(future.isocalendar().week) in range(40,47)),'navratri':int(future.month in (9,10) and int(future.isocalendar().week) in range(38,43))}.items():
      if k in row: row[k]=val
-    preds[horizon]=max(1,float(model.predict(row.to_frame().T)[0]))
+    preds[horizon]=max(1,float(model.predict(row.to_frame().T.astype(float))[0]))
    now=float(r.modal_price); pct=(preds[14]/now-1)*100; signal='BUY' if pct < -5 else 'SELL' if pct>5 else 'HOLD'
    results[c]={'current_price':now,'forecast_7d':preds[7],'forecast_14d':preds[14],'change_14d_pct':pct,'signal':signal}
   self.output=results; return results
