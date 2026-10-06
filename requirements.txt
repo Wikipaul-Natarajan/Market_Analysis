@@ -1,0 +1,15 @@
+pandas
+numpy
+requests
+beautifulsoup4
+pyarrow
+matplotlib
+seaborn
+statsmodels
+scikit-learn
+xgboost
+prophet
+shap
+streamlit
+python-dotenv
+kaggle
