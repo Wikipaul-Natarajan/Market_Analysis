@@ -1,4 +1,7 @@
-import pickle,numpy as np,pandas as pd,matplotlib.pyplot as plt
+import pickle,numpy as np,pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error,mean_absolute_error
 from xgboost import XGBRegressor

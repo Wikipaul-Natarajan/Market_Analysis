@@ -15,6 +15,7 @@ def main():
   dec=seasonal_decompose(tomato,model='multiplicative',period=365,extrapolate_trend='freq'); dec.plot(); plt.tight_layout(); plt.savefig(FIG/'eda_tomato_decomposition.png'); plt.close()
   lines.append('Tomato multiplicative seasonal decomposition (365d) completed.')
  hm=d[d.arrival_date.dt.year.between(2015,2026)].assign(year=lambda x:x.arrival_date.dt.year).pivot_table(index='commodity',columns='year',values='modal_price',aggfunc='mean')
+ hm=hm.apply(pd.to_numeric,errors='coerce').astype(float)
  plt.figure(figsize=(12,5)); sns.heatmap(hm,cmap='YlOrRd',annot=True,fmt='.0f'); plt.tight_layout(); plt.savefig(FIG/'eda_commodity_year_heatmap.png'); plt.close()
  daily=tomato; roll=daily.rolling(30,min_periods=10); z=(daily-roll.mean())/roll.std(); anomalies=z.abs()>2.5
  fig,ax=plt.subplots(2,1,figsize=(13,7),sharex=True); ax[0].plot(daily); ax[0].scatter(daily.index[anomalies],daily[anomalies],c='red'); ax[1].plot(z); ax[1].axhline(2.5,color='red'); ax[1].axhline(-2.5,color='red'); fig.tight_layout(); fig.savefig(FIG/'eda_tomato_spikes.png'); plt.close(fig); lines.append(f'Tomato rolling-z anomalies: {int(anomalies.sum())}.')
