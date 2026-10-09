@@ -1,0 +1,23 @@
+AgriSight data source, row count, and model history issues
+
+The requested source, row count, and model history do not match what the current scripts are built to produce.
+
+1. The scraper cannot start without commodity codes.
+The codes() function exits immediately when AGMARKNET_CODES is unset. The earlier .env check returned no AGMARKNET entries, and no code mapping was found in the project.
+
+2. The scraper only collects Koyambedu.
+Its parser discards every row that does not mention Koyambedu, and it saves at most one row per date, commodity, and market. Across roughly 16 years, eight commodities, and six days per week, that is only about 40,000 possible rows before dates with no reports are removed—not approximately 533,970 Tamil Nadu-wide market records.
+
+Script 02 has an optional data.gov.in source, but it skips that source unless both AGMARKNET_RESOURCE_ID and DATA_GOV_IN_API_KEY are set. If those are not supplied in the environment, the Koyambedu scrape is all it can process once the Kaggle CSV is removed.
+
+3. The model pipeline discards most historical data.
+Script 04 explicitly filters to year >= 2024. Scripts 05–09 use that feature table, so data from 2010–2023 will not affect model training or recommendations without changing the cutoff.
+
+4. A successful-looking scrape might still be incomplete.
+If Agmarknet returns a page without the legacy cphBody_GridPriceData table, the scraper records no rows for that page but can still advance its checkpoint. It could finish without proving that the requested dates and commodities were actually collected.
+
+5. The scraper end date is fixed at June 30, 2026.
+It will not fetch later dates even though the current date is October 9, 2026.
+
+Conclusion
+The current scraper may produce a Koyambedu-only file once valid codes are configured, but it cannot by itself replace the Tamil Nadu-wide Kaggle dataset and produce the requested row count and 10-year model results. To meet those goals, the input needs to contain Tamil Nadu-wide historical market data, and Script 04's cutoff must be revisited.
