@@ -1,0 +1,62 @@
+AGRISIGHT SECOND REVIEW PRESENTATION
+Speaker Script | Approx. 7–8 minutes
+
+Presenter pacing: Speak conversationally and pause briefly between sentences. The sections below follow the deck slide by slide. Approximate timings total about 7 minutes 55 seconds at a steady, unhurried pace.
+
+[SLIDE 1 — TITLE | approx. 0:40]
+Good morning, respected faculty members and panelists. I am Vignesh Natarajan, Roll Number 24060BA0046, from the MBA Business Analytics programme at Anna University’s Centre for Distance Education, CY24 batch.
+
+Today I am presenting the second review of my project, “A Study on Short-Term Vegetable Price Forecasting at Koyambedu Wholesale Market: A Machine Learning and Multi-Agent AI Approach for Supply Chain Procurement Decision-Making.”
+
+This presentation focuses on what has been completed since the first review, what the current local evidence shows, and what still needs validation. The figures I will discuss are from the local pipeline reports dated 7 October 2026.
+
+[SLIDE 2 — AGENDA | approx. 0:35]
+I will cover five areas. First, I will briefly recap the objectives and methodology, including the status of each objective. Second, I will describe the data collected and the compiled worksheet. Third, I will explain the scripts that prepare those data for analysis. Fourth, I will review the completed model results. Finally, I will outline the remaining work in the AgriSight pipeline and reporting phases.
+
+Let me begin with the objectives and what the current implementation can demonstrate.
+
+[SLIDE 3 — OBJECTIVES AND METHODOLOGY | approx. 1:10]
+The overall aim remains short-term vegetable price forecasting and assessing whether AgriSight can improve procurement decision support. The four-model comparison is implemented, but an evaluation showing that the agent pipeline improves decisions is still pending.
+
+The secondary objectives also remain. The scripts compare SARIMA, Prophet, Random Forest and XGBoost on the available evaluation windows, reporting RMSE, MAE and MAPE. Separate 7-, 14- and 30-day horizon comparisons are not in the current reports.
+
+For the Northeast Monsoon objective, the feature set contains monsoon flags, but it does not contain the proposed deviation index, and there is no statistical significance test. AgriSight currently has four rule-based agents for analysis, forecasting, market intelligence and procurement advice; automated news reading is not implemented. The July 2023 savings case study is also not supported by the current input, which begins in 2024.
+
+Methodologically, this is a quantitative study using secondary price and Chennai weather data, with no questionnaire. The scripts hold out the latest 90 days. Their validation schedules differ: ML retrains in 30-day expanding windows, SARIMA forecasts in seven-day blocks, and Prophet uses a static holdout. Therefore, cross-model comparisons are descriptive.
+
+[SLIDE 4 — DATA COLLECTION AND COMPILATION | approx. 1:00]
+The current price source is a Kaggle Agmarknet-derived file filtered by the project scripts to Tamil Nadu and the target vegetables. The processed market records run from 24 January 2024 to 20 April 2026. Chennai daily weather from Open-Meteo is joined by date, and the features include festival windows and South-West and North-East monsoon flags.
+
+The processed dataset contains 414,388 cleaned price records. Feature engineering produces a worksheet of 4,041 rows and 62 columns, spanning 26 February 2024 to 20 April 2026. Three records with modal prices above one lakh rupees per quintal were removed and logged.
+
+One important scope point: the current processed data are Tamil Nadu-wide, Kaggle-derived data. They are not produced by the legacy Koyambedu scraper, so these results should not be presented as Koyambedu-only findings. Pre-2024 coverage, including July 2023, cannot be verified from this input.
+
+[SLIDE 5 — COLLECTION TOOL AND WORKSHEET | approx. 0:50]
+The workflow is scripted. The Kaggle download script supplies the current price input. The consolidation script standardizes fields, parses dates, maps commodity-name variants and filters the dataset; optional data.gov.in pulls require credentials.
+
+The feature-engineering script then builds lag values at 7, 14, 21 and 30 days, shifted rolling statistics, exponential moving averages, weather and calendar features, monsoon and festival flags, and cross-commodity lags. The resulting Parquet and CSV worksheet is the shared input for the model pipeline and dashboard. The code requires at least 30 days of history and limits the worksheet to 2024 onward.
+
+[SLIDE 6 — WORK COMPLETED: MODEL ANALYSIS | approx. 1:00]
+For Phase 4, model artifacts and summary reports are available locally. SARIMA uses a grid-selected order for each commodity. Its mean static-holdout MAPE is 33.6 percent, while its separate walk-forward mean is 10.8 percent.
+
+Prophet’s static 90-day holdout mean MAPE is 18.8 percent. For Random Forest and XGBoost, the selected best model per commodity has a mean walk-forward MAPE of 6.3 percent. The deck reports that this best ML MAPE is lower than SARIMA’s static-holdout MAPE for seven of eight commodities, but those protocols differ, so that is a descriptive result rather than a matched comparison.
+
+The current SHAP report ranks position versus the 52-week high and low as the top feature for all eight commodities. SHAP describes model attribution; it does not establish cause or statistical significance.
+
+[SLIDE 7 — MODEL RESULTS | approx. 1:15]
+This table gives the reported MAPE percentages for each commodity. In the order SARIMA static holdout, Prophet static holdout, and best ML walk-forward: Beans are 9.9, 14.0 and 10.8. Brinjal is 28.6, 11.4 and 5.8. Cabbage is 12.7, 9.1 and 2.6. Carrot is 52.2, 35.5 and 4.8.
+
+Drumstick is 55.8, 31.7 and 6.8. Onion is 34.5, 14.6 and 8.3. Potato is 21.6, 8.5 and 5.7. Tomato is 53.6, 25.5 and 5.5. The averages shown are 33.6 for SARIMA, 18.8 for Prophet and 6.3 for best ML.
+
+The selected ML model is Random Forest for Beans and Onion, and XGBoost for the other six commodities. The SHAP report lists position_52w as the top driver for every commodity. Please interpret the table with the caveat shown: SARIMA and Prophet use static holdouts, while ML uses expanding-window walk-forward forecasts; these procedures are not identical.
+
+[SLIDE 8 — WORK TO BE DONE | approx. 1:00]
+The next phase is to evaluate AgriSight, not just run it. The current four-agent rule-based pipeline produces recommendations, and its latest report shows HOLD for all eight commodities with no high-risk items. The next step is a controlled Delta-RMSE evaluation against standalone XGBoost on the same validation window, followed by checking the risk and procurement signals against observed outcomes. News reading is not part of the current implementation, so its scope needs to be confirmed.
+
+For reporting, a July 2023 tomato crisis savings study would require pre-2024 observations or a revised case period. The remaining work is to consolidate verified model and SHAP results with the agent evaluation, then prepare the academic report and Viva-Voce materials.
+
+[SLIDE 9 — THANK YOU | approx. 0:25]
+That concludes my second-review presentation. Thank you for your time and attention. I welcome your questions and feedback.
+
+[End]
+
