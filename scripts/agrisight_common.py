@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 try:
     from dotenv import load_dotenv
     load_dotenv(Path(__file__).resolve().parent.parent / '.env')
@@ -7,7 +8,7 @@ except ImportError:
 import pandas as pd
 ROOT=Path(__file__).resolve().parent.parent
 RAW=ROOT/'data/raw'; PROC=ROOT/'data/processed'; EXT=ROOT/'data/external'
-OUT=ROOT/'outputs'; REPORT=OUT/'reports'; FIG=OUT/'figures'; MODELS=OUT/'models'
+OUT=Path(os.environ.get('AGRISIGHT_RUN_DIR', str(ROOT/'outputs'))); REPORT=OUT/'reports'; FIG=OUT/'figures'; MODELS=OUT/'models'
 COMMODITIES=['Tomato','Onion','Potato','Cabbage','Carrot','Beans','Brinjal','Drumstick']
 for p in (RAW,PROC,EXT,REPORT,FIG,MODELS): p.mkdir(parents=True,exist_ok=True)
 def read_data(path=PROC/'tn_vegetables_daily.parquet'):
