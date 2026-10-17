@@ -1,10 +1,10 @@
-"""Mock-only backtest of existing procurement advice rules against the mock price panel."""
+"""Counterfactual backtest of existing procurement advice rules against the published website series."""
 from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-PRICES = ROOT / 'data' / 'mock' / 'koyambedu_mock_prices_daily.csv'
-PREDICTIONS = ROOT / 'outputs' / 'reports' / 'mock_model_predictions.csv'
+PRICES = ROOT / 'data' / 'secondary' / 'koyambedu_prices_daily.csv'
+PREDICTIONS = ROOT / 'outputs' / 'reports' / 'koyambedu_model_predictions.csv'
 OUT = ROOT / 'outputs' / 'reports'
 LOT_KG = 100.0
 MODEL = 'XGBoost'
@@ -14,22 +14,22 @@ HORIZON = 14
 def main():
     prices = pd.read_csv(PRICES, parse_dates=['date'])
     preds = pd.read_csv(PREDICTIONS, parse_dates=['date', 'origin'])
-    # Use only matched XGBoost 14-day rows and only demonstration data.
+    # Use only matched XGBoost 14-day rows and only source observations.
     preds = preds[(preds.model == MODEL) & (preds.horizon_days == HORIZON)].copy()
     rows = []
     for _, f in preds.iterrows():
-        hist = prices[(prices.project_commodity_candidate == f.commodity) &
+        hist = prices[(prices.commodity == f.commodity) &
                       (prices.date <= f.origin)].sort_values('date')
         # Forecast origin's price record is the current price observation.
         nowrow = hist[hist.date == f.origin]
-        future = prices[(prices.project_commodity_candidate == f.commodity) &
+        future = prices[(prices.commodity == f.commodity) &
                         (prices.date == f.date)]
         if len(nowrow) != 1 or len(future) != 1:
             continue
-        current = float(nowrow.iloc[0].mock_price_inr_per_kg)
-        actual_future = float(future.iloc[0].mock_price_inr_per_kg)
-        predicted = float(f.predicted_mock_inr_per_kg)
-        recent = hist.tail(30).mock_price_inr_per_kg.astype(float)
+        current = float(nowrow.iloc[0].observed_price_inr_per_kg)
+        actual_future = float(future.iloc[0].observed_price_inr_per_kg)
+        predicted = float(f.predicted_observed_inr_per_kg)
+        recent = hist.tail(30).observed_price_inr_per_kg.astype(float)
         mean = float(recent.mean())
         sd = float(recent.std()) if len(recent) > 1 else 0.0
         cv = sd / (mean or 1.0)
@@ -49,8 +49,8 @@ def main():
         rows.append({
             'commodity': f.commodity, 'origin_date': f.origin.date().isoformat(),
             'evaluation_date': f.date.date().isoformat(), 'horizon_days': HORIZON,
-            'current_mock_inr_per_kg': current, 'predicted_14d_mock_inr_per_kg': predicted,
-            'actual_14d_mock_inr_per_kg': actual_future,
+            'current_observed_inr_per_kg': current, 'predicted_14d_observed_inr_per_kg': predicted,
+            'actual_14d_observed_inr_per_kg': actual_future,
             'forecast_change_pct': change, 'cv_30d': cv, 'z_30d': z,
             'risk_score': score, 'risk_level': risk, 'advice_action': action,
             'advice_timing': ('within 1-2 days' if action == 'PROCURE NOW' else
@@ -63,40 +63,43 @@ def main():
             'fixed_lot_kg': LOT_KG, 'lot_share_bought_at_origin': current_share,
             'buy_now_baseline_cost_inr': baseline_cost,
             'advice_scenario_cost_inr': advice_cost,
-            'simulated_savings_vs_buy_now_inr': baseline_cost - advice_cost,
-            'simulated_savings_pct_vs_buy_now': (baseline_cost-advice_cost)/baseline_cost*100 if baseline_cost else 0,
-            'is_demonstration_only': True,
+            'counterfactual_difference_vs_buy_now_inr': baseline_cost - advice_cost,
+            'counterfactual_difference_pct_vs_buy_now': (baseline_cost-advice_cost)/baseline_cost*100 if baseline_cost else 0,
         })
     result = pd.DataFrame(rows)
     if result.empty:
-        raise RuntimeError('No matching mock XGBoost 14-day forecasts and price observations.')
-    result.to_csv(OUT / 'mock_procurement_advice_backtest.csv', index=False)
+        raise RuntimeError('No matching observed XGBoost 14-day forecasts and price observations.')
+    result.to_csv(OUT / 'koyambedu_procurement_advice_backtest.csv', index=False)
     summary = result.groupby('advice_action', as_index=False).agg(
-        cases=('commodity','size'), mean_simulated_savings_inr=('simulated_savings_vs_buy_now_inr','mean'),
-        median_simulated_savings_inr=('simulated_savings_vs_buy_now_inr','median'))
-    summary.to_csv(OUT / 'mock_procurement_advice_summary.csv', index=False)
-    win_rate = float((result.simulated_savings_vs_buy_now_inr > 0).mean() * 100)
+        cases=('commodity','size'), mean_counterfactual_difference_inr=('counterfactual_difference_vs_buy_now_inr','mean'),
+        median_counterfactual_difference_inr=('counterfactual_difference_vs_buy_now_inr','median'))
+    summary.to_csv(OUT / 'koyambedu_procurement_advice_summary.csv', index=False)
+    win_rate = float((result.counterfactual_difference_vs_buy_now_inr > 0).mean() * 100)
     report = [
-        '# Mock procurement advice validation', '',
-        '**Status: demonstration only.** This backtest applies the current deterministic risk and action thresholds in `scripts/09_agrisight_agents.py` to stored XGBoost 14-day mock forecasts. Every price and resulting cost is simulated; this does not validate real Koyambedu advice or establish realized savings.', '',
-        '## Counterfactual assumptions', '',
+        '# Observed procurement advice validation', '',
+        '**Status: exploratory counterfactual.** This backtest applies the current deterministic risk and action thresholds in `scripts/09_agrisight_agents.py` to stored XGBoost 14-day observed forecasts. Daily prices are copied from the published site series. The observations are attributed to the Council as reported by the project. API unit is 1kg; this report does not claim independently audited wholesale rates. Costs are counterfactual comparisons, not realized savings.', '',
+        '## Source and assumptions
+
+Price source citation: Vegetable Market Price, "Koyambedu Market Price History," https://vegetablemarketprice.com/market/koyambedu/history (daily yValue history retrieved by scripts/00_download_koyambedu_history.py). Data are attributed to the Koyambedu Vegetable Merchants' Council.
+
+## Counterfactual assumptions', '',
         f'- Each case represents a fixed {LOT_KG:.0f} kg lot; buy-now baseline purchases the whole lot at the origin price.',
         '- PROCURE NOW and HOLD buy the lot at origin; DELAY buys it at the 14-day outcome; PARTIAL PROCUREMENT and HEDGE split the lot equally between origin and day 14.',
         '- The action labels and risk thresholds reproduce the existing advice rules. The fixed-lot translation is a backtest convention, not an operational procurement policy. In particular, DELAY is evaluated at day 14 although the production wording says reassess in 7 days.',
         '- Excludes storage, transport, spoilage, inventory, quantity constraints, quality differences, and stockout/service costs. It does not establish causal savings or forecast validity.', '',
         '## Results', '',
         f'- Evaluated cases: {len(result)} (commodity × forecast origin).',
-        f'- Cases with positive simulated savings vs buying immediately: {win_rate:.1f}%.',
-        f'- Mean simulated savings per fixed lot: INR {result.simulated_savings_vs_buy_now_inr.mean():.2f}.',
-        f'- Total simulated savings across these non-independent test cases: INR {result.simulated_savings_vs_buy_now_inr.sum():.2f}.',
-        '- Review action-level counts and means in `mock_procurement_advice_summary.csv`; case-level calculations are in `mock_procurement_advice_backtest.csv`.', '',
+        f'- Cases with positive counterfactual cost difference vs buying immediately: {win_rate:.1f}%.',
+        f'- Mean counterfactual cost difference per fixed lot: INR {result.counterfactual_difference_vs_buy_now_inr.mean():.2f}.',
+        f'- Total counterfactual cost difference across these non-independent test cases: INR {result.counterfactual_difference_vs_buy_now_inr.sum():.2f}.',
+        '- Review action-level counts and means in `koyambedu_procurement_advice_summary.csv`; case-level calculations are in `koyambedu_procurement_advice_backtest.csv`.', '',
         '## Action breakdown', '', summary.to_markdown(index=False), '',
-        'This is useful for exercising the proposal workflow and auditing rule behavior. Replace the mock panel with validated market observations and add operational costs and procurement constraints before treating the advice as decision-ready.'
+        'These calculations are fixed-lot counterfactuals. Realized procurement outcomes require buyer transactions, stock and operating costs, and operational constraints.'
     ]
-    (OUT / 'mock_procurement_advice_validation.md').write_text('\n'.join(report)+'\n', encoding='utf-8')
+    (OUT / 'koyambedu_procurement_counterfactual.md').write_text('\n'.join(report)+'\n', encoding='utf-8')
     print(f'Wrote {len(result)} backtest cases')
     print(summary.to_string(index=False))
-    print(f'Positive simulated savings rate: {win_rate:.1f}%')
+    print(f'Positive counterfactual cost difference rate: {win_rate:.1f}%')
 
 if __name__ == '__main__':
     main()

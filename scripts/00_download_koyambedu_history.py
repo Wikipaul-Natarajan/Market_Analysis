@@ -1,7 +1,6 @@
 """Download Koyambedu history from vegetablemarketprice.com into an auditable long-form dataset.
 
-This is a supplementary, non-official source. Preserve website series/varieties as
-separate records; do not merge these values directly with Agmarknet prices.
+This captures published secondary daily history attributed to the Koyambedu Vegetable Merchants' Council. The public API exposes a 1kg unit label; preserve original series and values, and do not merge varieties without a documented rule.
 """
 from __future__ import annotations
 

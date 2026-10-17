@@ -1,0 +1,13 @@
+{
+  "status": "SECONDARY_DATA_OBSERVED_SERIES",
+  "period_start": "2023-07-03",
+  "period_end": "2023-08-22",
+  "start_observed_price_inr_per_kg": 80.0,
+  "peak_observed_price_inr_per_kg": 160.0,
+  "peak_date": "2023-08-01",
+  "end_observed_price_inr_per_kg": 49.0,
+  "start_to_peak_change_pct": 100.0,
+  "peak_to_end_change_pct": -69.375,
+  "procurement_savings_estimate": null,
+  "savings_reason": "No purchase quantities, decision baseline, or actual transactions are available."
+}

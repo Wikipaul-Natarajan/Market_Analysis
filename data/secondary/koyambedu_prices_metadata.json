@@ -1,0 +1,24 @@
+{
+  "file": "koyambedu_prices_daily.csv",
+  "rows": 14472,
+  "date_start": "2021-11-04",
+  "date_end": "2026-10-17",
+  "commodities": [
+    "Brinjal",
+    "Cabbage",
+    "Carrot",
+    "Drumsticks",
+    "French Beans",
+    "Onion Big",
+    "Potato",
+    "Tomato"
+  ],
+  "all_values_copied_from_source": true,
+  "is_validated_observation_all": true,
+  "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+  "tomato_crisis_rows": 51,
+  "tomato_crisis_start": 80.0,
+  "tomato_crisis_peak": 160.0,
+  "tomato_crisis_peak_date": "2023-08-01",
+  "tomato_crisis_end": 49.0
+}

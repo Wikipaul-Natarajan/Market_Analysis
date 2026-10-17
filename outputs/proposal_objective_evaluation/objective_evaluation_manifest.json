@@ -1,0 +1,40 @@
+{
+  "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+  "source": "Vegetable Market Price, Koyambedu history API; attributed to Koyambedu Vegetable Merchants Council; https://vegetablemarketprice.com/market/koyambedu/history",
+  "evaluation_origins": [
+    "2025-08-23",
+    "2025-12-21",
+    "2026-04-20",
+    "2026-08-18"
+  ],
+  "horizons_days": [
+    7,
+    14,
+    30
+  ],
+  "commodities": [
+    "Tomato",
+    "Onion",
+    "Potato",
+    "Cabbage",
+    "Carrot",
+    "Beans",
+    "Brinjal",
+    "Drumstick"
+  ],
+  "models": [
+    "SARIMA",
+    "Prophet",
+    "RF",
+    "XGBoost",
+    "SeasonalNaive"
+  ],
+  "monsoon_note": "Rainfall anomaly is standardized against the same calendar month within the local weather file, not a long-run climatology. HAC regression uses seven-day price return and controls for prior seven-day price momentum; market arrival volume is absent. The short local weather record (two complete Northeast Monsoon seasons) and unverified quote basis mean p-values are exploratory and do not fulfill the proposal\u2019s claim of a statistically established monsoon effect.",
+  "procurement_note": "A rule-based 14-day XGBoost counterfactual was run on the local Tomato candidate series. It assumes a normalized one-quote-unit purchase, compares the advice timing with buying entirely at the origin, and omits storage, transport, spoilage, quality, stockouts and inventory constraints. This scenario uses observed website values but does not establish wholesale basis or Council provenance; it cannot establish realized economic value or savings.",
+  "benchmark_note": "Published Koyambedu SARIMA study reports monthly series/horizon metrics; those are not directly comparable with these daily 7/14/30-day matched-origin scores. No numeric cross-study delta is claimed.",
+  "proposal_status": {
+    "model_comparison": "IMPLEMENTED_EXPLORATORY_SECONDARY_DATA",
+    "monsoon_test": "IMPLEMENTED_EXPLORATORY_ARRIVALS_MISSING_AND_WEATHER_WINDOW_SHORT",
+    "procurement_case": "IMPLEMENTED_SCENARIO_ONLY_SOURCE_UNVERIFIED"
+  }
+}

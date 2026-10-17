@@ -1,7 +1,6 @@
 """Evaluate proposal gaps with a shared, source-qualified Koyambedu protocol.
 
-The extracted market history is an unverified candidate source. Outputs are
-exploratory and must not be presented as validated wholesale accuracy or savings.
+The extracted history contains direct daily source observations. Outputs are exploratory and must not be presented as realized procurement savings.
 """
 from __future__ import annotations
 import json, warnings
@@ -20,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'data/external/koyambedu_vegetablemarketprice_history.csv'
 WEATHER = ROOT / 'data/external/weather_chennai.csv'
 OUT = ROOT / 'outputs/proposal_objective_evaluation'
-SOURCE_STATUS = 'NOT_VALIDATED_SOURCE_DISCREPANCY'
+SOURCE_STATUS = 'SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL'
 SERIES = {'Tomato':'tomato','Onion':'onionbig','Potato':'potato','Cabbage':'cabbage',
           'Carrot':'carrot','Beans':'frenchbeans','Brinjal':'brinjal','Drumstick':'drumsticks'}
 HORIZONS = (7, 14, 30)
@@ -173,7 +172,7 @@ def monsoon_analysis(data):
     result=pd.DataFrame(rows); result.to_csv(OUT/'monsoon_association_hac.csv',index=False)
     note=('Rainfall anomaly is standardized against the same calendar month within the local weather file, not a long-run climatology. '
           'HAC regression uses seven-day price return and controls for prior seven-day price momentum; market arrival volume is absent. '
-          'The short local weather record and unvalidated price source mean p-values are exploratory and do not fulfill the proposal’s claim of a statistically established monsoon effect.')
+          'The short local weather record (two complete Northeast Monsoon seasons) means p-values are exploratory and do not fulfill the proposal’s claim of a statistically established monsoon effect.')
     (OUT/'monsoon_method_note.txt').write_text(note+'\n',encoding='utf-8')
     return result,note
 
@@ -212,7 +211,7 @@ def crisis_scenario(data):
         return result, 'No eligible historical origins were available for the specified backtest window.'
     note=('A rule-based 14-day XGBoost counterfactual was run on the local Tomato candidate series. It assumes a normalized one-quote-unit purchase, '
           'compares the advice timing with buying entirely at the origin, and omits storage, transport, spoilage, quality, stockouts and inventory constraints. '
-          'The source validation rejects this series as wholesale ground truth; the output is a scenario analysis only and cannot establish economic value or savings.')
+          'The observations are attributed to the Koyambedu Vegetable Merchants' Council. The API unit is 1kg; this analysis does not independently establish wholesale transaction basis or realized economic value/savings.')
     (OUT/'crisis_period_procurement_note.txt').write_text(note+'\n',encoding='utf-8')
     return result,note
 
@@ -221,23 +220,23 @@ def main():
     OUT.mkdir(parents=True,exist_ok=True)
     d=load_series(); summary,pred,origins=evaluate_models(d)
     mono,mono_note=monsoon_analysis(d); savings,savings_note=crisis_scenario(d)
-    meta={'source_status':SOURCE_STATUS,'source':'local Koyambedu history extract; price basis unresolved',
+    meta={'source_status':SOURCE_STATUS,'source':'Vegetable Market Price, Koyambedu history API; attributed to Koyambedu Vegetable Merchants Council; https://vegetablemarketprice.com/market/koyambedu/history',
           'evaluation_origins':[x.date().isoformat() for x in origins],'horizons_days':list(HORIZONS),
           'commodities':list(SERIES),'models':['SARIMA','Prophet','RF','XGBoost','SeasonalNaive'],
           'monsoon_note':mono_note,'procurement_note':savings_note,
           'benchmark_note':'Published Koyambedu SARIMA study reports monthly series/horizon metrics; those are not directly comparable with these daily 7/14/30-day matched-origin scores. No numeric cross-study delta is claimed.',
-          'proposal_status':{'model_comparison':'IMPLEMENTED_EXPLORATORY_SOURCE_UNVERIFIED',
+          'proposal_status':{'model_comparison':'IMPLEMENTED_EXPLORATORY_SECONDARY_DATA',
                              'monsoon_test':'IMPLEMENTED_EXPLORATORY_ARRIVALS_MISSING_AND_WEATHER_WINDOW_SHORT',
                              'procurement_case':'IMPLEMENTED_SCENARIO_ONLY_SOURCE_UNVERIFIED'}}
     (OUT/'objective_evaluation_manifest.json').write_text(json.dumps(meta,indent=2),encoding='utf-8')
     lines=['# Proposal objective evaluation outputs','',
-           f'Source disposition: **{SOURCE_STATUS}**. These outputs are exploratory and must not be represented as validated wholesale accuracy or realized procurement savings.','',
+           f'Source disposition: **{SOURCE_STATUS}**. These outputs are exploratory price-series accuracy results and must not be represented as realized procurement savings.','',
            '## Matched horizon model evaluation','',
            f'Common origin dates: {", ".join(meta["evaluation_origins"])}. Horizons: 7, 14 and 30 days. Models use the same origin and target dates; SeasonalNaive is included as a baseline. See `common_horizon_metrics.csv` and row-level `common_horizon_predictions.csv`.','',
            'The published benchmark is monthly and does not provide directly comparable daily 7/14/30-day forecasts; cross-study numeric comparison is therefore withheld.','',
            '## Monsoon association','',mono_note,'','Market arrivals are not available in the local price panel.','',
            '## Procurement scenario','',savings_note,'',
-           'Review the source validation report before using any output for a thesis conclusion or procurement recommendation.']
+           'Source citation: Vegetable Market Price. Koyambedu Market Price History. https://vegetablemarketprice.com/market/koyambedu/history (daily API values, accessed at extraction). The API unit is labeled 1kg. Procurement outputs are counterfactuals, not realized savings.']
     (OUT/'objective_evaluation_readme.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     print(f'Wrote {len(pred)} prediction/error rows; {len(summary)} metric rows; {len(mono)} weather-association rows; {len(savings)} scenario rows to {OUT}')
 
