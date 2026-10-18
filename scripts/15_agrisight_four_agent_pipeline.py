@@ -12,8 +12,20 @@ ROOT=Path(__file__).resolve().parents[1]
 RUN_OUT=Path(os.environ.get('AGRISIGHT_RUN_DIR',str(ROOT/'outputs')))
 PROC=ROOT/'data/processed'; EXT=ROOT/'data/external'; MODELS=RUN_OUT/'models'
 OUT=RUN_OUT/'objective_completion_pipeline'
-PIB_RSS='https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=1'
-WEATHER_URL='https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&daily=precipitation_sum,temperature_2m_max,temperature_2m_mean&timezone=Asia%2FKolkata&forecast_days=7'
+PIB_RSS=os.getenv('AGRI_PIB_RSS','https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=1')
+WEATHER_URL=os.getenv('AGRI_WEATHER_URL','https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&daily=precipitation_sum,temperature_2m_max,temperature_2m_mean&timezone=Asia%2FKolkata&forecast_days=7')
+USER_AGENT='Mozilla/5.0 (compatible; AgriSight-research/1.0)'
+MAX_NEWS=int(os.getenv('AGRI_MAX_NEWS','10'))
+
+def fetch(url,timeout=25,data=None,headers=None):
+    """GET (or POST when data is given) with a browser-like User-Agent; returns bytes."""
+    h={'User-Agent':USER_AGENT,'Accept':'*/*'}; h.update(headers or {})
+    req=urllib.request.Request(url,data=data,headers=h)
+    with urllib.request.urlopen(req,timeout=timeout) as r: return r.read()
+
+def strip_html(text):
+    import html, re
+    return re.sub(r'\s+',' ',html.unescape(re.sub(r'<[^>]+>',' ',text or ''))).strip()
 KEYWORDS=('agriculture','vegetable','horticulture','market price','price','procurement','rainfall','monsoon','tomato','onion','farmers welfare')
 
 class DataCollectorAgent:
@@ -31,11 +43,21 @@ class DataCollectorAgent:
                  'commodities':latest.commodity.tolist(),'latest_rows':latest.to_dict(orient='records'),
                  'weather_history_path':str(EXT/'weather_chennai.parquet'),'weather_forecast':None,
                  'live_context_requested':bool(live)}
+        context['weather_status']='not_requested'
         if live:
-            with urllib.request.urlopen(WEATHER_URL,timeout=25) as r: payload=json.loads(r.read().decode('utf-8'))
-            context['weather_forecast']={'daily':payload.get('daily',{}),'timezone':payload.get('timezone'),
-                                         'latitude':payload.get('latitude'),'longitude':payload.get('longitude'),
-                                         'source':'Open-Meteo Forecast API'}
+            try:
+                payload=json.loads(fetch(WEATHER_URL).decode('utf-8')); daily=payload.get('daily',{}) or {}
+                rain=[x for x in daily.get('precipitation_sum',[]) if x is not None]
+                tmax=[x for x in daily.get('temperature_2m_max',[]) if x is not None]
+                if not daily.get('time'): raise ValueError('response has no daily time axis')
+                context['weather_forecast']={'daily':daily,'timezone':payload.get('timezone'),
+                    'latitude':payload.get('latitude'),'longitude':payload.get('longitude'),'source':'Open-Meteo Forecast API',
+                    'summary':{'start':daily['time'][0],'end':daily['time'][-1],'days':len(daily['time']),
+                               'rain_total_mm':round(sum(rain),1),'wettest_day_mm':round(max(rain),1) if rain else None,
+                               'rain_days_ge_10mm':sum(1 for x in rain if x>=10),'max_temp_c':round(max(tmax),1) if tmax else None}}
+                context['weather_status']='ok'
+            except Exception as exc:
+                context['weather_status']='failed: '+str(exc)[:160]
         return context
 
 class ForecastAgent:
@@ -117,15 +139,23 @@ class ForecastAgent:
 class NewsReaderAgent:
     name='News Reader'
     def run(self,context,live=False):
-        items=[]
+        items=[]; context['news_status']='not_requested'
         if live:
-            with urllib.request.urlopen(PIB_RSS,timeout=25) as r: root=ET.fromstring(r.read())
-            for item in root.findall('.//item'):
-                title=(item.findtext('title') or '').strip(); desc=(item.findtext('description') or '').strip()
-                link=(item.findtext('link') or '').strip(); pub=(item.findtext('pubDate') or '').strip()
-                text=(title+' '+desc).casefold()
-                if any(key in text for key in KEYWORDS):
-                    items.append({'title':title,'summary':desc,'url':link,'published':pub,'source':'PIB RSS'})
+            try:
+                raw=fetch(PIB_RSS).lstrip(b'\xef\xbb\xbf').strip()
+                root=ET.fromstring(raw); seen=set(); scanned=0
+                for item in root.findall('.//item'):
+                    scanned+=1
+                    title=strip_html(item.findtext('title')); desc=strip_html(item.findtext('description'))
+                    link=(item.findtext('link') or '').strip(); pub=(item.findtext('pubDate') or '').strip()
+                    text=(title+' '+desc).casefold()
+                    if title.casefold() in seen or not any(key in text for key in KEYWORDS): continue
+                    seen.add(title.casefold())
+                    items.append({'title':title,'summary':desc[:400],'url':link,'published':pub,'source':'PIB RSS'})
+                    if len(items)>=MAX_NEWS: break
+                context['news_status']=f'ok: {len(items)} relevant of {scanned} items'
+            except Exception as exc:
+                context['news_status']='failed: '+str(exc)[:160]
         context['news_items']=items; context['news_source']=PIB_RSS if live else 'Not fetched (offline run)'
         return context
 
@@ -140,23 +170,63 @@ class ReportWriterAgent:
         base += [f"- **{r['commodity']}**: current {r['current_price']:.2f}; 7-day {r['forecast_7d']:.2f}; 14-day {r['forecast_14d']:.2f} ({r['forecast_14d_change_pct']:+.1f}%); signal {r['signal']}." for r in rows]
         base += ['', '## Weather outlook','']
         wf=context.get('weather_forecast')
-        base.append('Weather forecast is unavailable in this offline run.' if not wf else
-                    f"Open-Meteo forecast retrieved for {wf.get('timezone')}; use the daily values in the accompanying JSON. This is Chennai-area context, not a statewide forecast.")
+        if wf:
+            sm=wf['summary']
+            base.append(f"Chennai forecast {sm['start']} to {sm['end']} (Open-Meteo): {sm['rain_total_mm']} mm total rain, "
+                        f"wettest day {sm['wettest_day_mm']} mm, {sm['rain_days_ge_10mm']} day(s) with at least 10 mm, maximum temperature {sm['max_temp_c']} °C. "
+                        'This is Chennai-area context, not a statewide forecast, and it is not an input to the price model.')
+        else:
+            base.append('Weather forecast is unavailable in this offline run.' if context.get('weather_status')=='not_requested'
+                        else f"Weather forecast could not be retrieved ({context.get('weather_status')}).")
         base += ['', '## Policy and market news','']
-        base += (['No RSS items were retrieved in this offline run.'] if not news else [f"- [{x['title']}]({x['url']}) ({x['published']}): {x['summary']}" for x in news])
+        if news: base += [f"- [{x['title']}]({x['url']}) ({x['published']}): {x['summary']}" for x in news]
+        elif context.get('news_status')=='not_requested': base.append('No RSS items were retrieved in this offline run.')
+        elif str(context.get('news_status','')).startswith('ok'): base.append(f"No agriculture or price items in the current PIB feed ({context['news_status']}).")
+        else: base.append(f"PIB news could not be retrieved ({context.get('news_status')}).")
         text='\n'.join(base)
         llm_status='not_requested'
         if self.use_llm:
+            import re
+            from urllib.parse import urlparse
             endpoint=os.getenv('AGRI_OLLAMA_URL','http://127.0.0.1:11434/api/generate')
             model=os.getenv('AGRI_OLLAMA_MODEL','llama3.1')
-            prompt='Rewrite these grounded facts as a concise buyer brief. Preserve every number, source scope and caveat; do not add claims.\n\n'+text
-            req=urllib.request.Request(endpoint,data=json.dumps({'model':model,'prompt':prompt,'stream':False}).encode(),headers={'Content-Type':'application/json'})
-            try:
-                with urllib.request.urlopen(req,timeout=90) as r: answer=json.loads(r.read().decode('utf-8'))
-                generated=answer.get('response','').strip()
-                if generated: text=generated+'\n\n'+ '\n'.join(base[1:4]); llm_status='local_model_used'
-                else: llm_status='local_model_empty_fallback_template'
-            except Exception as exc: llm_status='local_model_unavailable_fallback_template: '+str(exc)[:180]
+            host=(urlparse(endpoint).hostname or '').lower()
+            context['llm_endpoint']=endpoint; context['llm_model']=model
+            if host not in ('127.0.0.1','localhost','::1'):
+                llm_status=f'refused_non_local_endpoint ({host}); fallback_template'
+            else:
+                prompt=('Rewrite these grounded facts as a concise buyer brief in Markdown. Preserve every number exactly as written, '
+                        'keep every source, scope statement and caveat, and do not add facts, numbers or advice that are not present.\n\n'+text)
+                try:
+                    answer=json.loads(fetch(endpoint,timeout=int(os.getenv('AGRI_OLLAMA_TIMEOUT','180')),
+                        data=json.dumps({'model':model,'prompt':prompt,'stream':False,'options':{'temperature':0}}).encode(),
+                        headers={'Content-Type':'application/json'}).decode('utf-8'))
+                    generated=(answer.get('response') or '').strip()
+                    def norm(t):
+                        t=re.sub(r'\b\d{4}-\d{2}-\d{2}\b',' ',t)   # dates are checked separately
+                        out=set()
+                        for n in re.findall(r'\d[\d,]*(?:\.\d+)?',t):
+                            n=n.replace(',',''); n=n.rstrip('0').rstrip('.') if '.' in n else n
+                            out.add(n.lstrip('0') or '0')
+                        return out
+                    key_lines=[l for l in base if l.startswith('- **') or l.startswith('Chennai forecast')]
+                    required=norm('\n'.join(key_lines)); allowed=norm('\n'.join(base))|{'7','14'}
+                    for iso in re.findall(r'\b(\d{4})-(\d{2})-(\d{2})\b','\n'.join(base)):
+                        allowed|={iso[0],iso[1].lstrip('0'),iso[2].lstrip('0')}
+                    found=norm(generated)
+                    missing=sorted(required-found); invented=sorted(found-allowed)
+                    asof=context['price_as_of']; y,m,dd=asof.split('-')
+                    import calendar
+                    date_ok=asof in generated or (f"{int(dd)} {calendar.month_name[int(m)]} {y}" in generated) or (f"{calendar.month_name[int(m)]} {int(dd)}, {y}" in generated)
+                    if not date_ok: missing.append(f'price-as-of date {asof}')
+                    context['llm_check']={'required_numbers':len(required),'missing':missing[:20],'unexpected':invented[:20],'date_preserved':date_ok}
+                    if not generated: llm_status='local_model_empty_fallback_template'
+                    elif missing or invented:
+                        llm_status=f'local_model_rejected_numbers_changed (missing {len(missing)}, unexpected {len(invented)}); fallback_template'
+                    else:
+                        text=generated+'\n\n---\n'+'\n'.join(base[2:5])+f'\n\n*Rewritten by local model {model}; all {len(required)} numbers verified against the template.*'
+                        llm_status='local_model_used_numbers_verified'
+                except Exception as exc: llm_status='local_model_unavailable_fallback_template: '+str(exc)[:180]
         context['brief_markdown']=text; context['llm_status']=llm_status
         return context
 
@@ -172,6 +242,6 @@ def main():
     (OUT/'agrisight_brief.md').write_text(context['brief_markdown']+'\n',encoding='utf-8')
     safe={k:v for k,v in context.items() if k!='brief_markdown'}
     (OUT/'agrisight_pipeline.json').write_text(json.dumps(safe,indent=2,default=str),encoding='utf-8')
-    print(f"Wrote {len(context['forecasts'])} commodity forecasts; news={len(context['news_items'])}; LLM={context['llm_status']}; live={args.live}")
+    print(f"Wrote {len(context['forecasts'])} commodity forecasts; weather={context.get('weather_status')}; news={context.get('news_status')}; LLM={context['llm_status']}; live={args.live}")
 
 if __name__=='__main__': main()
