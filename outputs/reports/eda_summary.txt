@@ -1,0 +1,44 @@
+Rows: 414388
+Date range: 2024-01-24 00:00:00 to 2026-04-20 00:00:00
+Commodities: 8
+
+Nulls:
+state           0
+district        0
+market          0
+commodity       0
+variety         0
+grade           0
+arrival_date    0
+min_price       0
+max_price       0
+modal_price     0
+dtype: int64
+Counts:
+commodity
+Beans        48382
+Brinjal      55050
+Cabbage      49072
+Carrot       49130
+Drumstick    50268
+Onion        59560
+Potato       47305
+Tomato       55621
+dtype: int64
+
+Tomato multiplicative seasonal decomposition (365d) completed.
+
+Tomato rolling-z anomalies: 34.
+
+ADF tests:
+commodity       adf      p_value  lags  nobs  stationary
+    Beans -3.994350 1.440385e-03     5   798        True
+  Brinjal -4.367407 3.388381e-04     4   799        True
+  Cabbage -4.823251 4.908141e-05     1   802        True
+   Carrot -4.660696 9.968531e-05     2   801        True
+Drumstick -5.633656 1.075255e-06     4   799        True
+    Onion -5.154096 1.090151e-05     2   815        True
+   Potato -4.427733 2.650255e-04     2   801        True
+   Tomato -6.250742 4.460548e-08     6   797        True
+
+Tomato crisis peak: ₹404000.0 on 2024-07-08.

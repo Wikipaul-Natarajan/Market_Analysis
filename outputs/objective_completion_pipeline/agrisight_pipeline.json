@@ -530,6 +530,7 @@
   "weather_history_path": "/home/claude/Market_Analysis/data/external/weather_chennai.parquet",
   "weather_forecast": null,
   "live_context_requested": false,
+  "weather_status": "not_requested",
   "forecasts": [
     {
       "commodity": "Beans",
@@ -612,6 +613,7 @@
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
     }
   ],
+  "news_status": "not_requested",
   "news_items": [],
   "news_source": "Not fetched (offline run)",
   "llm_status": "not_requested"

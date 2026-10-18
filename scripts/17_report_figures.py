@@ -28,7 +28,7 @@ def save(fig, name):
 
 
 def workflow():
-    fig, ax = plt.subplots(figsize=(7.2, 4.6)); ax.axis('off'); ax.set_xlim(0, 10); ax.set_ylim(0, 7)
+    fig, ax = plt.subplots(figsize=(7.2, 4.6)); ax.axis('off'); ax.set_xlim(0, 10); ax.set_ylim(-0.3, 7)
     def box(x, y, w, h, text, fc):
         ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0.05,rounding_size=0.12', fc=fc, ec='#333', lw=.8))
         ax.text(x+w/2, y+h/2, text, ha='center', va='center', fontsize=7.4, wrap=True)
@@ -36,21 +36,21 @@ def workflow():
         ax.annotate('', xy=(x2, y2), xytext=(x1, y1), arrowprops=dict(arrowstyle='->', lw=.9, color='#333'))
     ax.text(2.4, 6.75, 'Track A: Tamil Nadu statewide', ha='center', fontweight='bold', fontsize=8.5)
     ax.text(7.6, 6.75, 'Track B: Koyambedu market', ha='center', fontweight='bold', fontsize=8.5)
-    A = [('Kaggle Agmarknet extract\n414,388 rows · 451 markets\n(scripts 01–02)', '#e8f0fb'),
-         ('Daily median + 62 features\nlags, rolling, calendar, weather\n(scripts 03–04)', '#e8f0fb'),
-         ('SARIMA · Prophet · RF · XGBoost\n90-day holdout (05–07)\n+ horizon check (16)', '#e8f0fb'),
-         ('SHAP explanations (08)\nRule-based agents (09)', '#e8f0fb')]
-    B = [('vegetablemarketprice.com API\n14,472 daily ₹/kg values\n(scripts 00, 11)', '#eaf6ea'),
-         ('Common-origin evaluation\n7/14/30-day horizons\n(scripts 12, 14)', '#eaf6ea'),
-         ('Monsoon HAC regression\nTomato 2023 scenario (14)', '#eaf6ea'),
-         ('Procurement backtest\n56 fixed-lot cases (13)', '#eaf6ea')]
+    A = [('Kaggle Agmarknet extract\n414,388 rows · 451 markets', '#e8f0fb'),
+         ('Daily median + 62 features\nlags, rolling, calendar, weather', '#e8f0fb'),
+         ('SARIMA · Prophet · RF · XGBoost\n90-day holdout\n+ strict 7-day horizon check', '#e8f0fb'),
+         ('SHAP explanations\nRule-based agent pipeline', '#e8f0fb')]
+    B = [('vegetablemarketprice.com API\n14,472 daily ₹/kg values', '#eaf6ea'),
+         ('Common-origin evaluation\n7/14/30-day horizons', '#eaf6ea'),
+         ('Monsoon HAC regression\nTomato 2023 scenario', '#eaf6ea'),
+         ('Procurement backtest\n56 fixed-lot cases', '#eaf6ea')]
     for i, (t, c) in enumerate(A):
         box(.4, 5.3-i*1.35, 4.0, 1.0, t, c)
         if i: arrow(2.4, 5.3-(i-1)*1.35, 2.4, 5.3-i*1.35+1.0)
     for i, (t, c) in enumerate(B):
         box(5.6, 5.3-i*1.35, 4.0, 1.0, t, c)
         if i: arrow(7.6, 5.3-(i-1)*1.35, 7.6, 5.3-i*1.35+1.0)
-    box(.4, -.05, 9.2, .75, 'Open-Meteo Chennai weather (00) feeds both tracks  →  Four-role brief with freshness gate (15)  →  Streamlit dashboard, 9 pages (10)', '#fdf3e1')
+    box(.4, -.05, 9.2, .75, 'Open-Meteo Chennai weather feeds both tracks\n→  Four-role brief with freshness gate  →  Nine-page Streamlit dashboard', '#fdf3e1')
     arrow(2.4, 1.25, 2.4, .72); arrow(7.6, 1.25, 7.6, .72)
     save(fig, 'fig_3_1_workflow')
 

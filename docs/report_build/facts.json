@@ -1,0 +1,1956 @@
+{
+ "eda": "Rows: 414388\nDate range: 2024-01-24 00:00:00 to 2026-04-20 00:00:00\nCommodities: 8\n\nNulls:\nstate           0\ndistrict        0\nmarket          0\ncommodity       0\nvariety         0\ngrade           0\narrival_date    0\nmin_price       0\nmax_price       0\nmodal_price     0\ndtype: int64\nCounts:\ncommodity\nBeans        48382\nBrinjal      55050\nCabbage      49072\nCarrot       49130\nDrumstick    50268\nOnion        59560\nPotato       47305\nTomato       55621\ndtype: int64\n\nTomato multiplicative seasonal decomposition (365d) completed.\n\nTomato rolling-z anomalies: 34.\n\nADF tests:\ncommodity       adf      p_value  lags  nobs  stationary\n    Beans -3.994350 1.440385e-03     5   798        True\n  Brinjal -4.367407 3.388381e-04     4   799        True\n  Cabbage -4.823251 4.908141e-05     1   802        True\n   Carrot -4.660696 9.968531e-05     2   801        True\nDrumstick -5.633656 1.075255e-06     4   799        True\n    Onion -5.154096 1.090151e-05     2   815        True\n   Potato -4.427733 2.650255e-04     2   801        True\n   Tomato -6.250742 4.460548e-08     6   797        True\n\nTomato crisis peak: \u20b9404000.0 on 2024-07-08.",
+ "sarima": [
+  {
+   "commodity": "Beans",
+   "order": "((1, 0, 1), (0, 1, 1, 7))",
+   "aic": 11240.06,
+   "rmse": 689.54,
+   "mae": 575.68,
+   "mape": 9.88,
+   "naive_mape": 11.93,
+   "walk_forward_rmse": 409.58,
+   "walk_forward_mape": 5.33
+  },
+  {
+   "commodity": "Brinjal",
+   "order": "((1, 0, 1), (0, 1, 1, 7))",
+   "aic": 10355.59,
+   "rmse": 758.91,
+   "mae": 633.18,
+   "mape": 20.62,
+   "naive_mape": 14.33,
+   "walk_forward_rmse": 285.15,
+   "walk_forward_mape": 6.52
+  },
+  {
+   "commodity": "Cabbage",
+   "order": "((2, 0, 1), (0, 1, 1, 7))",
+   "aic": 9719.95,
+   "rmse": 318.54,
+   "mae": 285.39,
+   "mape": 12.66,
+   "naive_mape": 20.06,
+   "walk_forward_rmse": 212.51,
+   "walk_forward_mape": 7.3
+  },
+  {
+   "commodity": "Carrot",
+   "order": "((2, 0, 1), (0, 1, 1, 7))",
+   "aic": 11036.55,
+   "rmse": 2142.4,
+   "mae": 2087.12,
+   "mape": 52.24,
+   "naive_mape": 29.5,
+   "walk_forward_rmse": 585.84,
+   "walk_forward_mape": 11.9
+  },
+  {
+   "commodity": "Drumstick",
+   "order": "((2, 0, 0), (1, 1, 1, 7))",
+   "aic": 12327.51,
+   "rmse": 2930.23,
+   "mae": 2507.96,
+   "mape": 55.81,
+   "naive_mape": 225.66,
+   "walk_forward_rmse": 1410.26,
+   "walk_forward_mape": 23.07
+  },
+  {
+   "commodity": "Onion",
+   "order": "((1, 0, 1), (1, 1, 1, 7))",
+   "aic": 10377.55,
+   "rmse": 976.67,
+   "mae": 912.49,
+   "mape": 34.46,
+   "naive_mape": 21.08,
+   "walk_forward_rmse": 230.49,
+   "walk_forward_mape": 7.07
+  },
+  {
+   "commodity": "Potato",
+   "order": "((1, 0, 1), (0, 1, 1, 7))",
+   "aic": 9802.84,
+   "rmse": 751.65,
+   "mae": 654.3,
+   "mape": 21.55,
+   "naive_mape": 18.49,
+   "walk_forward_rmse": 256.97,
+   "walk_forward_mape": 6.51
+  },
+  {
+   "commodity": "Tomato",
+   "order": "((1, 0, 1), (0, 1, 1, 7))",
+   "aic": 10360.55,
+   "rmse": 983.18,
+   "mae": 906.58,
+   "mape": 53.57,
+   "naive_mape": 51.65,
+   "walk_forward_rmse": 343.88,
+   "walk_forward_mape": 15.99
+  },
+  {
+   "commodity": "AVERAGE",
+   "order": null,
+   "aic": 10652.57,
+   "rmse": 1193.89,
+   "mae": 1070.34,
+   "mape": 32.6,
+   "naive_mape": 49.09,
+   "walk_forward_rmse": 466.83,
+   "walk_forward_mape": 10.46
+  }
+ ],
+ "prophet": [
+  {
+   "commodity": "Beans",
+   "rmse": 1121.39,
+   "mae": 936.33,
+   "mape": 14.36,
+   "naive_mape": 11.93,
+   "sarima_mape": 9.88,
+   "winner": "SARIMA"
+  },
+  {
+   "commodity": "Brinjal",
+   "rmse": 455.2,
+   "mae": 361.0,
+   "mape": 11.27,
+   "naive_mape": 14.33,
+   "sarima_mape": 20.62,
+   "winner": "Prophet"
+  },
+  {
+   "commodity": "Cabbage",
+   "rmse": 265.62,
+   "mae": 199.66,
+   "mape": 8.46,
+   "naive_mape": 20.06,
+   "sarima_mape": 12.66,
+   "winner": "Prophet"
+  },
+  {
+   "commodity": "Carrot",
+   "rmse": 1505.48,
+   "mae": 1376.22,
+   "mape": 34.52,
+   "naive_mape": 29.5,
+   "sarima_mape": 52.24,
+   "winner": "Naive"
+  },
+  {
+   "commodity": "Drumstick",
+   "rmse": 1979.38,
+   "mae": 1793.05,
+   "mape": 31.76,
+   "naive_mape": 225.66,
+   "sarima_mape": 55.81,
+   "winner": "Prophet"
+  },
+  {
+   "commodity": "Onion",
+   "rmse": 591.35,
+   "mae": 511.57,
+   "mape": 18.91,
+   "naive_mape": 21.08,
+   "sarima_mape": 34.46,
+   "winner": "Prophet"
+  },
+  {
+   "commodity": "Potato",
+   "rmse": 380.42,
+   "mae": 320.8,
+   "mape": 10.34,
+   "naive_mape": 18.49,
+   "sarima_mape": 21.55,
+   "winner": "Prophet"
+  },
+  {
+   "commodity": "Tomato",
+   "rmse": 602.47,
+   "mae": 458.54,
+   "mape": 25.05,
+   "naive_mape": 51.65,
+   "sarima_mape": 53.57,
+   "winner": "Prophet"
+  }
+ ],
+ "ml": [
+  {
+   "commodity": "Beans",
+   "model": "RF",
+   "rmse": 800.22,
+   "mae": 609.09,
+   "mape": 11.35,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Beans",
+   "model": "XGBoost",
+   "rmse": 1038.19,
+   "mae": 810.08,
+   "mape": 14.87,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "RF",
+   "rmse": 514.22,
+   "mae": 404.23,
+   "mape": 13.05,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "XGBoost",
+   "rmse": 601.62,
+   "mae": 452.6,
+   "mape": 14.68,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "RF",
+   "rmse": 179.25,
+   "mae": 140.36,
+   "mape": 6.11,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "XGBoost",
+   "rmse": 222.42,
+   "mae": 179.32,
+   "mape": 7.84,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "RF",
+   "rmse": 551.4,
+   "mae": 421.17,
+   "mape": 10.43,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "XGBoost",
+   "rmse": 614.35,
+   "mae": 467.86,
+   "mape": 11.58,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Drumstick",
+   "model": "RF",
+   "rmse": 1512.63,
+   "mae": 1119.29,
+   "mape": 19.97,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Drumstick",
+   "model": "XGBoost",
+   "rmse": 2019.31,
+   "mae": 1352.0,
+   "mape": 25.72,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Onion",
+   "model": "RF",
+   "rmse": 312.97,
+   "mae": 259.22,
+   "mape": 9.36,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Onion",
+   "model": "XGBoost",
+   "rmse": 428.18,
+   "mae": 332.54,
+   "mape": 11.86,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Potato",
+   "model": "RF",
+   "rmse": 322.01,
+   "mae": 247.48,
+   "mape": 8.0,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Potato",
+   "model": "XGBoost",
+   "rmse": 383.03,
+   "mae": 302.0,
+   "mape": 9.81,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "RF",
+   "rmse": 282.79,
+   "mae": 234.19,
+   "mape": 12.26,
+   "best_model": "RF"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "XGBoost",
+   "rmse": 361.88,
+   "mae": 291.14,
+   "mape": 15.49,
+   "best_model": "RF"
+  }
+ ],
+ "hs": [
+  {
+   "commodity": "Beans",
+   "variant": "Naive_t-1",
+   "mape_pct": 4.08,
+   "mae": 239.17,
+   "n_test": 90
+  },
+  {
+   "commodity": "Beans",
+   "variant": "Naive_t-7",
+   "mape_pct": 13.29,
+   "mae": 737.5,
+   "n_test": 90
+  },
+  {
+   "commodity": "Beans",
+   "variant": "XGB_original",
+   "mape_pct": 13.85,
+   "mae": 752.78,
+   "n_test": 90
+  },
+  {
+   "commodity": "Beans",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 13.71,
+   "mae": 748.01,
+   "n_test": 90
+  },
+  {
+   "commodity": "Beans",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 22.6,
+   "mae": 1257.48,
+   "n_test": 90
+  },
+  {
+   "commodity": "Brinjal",
+   "variant": "Naive_t-1",
+   "mape_pct": 5.1,
+   "mae": 172.5,
+   "n_test": 90
+  },
+  {
+   "commodity": "Brinjal",
+   "variant": "Naive_t-7",
+   "mape_pct": 7.91,
+   "mae": 261.11,
+   "n_test": 90
+  },
+  {
+   "commodity": "Brinjal",
+   "variant": "XGB_original",
+   "mape_pct": 12.98,
+   "mae": 404.84,
+   "n_test": 90
+  },
+  {
+   "commodity": "Brinjal",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 13.63,
+   "mae": 426.35,
+   "n_test": 90
+  },
+  {
+   "commodity": "Brinjal",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 14.34,
+   "mae": 443.02,
+   "n_test": 90
+  },
+  {
+   "commodity": "Cabbage",
+   "variant": "Naive_t-1",
+   "mape_pct": 4.8,
+   "mae": 114.44,
+   "n_test": 90
+  },
+  {
+   "commodity": "Cabbage",
+   "variant": "Naive_t-7",
+   "mape_pct": 5.99,
+   "mae": 143.33,
+   "n_test": 90
+  },
+  {
+   "commodity": "Cabbage",
+   "variant": "XGB_original",
+   "mape_pct": 6.55,
+   "mae": 153.63,
+   "n_test": 90
+  },
+  {
+   "commodity": "Cabbage",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 6.39,
+   "mae": 151.12,
+   "n_test": 90
+  },
+  {
+   "commodity": "Cabbage",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 6.08,
+   "mae": 144.77,
+   "n_test": 90
+  },
+  {
+   "commodity": "Carrot",
+   "variant": "Naive_t-1",
+   "mape_pct": 4.3,
+   "mae": 176.11,
+   "n_test": 90
+  },
+  {
+   "commodity": "Carrot",
+   "variant": "Naive_t-7",
+   "mape_pct": 6.77,
+   "mae": 288.89,
+   "n_test": 90
+  },
+  {
+   "commodity": "Carrot",
+   "variant": "XGB_original",
+   "mape_pct": 10.3,
+   "mae": 423.27,
+   "n_test": 90
+  },
+  {
+   "commodity": "Carrot",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 9.61,
+   "mae": 394.31,
+   "n_test": 90
+  },
+  {
+   "commodity": "Carrot",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 12.71,
+   "mae": 528.3,
+   "n_test": 90
+  },
+  {
+   "commodity": "Drumstick",
+   "variant": "Naive_t-1",
+   "mape_pct": 5.9,
+   "mae": 509.17,
+   "n_test": 90
+  },
+  {
+   "commodity": "Drumstick",
+   "variant": "Naive_t-7",
+   "mape_pct": 16.61,
+   "mae": 1404.17,
+   "n_test": 90
+  },
+  {
+   "commodity": "Drumstick",
+   "variant": "XGB_original",
+   "mape_pct": 25.62,
+   "mae": 1534.82,
+   "n_test": 90
+  },
+  {
+   "commodity": "Drumstick",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 31.21,
+   "mae": 1754.71,
+   "n_test": 90
+  },
+  {
+   "commodity": "Drumstick",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 94.71,
+   "mae": 4533.03,
+   "n_test": 90
+  },
+  {
+   "commodity": "Onion",
+   "variant": "Naive_t-1",
+   "mape_pct": 1.74,
+   "mae": 51.39,
+   "n_test": 90
+  },
+  {
+   "commodity": "Onion",
+   "variant": "Naive_t-7",
+   "mape_pct": 4.69,
+   "mae": 141.94,
+   "n_test": 90
+  },
+  {
+   "commodity": "Onion",
+   "variant": "XGB_original",
+   "mape_pct": 9.76,
+   "mae": 272.49,
+   "n_test": 90
+  },
+  {
+   "commodity": "Onion",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 10.19,
+   "mae": 286.31,
+   "n_test": 90
+  },
+  {
+   "commodity": "Onion",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 15.96,
+   "mae": 461.63,
+   "n_test": 90
+  },
+  {
+   "commodity": "Potato",
+   "variant": "Naive_t-1",
+   "mape_pct": 3.54,
+   "mae": 115.0,
+   "n_test": 90
+  },
+  {
+   "commodity": "Potato",
+   "variant": "Naive_t-7",
+   "mape_pct": 5.45,
+   "mae": 175.56,
+   "n_test": 90
+  },
+  {
+   "commodity": "Potato",
+   "variant": "XGB_original",
+   "mape_pct": 9.32,
+   "mae": 285.82,
+   "n_test": 90
+  },
+  {
+   "commodity": "Potato",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 8.95,
+   "mae": 275.09,
+   "n_test": 90
+  },
+  {
+   "commodity": "Potato",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 8.75,
+   "mae": 272.76,
+   "n_test": 90
+  },
+  {
+   "commodity": "Tomato",
+   "variant": "Naive_t-1",
+   "mape_pct": 4.16,
+   "mae": 84.17,
+   "n_test": 90
+  },
+  {
+   "commodity": "Tomato",
+   "variant": "Naive_t-7",
+   "mape_pct": 12.08,
+   "mae": 250.56,
+   "n_test": 90
+  },
+  {
+   "commodity": "Tomato",
+   "variant": "XGB_original",
+   "mape_pct": 21.28,
+   "mae": 392.01,
+   "n_test": 90
+  },
+  {
+   "commodity": "Tomato",
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 21.33,
+   "mae": 389.18,
+   "n_test": 90
+  },
+  {
+   "commodity": "Tomato",
+   "variant": "XGB_strict_7day",
+   "mape_pct": 41.59,
+   "mae": 734.22,
+   "n_test": 90
+  }
+ ],
+ "hs_mean": [
+  {
+   "variant": "Naive_t-1",
+   "mape_pct": 4.2,
+   "mae": 182.74
+  },
+  {
+   "variant": "Naive_t-7",
+   "mape_pct": 9.1,
+   "mae": 425.38
+  },
+  {
+   "variant": "XGB_original",
+   "mape_pct": 13.71,
+   "mae": 527.46
+  },
+  {
+   "variant": "XGB_no_own_lag1",
+   "mape_pct": 14.38,
+   "mae": 553.13
+  },
+  {
+   "variant": "XGB_strict_7day",
+   "mape_pct": 27.09,
+   "mae": 1046.9
+  }
+ ],
+ "shap": [
+  {
+   "commodity": "Beans",
+   "top1": "cross_Beans_lag1",
+   "top1_magnitude": 272.1,
+   "top2": "position_52w",
+   "top2_magnitude": 264.2,
+   "top3": "ema_7",
+   "top3_magnitude": 215.5
+  },
+  {
+   "commodity": "Brinjal",
+   "top1": "cross_Brinjal_lag1",
+   "top1_magnitude": 249.2,
+   "top2": "position_52w",
+   "top2_magnitude": 182.6,
+   "top3": "rain_30d_sum",
+   "top3_magnitude": 111.6
+  },
+  {
+   "commodity": "Cabbage",
+   "top1": "position_52w",
+   "top1_magnitude": 186.7,
+   "top2": "rolling_max_7",
+   "top2_magnitude": 81.8,
+   "top3": "cross_Tomato_lag1",
+   "top3_magnitude": 79.3
+  },
+  {
+   "commodity": "Carrot",
+   "top1": "cross_Carrot_lag1",
+   "top1_magnitude": 460.8,
+   "top2": "rolling_mean_7",
+   "top2_magnitude": 361.6,
+   "top3": "position_52w",
+   "top3_magnitude": 352.8
+  },
+  {
+   "commodity": "Drumstick",
+   "top1": "cross_Drumstick_lag1",
+   "top1_magnitude": 2428.2,
+   "top2": "position_52w",
+   "top2_magnitude": 1129.9,
+   "top3": "temp_max",
+   "top3_magnitude": 646.6
+  },
+  {
+   "commodity": "Onion",
+   "top1": "position_52w",
+   "top1_magnitude": 409.3,
+   "top2": "ema_14",
+   "top2_magnitude": 203.2,
+   "top3": "cross_Potato_lag1",
+   "top3_magnitude": 201.3
+  },
+  {
+   "commodity": "Potato",
+   "top1": "rolling_mean_7",
+   "top1_magnitude": 201.1,
+   "top2": "lag_14",
+   "top2_magnitude": 148.4,
+   "top3": "position_52w",
+   "top3_magnitude": 75.2
+  },
+  {
+   "commodity": "Tomato",
+   "top1": "position_52w",
+   "top1_magnitude": 219.3,
+   "top2": "cross_Tomato_lag1",
+   "top2_magnitude": 157.5,
+   "top3": "rolling_max_7",
+   "top3_magnitude": 131.9
+  }
+ ],
+ "shap_own": [
+  {
+   "c": "Beans",
+   "v": 16.64
+  },
+  {
+   "c": "Brinjal",
+   "v": 24.98
+  },
+  {
+   "c": "Cabbage",
+   "v": 2.58
+  },
+  {
+   "c": "Carrot",
+   "v": 27.19
+  },
+  {
+   "c": "Drumstick",
+   "v": 36.9
+  },
+  {
+   "c": "Onion",
+   "v": 10.42
+  },
+  {
+   "c": "Potato",
+   "v": 2.14
+  },
+  {
+   "c": "Tomato",
+   "v": 19.01
+  }
+ ],
+ "agents": [
+  {
+   "commodity": "Beans",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 179.58210439872374,
+   "risk": "MEDIUM",
+   "forecast_14d_change_pct": -2.3629224262989967,
+   "current_price": 7600.0,
+   "forecast_7d": 7420.4178956012765,
+   "forecast_14d": 7420.4178956012765,
+   "change_14d_pct": -2.3629224262989967,
+   "signal": "HOLD",
+   "risk_score": 28.491221612177053,
+   "driver": "cross_Beans_lag1",
+   "trigger": "routine volatility; leading driver: cross_Beans_lag1"
+  },
+  {
+   "commodity": "Brinjal",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 101.68863456804777,
+   "risk": "LOW",
+   "forecast_14d_change_pct": -2.9053895590870793,
+   "current_price": 3500.0,
+   "forecast_7d": 3398.3113654319523,
+   "forecast_14d": 3398.3113654319523,
+   "change_14d_pct": -2.9053895590870793,
+   "signal": "HOLD",
+   "risk_score": 25.838732551809017,
+   "driver": "cross_Brinjal_lag1",
+   "trigger": "demand surge; leading driver: cross_Brinjal_lag1"
+  },
+  {
+   "commodity": "Cabbage",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 1.758168544989891,
+   "risk": "LOW",
+   "forecast_14d_change_pct": 0.07814082422177293,
+   "current_price": 2250.0,
+   "forecast_7d": 2251.75816854499,
+   "forecast_14d": 2251.75816854499,
+   "change_14d_pct": 0.07814082422177293,
+   "signal": "HOLD",
+   "risk_score": 7.898122088030362,
+   "driver": "position_52w",
+   "trigger": "demand surge; leading driver: position_52w"
+  },
+  {
+   "commodity": "Carrot",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 7.968510468076284,
+   "risk": "LOW",
+   "forecast_14d_change_pct": 0.21249361248203424,
+   "current_price": 3750.0,
+   "forecast_7d": 3757.968510468076,
+   "forecast_14d": 3757.968510468076,
+   "change_14d_pct": 0.21249361248203424,
+   "signal": "HOLD",
+   "risk_score": 13.621392354765502,
+   "driver": "cross_Carrot_lag1",
+   "trigger": "routine volatility; leading driver: cross_Carrot_lag1"
+  },
+  {
+   "commodity": "Drumstick",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 81.4249384945956,
+   "risk": "LOW",
+   "forecast_14d_change_pct": 2.1713316931892157,
+   "current_price": 3750.0,
+   "forecast_7d": 3831.4249384945956,
+   "forecast_14d": 3831.4249384945956,
+   "change_14d_pct": 2.1713316931892157,
+   "signal": "HOLD",
+   "risk_score": 13.369250996989475,
+   "driver": "cross_Drumstick_lag1",
+   "trigger": "routine volatility; leading driver: cross_Drumstick_lag1"
+  },
+  {
+   "commodity": "Onion",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 13.770966098172188,
+   "risk": "LOW",
+   "forecast_14d_change_pct": -0.5508386439268875,
+   "current_price": 2500.0,
+   "forecast_7d": 2486.2290339018277,
+   "forecast_14d": 2486.2290339018277,
+   "change_14d_pct": -0.5508386439268875,
+   "signal": "HOLD",
+   "risk_score": 11.77532042467211,
+   "driver": "position_52w",
+   "trigger": "routine volatility; leading driver: position_52w"
+  },
+  {
+   "commodity": "Potato",
+   "action": "HOLD",
+   "timing": "split purchase across 7-14 days",
+   "quantity_guidance": "normal replenishment",
+   "estimated_savings_per_quintal": 55.35927180762652,
+   "risk": "LOW",
+   "forecast_14d_change_pct": 1.9771168502723757,
+   "current_price": 2800.0,
+   "forecast_7d": 2855.3592718076266,
+   "forecast_14d": 2855.3592718076266,
+   "change_14d_pct": 1.9771168502723757,
+   "signal": "HOLD",
+   "risk_score": 20.76167166827283,
+   "driver": "rolling_mean_7",
+   "trigger": "routine volatility; leading driver: rolling_mean_7"
+  },
+  {
+   "commodity": "Tomato",
+   "action": "DELAY PROCUREMENT",
+   "timing": "reassess in 7 days",
+   "quantity_guidance": "defer discretionary volume",
+   "estimated_savings_per_quintal": 152.64194338978677,
+   "risk": "HIGH",
+   "forecast_14d_change_pct": -5.550616123264973,
+   "current_price": 2750.0,
+   "forecast_7d": 2597.358056610213,
+   "forecast_14d": 2597.358056610213,
+   "change_14d_pct": -5.550616123264973,
+   "signal": "BUY",
+   "risk_score": 56.08705536123688,
+   "driver": "position_52w",
+   "trigger": "demand surge; leading driver: position_52w"
+  }
+ ],
+ "k_overall": [
+  {
+   "model": "NaiveLast",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 9.99,
+   "mae_inr_per_kg": 4.89,
+   "mape_pct": 12.28,
+   "smape_pct": 11.57,
+   "wape_pct": 11.88,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "model": "SARIMA",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 9.83,
+   "mae_inr_per_kg": 5.05,
+   "mape_pct": 12.81,
+   "smape_pct": 12.01,
+   "wape_pct": 12.28,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "model": "SeasonalNaive7",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 10.07,
+   "mae_inr_per_kg": 5.25,
+   "mape_pct": 13.4,
+   "smape_pct": 12.47,
+   "wape_pct": 12.76,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "model": "XGBoost",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 10.82,
+   "mae_inr_per_kg": 6.32,
+   "mape_pct": 14.35,
+   "smape_pct": 13.66,
+   "wape_pct": 15.36,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "model": "RandomForest",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 11.95,
+   "mae_inr_per_kg": 6.84,
+   "mape_pct": 15.39,
+   "smape_pct": 14.62,
+   "wape_pct": 16.63,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "model": "Prophet",
+   "n_predictions": 168,
+   "rmse_inr_per_kg": 15.64,
+   "mae_inr_per_kg": 9.8,
+   "mape_pct": 23.46,
+   "smape_pct": 22.56,
+   "wape_pct": 23.82,
+   "origins": 7,
+   "commodities": 8,
+   "horizons": "7,14,30",
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  }
+ ],
+ "k_by": [
+  {
+   "commodity": "Brinjal",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 2.37,
+   "mae_inr_per_kg": 2.0,
+   "mape_pct": 5.74,
+   "smape_pct": 5.63,
+   "wape_pct": 5.69,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.83,
+   "mae_inr_per_kg": 2.9,
+   "mape_pct": 8.44,
+   "smape_pct": 8.07,
+   "wape_pct": 8.24,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 1.92,
+   "mae_inr_per_kg": 1.51,
+   "mape_pct": 4.36,
+   "smape_pct": 4.32,
+   "wape_pct": 4.3,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 2.42,
+   "mae_inr_per_kg": 2.14,
+   "mape_pct": 6.25,
+   "smape_pct": 6.14,
+   "wape_pct": 6.1,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 2.66,
+   "mae_inr_per_kg": 2.14,
+   "mape_pct": 6.12,
+   "smape_pct": 5.94,
+   "wape_pct": 6.1,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Brinjal",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 2.15,
+   "mae_inr_per_kg": 1.8,
+   "mape_pct": 5.23,
+   "smape_pct": 5.25,
+   "wape_pct": 5.11,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.56,
+   "mae_inr_per_kg": 2.67,
+   "mape_pct": 11.0,
+   "smape_pct": 11.06,
+   "wape_pct": 11.02,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.84,
+   "mae_inr_per_kg": 4.13,
+   "mape_pct": 18.47,
+   "smape_pct": 17.48,
+   "wape_pct": 17.07,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.13,
+   "mae_inr_per_kg": 3.1,
+   "mape_pct": 13.45,
+   "smape_pct": 12.7,
+   "wape_pct": 12.81,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.15,
+   "mae_inr_per_kg": 3.12,
+   "mape_pct": 12.9,
+   "smape_pct": 12.55,
+   "wape_pct": 12.9,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 5.07,
+   "mae_inr_per_kg": 3.33,
+   "mape_pct": 13.9,
+   "smape_pct": 13.1,
+   "wape_pct": 13.78,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Cabbage",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.83,
+   "mae_inr_per_kg": 2.81,
+   "mape_pct": 12.16,
+   "smape_pct": 11.7,
+   "wape_pct": 11.62,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 5.69,
+   "mae_inr_per_kg": 3.9,
+   "mape_pct": 9.05,
+   "smape_pct": 9.82,
+   "wape_pct": 9.07,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 7.88,
+   "mae_inr_per_kg": 6.37,
+   "mape_pct": 14.52,
+   "smape_pct": 15.34,
+   "wape_pct": 14.79,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 5.27,
+   "mae_inr_per_kg": 3.66,
+   "mape_pct": 8.0,
+   "smape_pct": 8.31,
+   "wape_pct": 8.49,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 6.16,
+   "mae_inr_per_kg": 4.31,
+   "mape_pct": 9.86,
+   "smape_pct": 10.76,
+   "wape_pct": 10.01,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 6.25,
+   "mae_inr_per_kg": 4.14,
+   "mape_pct": 9.59,
+   "smape_pct": 10.54,
+   "wape_pct": 9.62,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Carrot",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.93,
+   "mae_inr_per_kg": 3.62,
+   "mape_pct": 8.34,
+   "smape_pct": 8.58,
+   "wape_pct": 8.42,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 24.59,
+   "mae_inr_per_kg": 14.76,
+   "mape_pct": 24.78,
+   "smape_pct": 18.25,
+   "wape_pct": 17.13,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 33.42,
+   "mae_inr_per_kg": 26.5,
+   "mape_pct": 31.73,
+   "smape_pct": 30.16,
+   "wape_pct": 30.75,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 26.83,
+   "mae_inr_per_kg": 22.38,
+   "mape_pct": 28.02,
+   "smape_pct": 24.96,
+   "wape_pct": 25.97,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 23.64,
+   "mae_inr_per_kg": 14.31,
+   "mape_pct": 24.35,
+   "smape_pct": 17.9,
+   "wape_pct": 16.61,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 23.2,
+   "mae_inr_per_kg": 14.76,
+   "mape_pct": 24.38,
+   "smape_pct": 18.71,
+   "wape_pct": 17.13,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Drumsticks",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 23.82,
+   "mae_inr_per_kg": 19.6,
+   "mape_pct": 24.05,
+   "smape_pct": 21.61,
+   "wape_pct": 22.74,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 8.18,
+   "mae_inr_per_kg": 5.71,
+   "mape_pct": 10.24,
+   "smape_pct": 11.34,
+   "wape_pct": 9.89,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 14.72,
+   "mae_inr_per_kg": 12.85,
+   "mape_pct": 22.36,
+   "smape_pct": 25.26,
+   "wape_pct": 22.25,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 15.73,
+   "mae_inr_per_kg": 9.48,
+   "mape_pct": 16.42,
+   "smape_pct": 15.99,
+   "wape_pct": 16.41,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 8.22,
+   "mae_inr_per_kg": 5.69,
+   "mape_pct": 10.22,
+   "smape_pct": 11.33,
+   "wape_pct": 9.85,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 8.37,
+   "mae_inr_per_kg": 5.43,
+   "mape_pct": 9.79,
+   "smape_pct": 11.02,
+   "wape_pct": 9.4,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "French Beans",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 14.43,
+   "mae_inr_per_kg": 9.23,
+   "mape_pct": 15.47,
+   "smape_pct": 15.23,
+   "wape_pct": 15.98,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.02,
+   "mae_inr_per_kg": 2.0,
+   "mape_pct": 7.43,
+   "smape_pct": 7.24,
+   "wape_pct": 6.77,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 9.63,
+   "mae_inr_per_kg": 8.08,
+   "mape_pct": 27.16,
+   "smape_pct": 30.03,
+   "wape_pct": 27.37,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.16,
+   "mae_inr_per_kg": 3.26,
+   "mape_pct": 10.44,
+   "smape_pct": 10.87,
+   "wape_pct": 11.06,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.6,
+   "mae_inr_per_kg": 2.61,
+   "mape_pct": 9.07,
+   "smape_pct": 8.72,
+   "wape_pct": 8.85,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 6.91,
+   "mae_inr_per_kg": 3.48,
+   "mape_pct": 11.67,
+   "smape_pct": 10.28,
+   "wape_pct": 11.77,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Onion Big",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.22,
+   "mae_inr_per_kg": 2.6,
+   "mape_pct": 8.68,
+   "smape_pct": 8.82,
+   "wape_pct": 8.82,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.11,
+   "mae_inr_per_kg": 2.52,
+   "mape_pct": 9.55,
+   "smape_pct": 9.7,
+   "wape_pct": 9.36,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.6,
+   "mae_inr_per_kg": 2.67,
+   "mape_pct": 10.41,
+   "smape_pct": 9.82,
+   "wape_pct": 9.92,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.83,
+   "mae_inr_per_kg": 4.04,
+   "mape_pct": 15.92,
+   "smape_pct": 14.4,
+   "wape_pct": 15.0,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 3.78,
+   "mae_inr_per_kg": 2.74,
+   "mape_pct": 9.72,
+   "smape_pct": 9.27,
+   "wape_pct": 10.17,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.92,
+   "mae_inr_per_kg": 3.1,
+   "mape_pct": 11.16,
+   "smape_pct": 10.36,
+   "wape_pct": 11.48,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Potato",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 4.26,
+   "mae_inr_per_kg": 3.43,
+   "mape_pct": 13.79,
+   "smape_pct": 12.53,
+   "wape_pct": 12.72,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "NaiveLast",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 7.58,
+   "mae_inr_per_kg": 5.52,
+   "mape_pct": 20.46,
+   "smape_pct": 19.51,
+   "wape_pct": 20.98,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "Prophet",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 20.45,
+   "mae_inr_per_kg": 14.9,
+   "mape_pct": 54.6,
+   "smape_pct": 44.29,
+   "wape_pct": 56.57,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "RandomForest",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 9.3,
+   "mae_inr_per_kg": 7.31,
+   "mape_pct": 26.51,
+   "smape_pct": 25.42,
+   "wape_pct": 27.78,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "SARIMA",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 7.57,
+   "mae_inr_per_kg": 5.48,
+   "mape_pct": 20.1,
+   "smape_pct": 19.4,
+   "wape_pct": 20.81,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "SeasonalNaive7",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 7.7,
+   "mae_inr_per_kg": 5.62,
+   "mape_pct": 20.61,
+   "smape_pct": 19.84,
+   "wape_pct": 21.34,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  },
+  {
+   "commodity": "Tomato",
+   "model": "XGBoost",
+   "n_predictions": 21,
+   "rmse_inr_per_kg": 9.44,
+   "mae_inr_per_kg": 7.45,
+   "mape_pct": 27.1,
+   "smape_pct": 25.58,
+   "wape_pct": 28.29,
+   "status": "SECONDARY_DATA_EXPLORATORY"
+  }
+ ],
+ "k_h": [
+  {
+   "model": "NaiveLast",
+   "7": 8.02,
+   "14": 9.27,
+   "30": 18.38
+  },
+  {
+   "model": "SeasonalNaive7",
+   "7": 8.02,
+   "14": 9.27,
+   "30": 21.05
+  },
+  {
+   "model": "SARIMA",
+   "7": 8.17,
+   "14": 9.61,
+   "30": 19.11
+  },
+  {
+   "model": "XGBoost",
+   "7": 11.63,
+   "14": 15.71,
+   "30": 18.73
+  },
+  {
+   "model": "RandomForest",
+   "7": 10.75,
+   "14": 18.01,
+   "30": 21.13
+  },
+  {
+   "model": "Prophet",
+   "7": 22.11,
+   "14": 23.93,
+   "30": 25.42
+  }
+ ],
+ "mh": [
+  {
+   "horizon_days": 7,
+   "model": "Prophet",
+   "mape_pct": 17.27,
+   "mae": 8.35,
+   "rmse": 11.35
+  },
+  {
+   "horizon_days": 7,
+   "model": "RF",
+   "mape_pct": 9.85,
+   "mae": 4.62,
+   "rmse": 6.21
+  },
+  {
+   "horizon_days": 7,
+   "model": "SARIMA",
+   "mape_pct": 8.65,
+   "mae": 3.91,
+   "rmse": 4.93
+  },
+  {
+   "horizon_days": 7,
+   "model": "SeasonalNaive",
+   "mape_pct": 8.58,
+   "mae": 3.44,
+   "rmse": 4.04
+  },
+  {
+   "horizon_days": 7,
+   "model": "XGBoost",
+   "mape_pct": 9.06,
+   "mae": 4.26,
+   "rmse": 5.92
+  },
+  {
+   "horizon_days": 14,
+   "model": "Prophet",
+   "mape_pct": 22.54,
+   "mae": 11.16,
+   "rmse": 14.37
+  },
+  {
+   "horizon_days": 14,
+   "model": "RF",
+   "mape_pct": 15.45,
+   "mae": 7.13,
+   "rmse": 8.94
+  },
+  {
+   "horizon_days": 14,
+   "model": "SARIMA",
+   "mape_pct": 13.93,
+   "mae": 6.65,
+   "rmse": 8.67
+  },
+  {
+   "horizon_days": 14,
+   "model": "SeasonalNaive",
+   "mape_pct": 12.94,
+   "mae": 5.78,
+   "rmse": 7.62
+  },
+  {
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "mape_pct": 16.19,
+   "mae": 7.07,
+   "rmse": 8.81
+  },
+  {
+   "horizon_days": 30,
+   "model": "Prophet",
+   "mape_pct": 25.99,
+   "mae": 12.85,
+   "rmse": 16.33
+  },
+  {
+   "horizon_days": 30,
+   "model": "RF",
+   "mape_pct": 17.97,
+   "mae": 7.22,
+   "rmse": 8.7
+  },
+  {
+   "horizon_days": 30,
+   "model": "SARIMA",
+   "mape_pct": 17.8,
+   "mae": 7.48,
+   "rmse": 9.54
+  },
+  {
+   "horizon_days": 30,
+   "model": "SeasonalNaive",
+   "mape_pct": 17.31,
+   "mae": 6.72,
+   "rmse": 8.33
+  },
+  {
+   "horizon_days": 30,
+   "model": "XGBoost",
+   "mape_pct": 18.38,
+   "mae": 7.6,
+   "rmse": 8.99
+  }
+ ],
+ "hac": [
+  {
+   "commodity": "Tomato",
+   "n": 1000,
+   "rain_anomaly_coef": 2.7277,
+   "rain_anomaly_hac_se": 2.4301,
+   "rain_anomaly_pvalue": 0.2617,
+   "price_momentum_coef": -0.0861,
+   "price_momentum_pvalue": 0.0214,
+   "r_squared": 0.0128,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Onion",
+   "n": 1000,
+   "rain_anomaly_coef": -0.4062,
+   "rain_anomaly_hac_se": 1.7398,
+   "rain_anomaly_pvalue": 0.8154,
+   "price_momentum_coef": -0.1483,
+   "price_momentum_pvalue": 0.0201,
+   "r_squared": 0.0216,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Potato",
+   "n": 1000,
+   "rain_anomaly_coef": -0.0978,
+   "rain_anomaly_hac_se": 0.9824,
+   "rain_anomaly_pvalue": 0.9207,
+   "price_momentum_coef": -0.2695,
+   "price_momentum_pvalue": 0.0,
+   "r_squared": 0.0728,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Cabbage",
+   "n": 1000,
+   "rain_anomaly_coef": -0.5639,
+   "rain_anomaly_hac_se": 1.145,
+   "rain_anomaly_pvalue": 0.6224,
+   "price_momentum_coef": -0.3172,
+   "price_momentum_pvalue": 0.0,
+   "r_squared": 0.1007,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Carrot",
+   "n": 1000,
+   "rain_anomaly_coef": -0.7881,
+   "rain_anomaly_hac_se": 0.8803,
+   "rain_anomaly_pvalue": 0.3706,
+   "price_momentum_coef": -0.1708,
+   "price_momentum_pvalue": 0.0009,
+   "r_squared": 0.0299,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Beans",
+   "n": 1000,
+   "rain_anomaly_coef": 0.8646,
+   "rain_anomaly_hac_se": 1.5505,
+   "rain_anomaly_pvalue": 0.5771,
+   "price_momentum_coef": -0.2483,
+   "price_momentum_pvalue": 0.0016,
+   "r_squared": 0.063,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Brinjal",
+   "n": 1000,
+   "rain_anomaly_coef": 0.5549,
+   "rain_anomaly_hac_se": 0.9128,
+   "rain_anomaly_pvalue": 0.5432,
+   "price_momentum_coef": -0.3866,
+   "price_momentum_pvalue": 0.0,
+   "r_squared": 0.1494,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  },
+  {
+   "commodity": "Drumstick",
+   "n": 1000,
+   "rain_anomaly_coef": -1.7348,
+   "rain_anomaly_hac_se": 2.5503,
+   "rain_anomaly_pvalue": 0.4963,
+   "price_momentum_coef": -0.1761,
+   "price_momentum_pvalue": 0.0002,
+   "r_squared": 0.0313,
+   "hac_lags": 7,
+   "arrival_volume_available": false,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "inference_status": "EXPLORATORY_SHORT_WEATHER_HISTORY_NO_ARRIVAL_CONTROL"
+  }
+ ],
+ "crisis": [
+  {
+   "origin": "2023-04-01",
+   "target": "2023-04-15",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 27.0,
+   "predicted_source_value": 19.52,
+   "actual_source_value": 16.0,
+   "action": "DELAY PROCUREMENT",
+   "risk": "MEDIUM",
+   "scenario_difference_vs_buy_now_source_units": 11.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-04-08",
+   "target": "2023-04-22",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 18.0,
+   "predicted_source_value": 20.41,
+   "actual_source_value": 18.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": 0.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-04-15",
+   "target": "2023-04-29",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 16.0,
+   "predicted_source_value": 18.0,
+   "actual_source_value": 13.0,
+   "action": "PROCURE NOW",
+   "risk": "MEDIUM",
+   "scenario_difference_vs_buy_now_source_units": 0.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-04-22",
+   "target": "2023-05-06",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 18.0,
+   "predicted_source_value": 20.71,
+   "actual_source_value": 14.0,
+   "action": "PROCURE NOW",
+   "risk": "MEDIUM",
+   "scenario_difference_vs_buy_now_source_units": 0.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-04-29",
+   "target": "2023-05-13",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 13.0,
+   "predicted_source_value": 21.5,
+   "actual_source_value": 16.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -1.5,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-05-06",
+   "target": "2023-05-20",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 14.0,
+   "predicted_source_value": 26.71,
+   "actual_source_value": 17.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -1.5,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-05-13",
+   "target": "2023-05-27",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 16.0,
+   "predicted_source_value": 49.01,
+   "actual_source_value": 13.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": 1.5,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-05-20",
+   "target": "2023-06-03",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 17.0,
+   "predicted_source_value": 43.42,
+   "actual_source_value": 20.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -1.5,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-05-27",
+   "target": "2023-06-10",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 13.0,
+   "predicted_source_value": 20.16,
+   "actual_source_value": 27.0,
+   "action": "PARTIAL PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -7.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-06-03",
+   "target": "2023-06-17",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 20.0,
+   "predicted_source_value": 20.97,
+   "actual_source_value": 38.0,
+   "action": "HEDGE",
+   "risk": "MEDIUM",
+   "scenario_difference_vs_buy_now_source_units": -9.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-06-10",
+   "target": "2023-06-24",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 27.0,
+   "predicted_source_value": 24.59,
+   "actual_source_value": 70.0,
+   "action": "DELAY PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -43.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-06-17",
+   "target": "2023-07-01",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 38.0,
+   "predicted_source_value": 29.85,
+   "actual_source_value": 80.0,
+   "action": "DELAY PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -42.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  },
+  {
+   "origin": "2023-06-24",
+   "target": "2023-07-08",
+   "horizon_days": 14,
+   "model": "XGBoost",
+   "current_source_value": 70.0,
+   "predicted_source_value": 43.84,
+   "actual_source_value": 97.0,
+   "action": "DELAY PROCUREMENT",
+   "risk": "HIGH",
+   "scenario_difference_vs_buy_now_source_units": -27.0,
+   "source_status": "SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL",
+   "economic_status": "SCENARIO_ONLY_NO_BUYER_OUTCOMES_OR_VALIDATED_PRICE_BASIS"
+  }
+ ],
+ "bt_sum": [
+  {
+   "advice_action": "DELAY PROCUREMENT",
+   "cases": 14,
+   "mean_counterfactual_difference_inr": 278.57,
+   "median_counterfactual_difference_inr": 100.0
+  },
+  {
+   "advice_action": "HEDGE",
+   "cases": 10,
+   "mean_counterfactual_difference_inr": -5.0,
+   "median_counterfactual_difference_inr": 25.0
+  },
+  {
+   "advice_action": "HOLD",
+   "cases": 9,
+   "mean_counterfactual_difference_inr": 0.0,
+   "median_counterfactual_difference_inr": 0.0
+  },
+  {
+   "advice_action": "PARTIAL PROCUREMENT",
+   "cases": 9,
+   "mean_counterfactual_difference_inr": -16.67,
+   "median_counterfactual_difference_inr": 0.0
+  },
+  {
+   "advice_action": "PROCURE NOW",
+   "cases": 14,
+   "mean_counterfactual_difference_inr": 0.0,
+   "median_counterfactual_difference_inr": 0.0
+  }
+ ],
+ "bt": {
+  "n": 56,
+  "pos": 30.4,
+  "neg": 19.6,
+  "mean": 66.07,
+  "total": 3700.0
+ },
+ "ne_rain": "{\"2024\": 846.7, \"2025\": 965.5}"
+}

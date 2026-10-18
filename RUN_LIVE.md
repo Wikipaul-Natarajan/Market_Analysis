@@ -1,7 +1,7 @@
 # Running AgriSight script 15 live (weather + PIB news + local LLM)
 
-The live run needs internet access and a local Ollama model. Neither is available in the
-analysis sandbox, so this run is done on your own PC. Total time: about 20–30 minutes,
+The live run needs internet access and a local Ollama model installed on the machine
+that runs it. Total time: about 20–30 minutes,
 mostly the one-time model download.
 
 ## 1. Install Ollama and a model (one time)

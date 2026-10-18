@@ -1,15 +1,17 @@
-pandas
-numpy
-requests
-beautifulsoup4
-pyarrow
-matplotlib
-seaborn
-statsmodels
-scikit-learn
-xgboost
-prophet
-shap
-streamlit
-python-dotenv
-kaggle
+# Versions used for the 18 Oct 2026 end-to-end run (Python 3.12.3).
+# Pinned because tree-model forecasts, and some advice actions, change between library versions.
+pandas==3.0.2
+numpy==2.4.4
+requests==2.33.1
+beautifulsoup4==4.14.3
+pyarrow==26.0.0
+matplotlib==3.10.8
+seaborn==0.13.2
+statsmodels==0.15.0
+scikit-learn==1.8.0
+xgboost==3.4.1
+prophet==1.5.0
+shap==0.54.1
+streamlit==1.66.0
+python-dotenv==1.2.2
+kaggle  # not installed in the run environment; version unpinned

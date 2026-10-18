@@ -1,0 +1,472 @@
+{
+  "agents": [
+    "Data Analyst",
+    "Price Forecaster",
+    "Market Intelligence",
+    "Procurement Advisor"
+  ],
+  "analysis": {
+    "Beans": {
+      "mean_30d": 7011.666666666667,
+      "std_30d": 363.159823591851,
+      "cv_30d": 0.05179365204542681,
+      "change_7d_pct": 3.771661569826712,
+      "z_30d": 1.6200397045972534,
+      "anomaly": false,
+      "trend": "stable"
+    },
+    "Brinjal": {
+      "mean_30d": 3243.3333333333335,
+      "std_30d": 212.63264960527798,
+      "cv_30d": 0.06555991251961293,
+      "change_7d_pct": 6.4159292035398385,
+      "z_30d": 1.2070896315459143,
+      "anomaly": false,
+      "trend": "up"
+    },
+    "Cabbage": {
+      "mean_30d": 2234.1666666666665,
+      "std_30d": 114.37297828123363,
+      "cv_30d": 0.05119267957384572,
+      "change_7d_pct": 5.237315875613735,
+      "z_30d": 0.13843596250856244,
+      "anomaly": false,
+      "trend": "up"
+    },
+    "Carrot": {
+      "mean_30d": 3867.5,
+      "std_30d": 184.54861054793236,
+      "cv_30d": 0.04771780492512795,
+      "change_7d_pct": 3.2833020637898613,
+      "z_30d": -0.6366886190643088,
+      "anomaly": false,
+      "trend": "stable"
+    },
+    "Drumstick": {
+      "mean_30d": 3687.5,
+      "std_30d": 230.97898844580706,
+      "cv_30d": 0.06263836974801547,
+      "change_7d_pct": -0.3741814780168329,
+      "z_30d": 0.2705873829500467,
+      "anomaly": false,
+      "trend": "stable"
+    },
+    "Onion": {
+      "mean_30d": 2551.6666666666665,
+      "std_30d": 90.24233020550578,
+      "cv_30d": 0.0353660340452668,
+      "change_7d_pct": -0.9971509971509973,
+      "z_30d": -0.5725324972106525,
+      "anomaly": false,
+      "trend": "stable"
+    },
+    "Potato": {
+      "mean_30d": 2944.1666666666665,
+      "std_30d": 133.6947329149335,
+      "cv_30d": 0.04541004231472409,
+      "change_7d_pct": 1.7632241813602123,
+      "z_30d": -1.078327197514924,
+      "anomaly": false,
+      "trend": "stable"
+    },
+    "Tomato": {
+      "mean_30d": 1935.0,
+      "std_30d": 365.3411254307876,
+      "cv_30d": 0.1888067831683657,
+      "change_7d_pct": 34.40453686200377,
+      "z_30d": 2.230791836092919,
+      "anomaly": true,
+      "trend": "up"
+    }
+  },
+  "forecasts": {
+    "Beans": {
+      "current_price": 7600.0,
+      "forecast_7d": 7420.4178956012765,
+      "forecast_14d": 7420.4178956012765,
+      "change_14d_pct": -2.3629224262989967,
+      "signal": "HOLD"
+    },
+    "Brinjal": {
+      "current_price": 3500.0,
+      "forecast_7d": 3398.3113654319523,
+      "forecast_14d": 3398.3113654319523,
+      "change_14d_pct": -2.9053895590870793,
+      "signal": "HOLD"
+    },
+    "Cabbage": {
+      "current_price": 2250.0,
+      "forecast_7d": 2251.75816854499,
+      "forecast_14d": 2251.75816854499,
+      "change_14d_pct": 0.07814082422177293,
+      "signal": "HOLD"
+    },
+    "Carrot": {
+      "current_price": 3750.0,
+      "forecast_7d": 3757.968510468076,
+      "forecast_14d": 3757.968510468076,
+      "change_14d_pct": 0.21249361248203424,
+      "signal": "HOLD"
+    },
+    "Drumstick": {
+      "current_price": 3750.0,
+      "forecast_7d": 3831.4249384945956,
+      "forecast_14d": 3831.4249384945956,
+      "change_14d_pct": 2.1713316931892157,
+      "signal": "HOLD"
+    },
+    "Onion": {
+      "current_price": 2500.0,
+      "forecast_7d": 2486.2290339018277,
+      "forecast_14d": 2486.2290339018277,
+      "change_14d_pct": -0.5508386439268875,
+      "signal": "HOLD"
+    },
+    "Potato": {
+      "current_price": 2800.0,
+      "forecast_7d": 2855.3592718076266,
+      "forecast_14d": 2855.3592718076266,
+      "change_14d_pct": 1.9771168502723757,
+      "signal": "HOLD"
+    },
+    "Tomato": {
+      "current_price": 2750.0,
+      "forecast_7d": 2597.358056610213,
+      "forecast_14d": 2597.358056610213,
+      "change_14d_pct": -5.550616123264973,
+      "signal": "BUY"
+    }
+  },
+  "intelligence": {
+    "Beans": {
+      "risk_score": 28.491221612177053,
+      "risk": "MEDIUM",
+      "driver": "cross_Beans_lag1",
+      "trigger": "routine volatility; leading driver: cross_Beans_lag1"
+    },
+    "Brinjal": {
+      "risk_score": 25.838732551809017,
+      "risk": "LOW",
+      "driver": "cross_Brinjal_lag1",
+      "trigger": "demand surge; leading driver: cross_Brinjal_lag1"
+    },
+    "Cabbage": {
+      "risk_score": 7.898122088030362,
+      "risk": "LOW",
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    },
+    "Carrot": {
+      "risk_score": 13.621392354765502,
+      "risk": "LOW",
+      "driver": "cross_Carrot_lag1",
+      "trigger": "routine volatility; leading driver: cross_Carrot_lag1"
+    },
+    "Drumstick": {
+      "risk_score": 13.369250996989475,
+      "risk": "LOW",
+      "driver": "cross_Drumstick_lag1",
+      "trigger": "routine volatility; leading driver: cross_Drumstick_lag1"
+    },
+    "Onion": {
+      "risk_score": 11.77532042467211,
+      "risk": "LOW",
+      "driver": "position_52w",
+      "trigger": "routine volatility; leading driver: position_52w"
+    },
+    "Potato": {
+      "risk_score": 20.76167166827283,
+      "risk": "LOW",
+      "driver": "rolling_mean_7",
+      "trigger": "routine volatility; leading driver: rolling_mean_7"
+    },
+    "Tomato": {
+      "risk_score": 56.08705536123688,
+      "risk": "HIGH",
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    }
+  },
+  "recommendations": [
+    {
+      "commodity": "Beans",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 179.58210439872374,
+      "risk": "MEDIUM",
+      "forecast_14d_change_pct": -2.3629224262989967,
+      "current_price": 7600.0,
+      "forecast_7d": 7420.4178956012765,
+      "forecast_14d": 7420.4178956012765,
+      "change_14d_pct": -2.3629224262989967,
+      "signal": "HOLD",
+      "risk_score": 28.491221612177053,
+      "driver": "cross_Beans_lag1",
+      "trigger": "routine volatility; leading driver: cross_Beans_lag1"
+    },
+    {
+      "commodity": "Brinjal",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 101.68863456804777,
+      "risk": "LOW",
+      "forecast_14d_change_pct": -2.9053895590870793,
+      "current_price": 3500.0,
+      "forecast_7d": 3398.3113654319523,
+      "forecast_14d": 3398.3113654319523,
+      "change_14d_pct": -2.9053895590870793,
+      "signal": "HOLD",
+      "risk_score": 25.838732551809017,
+      "driver": "cross_Brinjal_lag1",
+      "trigger": "demand surge; leading driver: cross_Brinjal_lag1"
+    },
+    {
+      "commodity": "Cabbage",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 1.758168544989891,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 0.07814082422177293,
+      "current_price": 2250.0,
+      "forecast_7d": 2251.75816854499,
+      "forecast_14d": 2251.75816854499,
+      "change_14d_pct": 0.07814082422177293,
+      "signal": "HOLD",
+      "risk_score": 7.898122088030362,
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    },
+    {
+      "commodity": "Carrot",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 7.968510468076284,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 0.21249361248203424,
+      "current_price": 3750.0,
+      "forecast_7d": 3757.968510468076,
+      "forecast_14d": 3757.968510468076,
+      "change_14d_pct": 0.21249361248203424,
+      "signal": "HOLD",
+      "risk_score": 13.621392354765502,
+      "driver": "cross_Carrot_lag1",
+      "trigger": "routine volatility; leading driver: cross_Carrot_lag1"
+    },
+    {
+      "commodity": "Drumstick",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 81.4249384945956,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 2.1713316931892157,
+      "current_price": 3750.0,
+      "forecast_7d": 3831.4249384945956,
+      "forecast_14d": 3831.4249384945956,
+      "change_14d_pct": 2.1713316931892157,
+      "signal": "HOLD",
+      "risk_score": 13.369250996989475,
+      "driver": "cross_Drumstick_lag1",
+      "trigger": "routine volatility; leading driver: cross_Drumstick_lag1"
+    },
+    {
+      "commodity": "Onion",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 13.770966098172188,
+      "risk": "LOW",
+      "forecast_14d_change_pct": -0.5508386439268875,
+      "current_price": 2500.0,
+      "forecast_7d": 2486.2290339018277,
+      "forecast_14d": 2486.2290339018277,
+      "change_14d_pct": -0.5508386439268875,
+      "signal": "HOLD",
+      "risk_score": 11.77532042467211,
+      "driver": "position_52w",
+      "trigger": "routine volatility; leading driver: position_52w"
+    },
+    {
+      "commodity": "Potato",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 55.35927180762652,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 1.9771168502723757,
+      "current_price": 2800.0,
+      "forecast_7d": 2855.3592718076266,
+      "forecast_14d": 2855.3592718076266,
+      "change_14d_pct": 1.9771168502723757,
+      "signal": "HOLD",
+      "risk_score": 20.76167166827283,
+      "driver": "rolling_mean_7",
+      "trigger": "routine volatility; leading driver: rolling_mean_7"
+    },
+    {
+      "commodity": "Tomato",
+      "action": "DELAY PROCUREMENT",
+      "timing": "reassess in 7 days",
+      "quantity_guidance": "defer discretionary volume",
+      "estimated_savings_per_quintal": 152.64194338978677,
+      "risk": "HIGH",
+      "forecast_14d_change_pct": -5.550616123264973,
+      "current_price": 2750.0,
+      "forecast_7d": 2597.358056610213,
+      "forecast_14d": 2597.358056610213,
+      "change_14d_pct": -5.550616123264973,
+      "signal": "BUY",
+      "risk_score": 56.08705536123688,
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    }
+  ],
+  "priority_actions": [
+    {
+      "commodity": "Tomato",
+      "action": "DELAY PROCUREMENT",
+      "timing": "reassess in 7 days",
+      "quantity_guidance": "defer discretionary volume",
+      "estimated_savings_per_quintal": 152.64194338978677,
+      "risk": "HIGH",
+      "forecast_14d_change_pct": -5.550616123264973,
+      "current_price": 2750.0,
+      "forecast_7d": 2597.358056610213,
+      "forecast_14d": 2597.358056610213,
+      "change_14d_pct": -5.550616123264973,
+      "signal": "BUY",
+      "risk_score": 56.08705536123688,
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    },
+    {
+      "commodity": "Brinjal",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 101.68863456804777,
+      "risk": "LOW",
+      "forecast_14d_change_pct": -2.9053895590870793,
+      "current_price": 3500.0,
+      "forecast_7d": 3398.3113654319523,
+      "forecast_14d": 3398.3113654319523,
+      "change_14d_pct": -2.9053895590870793,
+      "signal": "HOLD",
+      "risk_score": 25.838732551809017,
+      "driver": "cross_Brinjal_lag1",
+      "trigger": "demand surge; leading driver: cross_Brinjal_lag1"
+    },
+    {
+      "commodity": "Beans",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 179.58210439872374,
+      "risk": "MEDIUM",
+      "forecast_14d_change_pct": -2.3629224262989967,
+      "current_price": 7600.0,
+      "forecast_7d": 7420.4178956012765,
+      "forecast_14d": 7420.4178956012765,
+      "change_14d_pct": -2.3629224262989967,
+      "signal": "HOLD",
+      "risk_score": 28.491221612177053,
+      "driver": "cross_Beans_lag1",
+      "trigger": "routine volatility; leading driver: cross_Beans_lag1"
+    },
+    {
+      "commodity": "Drumstick",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 81.4249384945956,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 2.1713316931892157,
+      "current_price": 3750.0,
+      "forecast_7d": 3831.4249384945956,
+      "forecast_14d": 3831.4249384945956,
+      "change_14d_pct": 2.1713316931892157,
+      "signal": "HOLD",
+      "risk_score": 13.369250996989475,
+      "driver": "cross_Drumstick_lag1",
+      "trigger": "routine volatility; leading driver: cross_Drumstick_lag1"
+    },
+    {
+      "commodity": "Potato",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 55.35927180762652,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 1.9771168502723757,
+      "current_price": 2800.0,
+      "forecast_7d": 2855.3592718076266,
+      "forecast_14d": 2855.3592718076266,
+      "change_14d_pct": 1.9771168502723757,
+      "signal": "HOLD",
+      "risk_score": 20.76167166827283,
+      "driver": "rolling_mean_7",
+      "trigger": "routine volatility; leading driver: rolling_mean_7"
+    },
+    {
+      "commodity": "Onion",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 13.770966098172188,
+      "risk": "LOW",
+      "forecast_14d_change_pct": -0.5508386439268875,
+      "current_price": 2500.0,
+      "forecast_7d": 2486.2290339018277,
+      "forecast_14d": 2486.2290339018277,
+      "change_14d_pct": -0.5508386439268875,
+      "signal": "HOLD",
+      "risk_score": 11.77532042467211,
+      "driver": "position_52w",
+      "trigger": "routine volatility; leading driver: position_52w"
+    },
+    {
+      "commodity": "Carrot",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 7.968510468076284,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 0.21249361248203424,
+      "current_price": 3750.0,
+      "forecast_7d": 3757.968510468076,
+      "forecast_14d": 3757.968510468076,
+      "change_14d_pct": 0.21249361248203424,
+      "signal": "HOLD",
+      "risk_score": 13.621392354765502,
+      "driver": "cross_Carrot_lag1",
+      "trigger": "routine volatility; leading driver: cross_Carrot_lag1"
+    },
+    {
+      "commodity": "Cabbage",
+      "action": "HOLD",
+      "timing": "split purchase across 7-14 days",
+      "quantity_guidance": "normal replenishment",
+      "estimated_savings_per_quintal": 1.758168544989891,
+      "risk": "LOW",
+      "forecast_14d_change_pct": 0.07814082422177293,
+      "current_price": 2250.0,
+      "forecast_7d": 2251.75816854499,
+      "forecast_14d": 2251.75816854499,
+      "change_14d_pct": 0.07814082422177293,
+      "signal": "HOLD",
+      "risk_score": 7.898122088030362,
+      "driver": "position_52w",
+      "trigger": "demand surge; leading driver: position_52w"
+    }
+  ],
+  "executive_summary": {
+    "high_risk": [
+      "Tomato"
+    ],
+    "model_basis": "ml_summary.csv mean MAPE 12.65%; sarima_summary.csv mean MAPE 32.60%"
+  }
+}

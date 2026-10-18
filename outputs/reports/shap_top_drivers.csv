@@ -1,0 +1,9 @@
+commodity,top1,top1_magnitude,top2,top2_magnitude,top3,top3_magnitude
+Beans,cross_Beans_lag1,272.06924,position_52w,264.15308,ema_7,215.49687
+Brinjal,cross_Brinjal_lag1,249.2432,position_52w,182.55008,rain_30d_sum,111.58447
+Cabbage,position_52w,186.69226,rolling_max_7,81.78831,cross_Tomato_lag1,79.31732
+Carrot,cross_Carrot_lag1,460.75244,rolling_mean_7,361.6412,position_52w,352.8081
+Drumstick,cross_Drumstick_lag1,2428.152,position_52w,1129.9081,temp_max,646.58044
+Onion,position_52w,409.33792,ema_14,203.20618,cross_Potato_lag1,201.3347
+Potato,rolling_mean_7,201.09273,lag_14,148.43536,position_52w,75.24148
+Tomato,position_52w,219.30414,cross_Tomato_lag1,157.50636,rolling_max_7,131.93037

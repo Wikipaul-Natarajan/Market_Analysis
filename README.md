@@ -1,5 +1,14 @@
 # AgriSight POC
 
+## Final report branch (`agrisight-final-report`)
+
+- **Final report:** `outputs/final_project_report_20261018/AgriSight_Final_Project_Report.docx` (build files in `docs/report_build/`).
+- **Full run order:** `02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 12 → 13 → 14 → 15 → 16 → 17`, then `streamlit run scripts/10_dashboard.py`. Scripts 00, 01 and 11 download source data and need internet access.
+- **New scripts:** `16_horizon_sensitivity.py` (naive benchmarks and strict seven-day models) and `17_report_figures.py` (report figures in `outputs/figures/report/`).
+- **Live mode of script 15** (weather, PIB news, local LLM writer): see `RUN_LIVE.md`; verify setup first with `python tests/test_live_paths.py`.
+- **Changes in this branch:** see `E2E_CHANGES.md`. Library versions are pinned in `requirements.txt`.
+- Trained models (`outputs/models/`) and processed data (`data/processed/`) are not committed; rerun scripts 02–07 to regenerate them.
+
 ## Environment and inputs
 
 Install dependencies using pip install -r requirements.txt. Run commands from the project root. Pipeline Python files are organized under `scripts/`; the shared helper writes data and outputs at the project root.
