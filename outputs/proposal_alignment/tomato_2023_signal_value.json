@@ -1,0 +1,24 @@
+{
+ "14": {
+  "rise_signals": 9,
+  "rise_signals_correct": 5,
+  "forward_buy_value_total": 31.0,
+  "forward_buy_value_mean": 3.44,
+  "fall_signals": 3,
+  "fall_signals_correct": 1,
+  "deferral_value_total": -58.0,
+  "net_signal_value": -27.0,
+  "first_large_rise_signal": "2023-05-06"
+ },
+ "30": {
+  "rise_signals": 9,
+  "rise_signals_correct": 7,
+  "forward_buy_value_total": 259.0,
+  "forward_buy_value_mean": 28.78,
+  "fall_signals": 3,
+  "fall_signals_correct": 1,
+  "deferral_value_total": -89.0,
+  "net_signal_value": 170.0,
+  "first_large_rise_signal": "2023-04-29"
+ }
+}

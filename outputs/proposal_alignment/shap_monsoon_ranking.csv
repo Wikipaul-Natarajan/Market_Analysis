@@ -1,0 +1,9 @@
+commodity,n_rows,top1,top1_share_pct,lag_1_share_pct,ne_monsoon_deviation_share_pct,ne_monsoon_deviation_rank,rain_anomaly_7d_share_pct,rain_anomaly_7d_rank,all_weather_share_pct,n_features
+Tomato,975,lag_1,42.1,42.1,1.63,13,3.2,7,11.2,16
+Onion,975,lag_1,36.7,36.7,0.9,14,1.71,9,10.5,16
+Potato,975,lag_1,27.0,27.0,0.32,15,1.53,10,5.8,16
+Cabbage,975,lag_1,37.9,37.9,1.67,12,0.55,15,9.7,16
+Carrot,975,lag_1,25.4,25.4,1.29,12,2.74,10,11.5,16
+Beans,975,lag_1,22.6,22.6,0.18,15,0.74,14,20.0,16
+Brinjal,975,lag_1,43.2,43.2,1.19,13,1.72,11,13.6,16
+Drumstick,975,lag_1,50.9,50.9,0.09,15,1.92,10,12.4,16

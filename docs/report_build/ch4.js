@@ -6,6 +6,7 @@ const n0 = v => Number(v).toLocaleString('en-IN', { maximumFractionDigits: 0 });
 const n2 = v => Number(v).toFixed(2);
 const ORDER8 = ['Beans', 'Brinjal', 'Cabbage', 'Carrot', 'Drumstick', 'Onion', 'Potato', 'Tomato'];
 const pct = v => `${n2(v)}%`;
+const money = v => `${Number(v) < 0 ? '−' : ''}₹${n2(Math.abs(Number(v)))}`;
 
 function ch4() {
   // ---------- statewide descriptive
@@ -69,13 +70,25 @@ function ch4() {
     .map(r => [r[0], n0(r[1]), n0(r[2]), n0(r[3]), `${r[4] > 0 ? '+' : ''}${r[4].toFixed(1)}%`, 'ABSTAIN_STALE_DATA']);
 
   // ---------- Backtest + crisis
-  const bt = F.bt_sum.map(r => [r.advice_action, r.cases, `₹${n2(r.mean_counterfactual_difference_inr)}`, `₹${n2(r.median_counterfactual_difference_inr)}`]);
+  const bt = F.bt_sum.map(r => [r.advice_action, r.cases, money(r.mean_counterfactual_difference_inr), money(r.median_counterfactual_difference_inr)]);
   const cr = F.crisis.map(r => [r.origin, n2(r.current_source_value), n2(r.predicted_source_value), n2(r.actual_source_value), r.action, r.risk, n2(r.scenario_difference_vs_buy_now_source_units)]);
   const crTot = F.crisis.reduce((a, r) => a + r.scenario_difference_vs_buy_now_source_units, 0);
 
+
+  // ---------- proposal-alignment analyses (script 18)
+  const pr = F.pa_shap.map(r => [r.commodity, `${n2(r.lag_1_share_pct)}%`, `${r.ne_monsoon_deviation_rank} of ${r.n_features}`, `${n2(r.ne_monsoon_deviation_share_pct)}%`,
+    `${r.rain_anomaly_7d_rank} of ${r.n_features}`, `${n2(r.all_weather_share_pct)}%`]);
+  const dl = F.pa_delta.map(r => [`${r.horizon_days} days`, r.forecasts, n2(r.naive_wape), n2(r.xgb_price_only_wape), n2(r.xgb_with_weather_wape),
+    `${r.delta_wape_pts >= 0 ? '+' : ''}${n2(r.delta_wape_pts)}`, r.dm_p.toFixed(3), r.dm_vs_naive_p.toFixed(3)]);
+  const c30 = F.pa_crisis.filter(r => r.horizon_days === 30).map(r => [r.origin, n2(r.price_at_origin), n2(r.forecast), n2(r.actual_at_target),
+    `${r.forecast_change_pct >= 0 ? '+' : ''}${r.forecast_change_pct.toFixed(0)}%`, r.risk, r.action, n2(r.result_vs_buy_now_inr_per_kg)]);
+  const pv = [14, 30].map(h => { const v = F.pa_value[String(h)], s = F.pa_crisis_sum.find(r => r.horizon_days === h), ru = F.pa_rule[String(h)];
+    return [`${h} days`, `${v.rise_signals_correct} of ${v.rise_signals}`, money(v.forward_buy_value_total), `${v.fall_signals_correct} of ${v.fall_signals}`,
+      money(v.deferral_value_total), `**${money(v.net_signal_value)}**`, money(s.cumulative_result), money(ru.direction_only)]; });
+
   return [
     ...chapter(4, 'Data Analysis and Interpretation'),
-    P('This chapter presents the results in the order of the research questions: the data and their quality (Sections 4.1–4.4), statewide forecasting and its diagnosis (4.5–4.7), Koyambedu multi-horizon evaluation (4.8–4.10), the monsoon test (4.11), the multi-agent decision layer (4.12), the procurement backtest and tomato case study (4.13–4.14), and a summary of hypotheses and objectives (4.15–4.16). All figures and tables come from a single end-to-end run of the analysis pipeline (Appendices C and D).'),
+    P('This chapter presents the results in the order of the research questions: the data and their quality (Sections 4.1–4.4), statewide forecasting and its diagnosis (4.5–4.7), Koyambedu multi-horizon evaluation (4.8–4.10), the monsoon and weather-context tests (4.11), the multi-agent decision layer (4.12), the procurement backtest and tomato case study (4.13–4.14), and a summary of hypotheses and objectives (4.15–4.16). All figures and tables come from a single end-to-end run of the analysis pipeline (Appendices C and D).'),
 
     H2('4.1 Profile of the Statewide Data'),
     P('The statewide extract contains 414,388 market-level records for the eight vegetables from 451 markets in 36 districts between 24 January 2024 and 20 April 2026, with no missing values in any field. After aggregation to the daily statewide median and construction of 30-day lag features, the modelling table contains 4,041 commodity-days (about 504 days per vegetable) and 62 columns.'),
@@ -159,13 +172,27 @@ function ch4() {
       { widths: [1.6, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8], size: 18, source: 'Author’s analysis (protocol B2).' }),
     P('**Interpretation.** A second, independent set of four origins (23 August 2025 to 18 August 2026) gives the same ordering: the naive forecast is lowest at all three horizons (8.58%, 12.94% and 17.31% MAPE), SARIMA is close behind, and Prophet is worst. With only four origins the differences between the naive forecast, SARIMA and the tree models at 30 days are small and would not pass a formal significance test. The consistent conclusion across B1 and B2 is that **no model reliably beats the naive benchmark**, which answers research question 2 and leaves benchmark hypothesis H0 unrejected.'),
 
-    H2('4.11 Northeast Monsoon Association Test'),
+    H2('4.11 Northeast Monsoon and Weather Context'),
+    H3('4.11.1 Regression test of the monsoon effect'),
     P(`Observed Chennai rainfall during the October–December Northeast Monsoon was 846.7 mm in 2024 and 965.5 mm in 2025, the only two complete seasons in the weather file. The HAC regression of Section 3.7 was estimated for each Koyambedu series on 1,000 overlapping daily observations.`),
     ...table('HAC regression of forward 7-day price return on rainfall anomaly and prior momentum', ['Commodity', 'n', 'β₁ rain', 'HAC s.e.', 'p (β₁)', 'β₂ momentum', 'p (β₂)', 'R²'], hac,
       { widths: [1.1, 0.6, 0.8, 0.8, 0.7, 1.0, 0.7, 0.6], size: 18, source: 'Author’s analysis; Newey–West standard errors with 7 lags.' }),
     ...figure('report/fig_4_13_monsoon_hac.png', 'Rainfall-anomaly coefficients with 95% HAC intervals, and price-momentum coefficients', { source: 'Author’s analysis.' }),
     P('**Interpretation.** No rainfall-anomaly coefficient is significant: p-values range from 0.262 (Tomato) to 0.921 (Potato), and every 95% interval spans zero. **H2 is not supported.** This is not evidence that weather does not matter. The weather record covers only two monsoon seasons, rainfall is measured in Chennai rather than in the producing districts that supply Koyambedu, and arrival volumes, the channel through which weather would act according to Roy et al. (2024), were unavailable.'),
     P('By contrast, **prior seven-day momentum is negative and significant for all eight series** (coefficients −0.09 to −0.39, all p < 0.03): a price that has risen over the past week tends to fall back over the next week, and vice versa. This short-run mean reversion is the same property detected by the ADF tests in Section 4.4. It is a genuine and usable finding for buyers: after a sharp weekly rise, waiting has on average been rewarded, except during sustained supply shocks of the kind examined in Section 4.14. The low R² values (0.01–0.15) show that most weekly variation remains unexplained.'),
+    H3('4.11.2 SHAP ranking of the Northeast Monsoon deviation index'),
+    P('As the proposal specified, a seven-day XGBoost model was fitted to each Koyambedu series with sixteen features: ten price features (prices at the origin and earlier, rolling means and spread, momentum and season of the target date) and six weather features (7- and 30-day rainfall, maximum temperature, a seven-day rainfall anomaly, the Northeast Monsoon deviation index and a season flag), using January 2024 to September 2026, the period covered by the weather record. Market arrival volume could not be included. Table 4.14 ranks the features by share of mean absolute SHAP value.'),
+    ...table('SHAP ranking of the Northeast Monsoon deviation index against price features (Koyambedu, 7-day XGBoost)', ['Series', 'Price at origin: share', 'NE Monsoon deviation: rank', 'NE Monsoon deviation: share', 'Rainfall anomaly: rank', 'All six weather features: share'], pr,
+      { widths: [1.0, 1.0, 1.1, 1.1, 1.0, 1.2], size: 17, source: 'Author’s analysis; 975 daily observations per series.' }),
+    ...figure('report/fig_pa_shap_beeswarm_tomato.png', 'Tomato: SHAP beeswarm for the Koyambedu 7-day XGBoost model', { source: 'Author’s analysis.' }),
+    ...figure('report/fig_pa_shap_dependence_tomato.png', 'Tomato: SHAP dependence plots for the top three features', { source: 'Author’s analysis.' }),
+    P('**Interpretation.** The price at the forecast origin is the strongest feature for **all eight** vegetables, accounting for 23–51% of attribution. The Northeast Monsoon deviation index ranks between 12th and 15th of 16 features and contributes at most 1.7%; all six weather features together contribute 6–20%. For Tomato (Figures 4.13 and 4.14) the top three features are the price at the origin (42.1%), the seven-day mean price (13.8%) and the season of the target date (11.3%), and their dependence plots show a near-linear persistence effect and a seasonal step. Consistent with the regression test, the SHAP ranking places monsoon deviation well behind price history, answering the proposal’s question of which predictor is strongest.'),
+    H3('4.11.3 Delta-accuracy test: does weather context improve the forecast?'),
+    P('The proposal’s AgriSight evaluation asked whether adding real-time context to XGBoost measurably improves accuracy on a six-month held-out period. Historical policy news is not archived, so the context tested is the weather information that the live pipeline supplies, observed up to each forecast date. At 27 weekly origins from April to September 2026, two XGBoost models were trained on data available at each origin, one with the ten price features and one with the six weather features added, and scored at 7, 14 and 30 days (protocol C1).'),
+    ...table('Delta-accuracy test: WAPE (%) on the six-month holdout, Koyambedu, 8 series', ['Horizon', 'Forecasts', 'Naive', 'XGBoost (prices)', 'XGBoost + weather', 'Gain from weather (pts)', 'DM p: weather vs prices', 'DM p: weather vs naive'], dl,
+      { widths: [0.8, 0.8, 0.7, 0.9, 0.9, 0.9, 0.9, 0.9], size: 16, source: 'Author’s analysis (protocol C1). DM = Diebold–Mariano test on absolute errors with HAC standard errors.' }),
+    ...figure('report/fig_pa_delta_accuracy.png', 'Delta-accuracy test: naive, XGBoost on prices, and XGBoost with weather context', { source: 'Author’s analysis.' }),
+    P('**Interpretation.** Weather context made no significant difference at any horizon. At 7 and 14 days the two XGBoost models are practically identical (DM p = 0.166 and 0.981). At 30 days weather lowers WAPE by 1.77 points, from 20.49% to 18.72%, but the difference is not significant (p = 0.101). The naive forecast remains the most accurate at every horizon and is significantly better than the context-enriched model at 7 and 14 days (p = 0.011 and 0.026). The proposal’s question therefore receives a clear answer: on this evidence, real-time weather context does not add measurable forecast value, although the 30-day result suggests a possible small benefit that a longer weather record could confirm or rule out.'),
 
     H2('4.12 Multi-Agent Decision Layer Outputs'),
     H3('4.12.1 Deterministic agent pipeline'),
@@ -180,7 +207,7 @@ function ch4() {
     H3('4.12.3 Live context and local language-model writer'),
     P('The four-role pipeline has two optional components. A **live mode** adds a seven-day Chennai weather forecast (Open-Meteo) and official agriculture news from the Press Information Bureau RSS feed to the buyer brief; the forecast is summarised as total rainfall, wettest day, number of rainy days and maximum temperature, and news items are filtered for agriculture and price relevance. A **language-model writer** rewrites the brief in plain prose using a model running on the buyer’s own computer. Two safeguards are built into the writer: it may only use a model on the buyer’s own computer, never an external service, and its rewrite is accepted only if every price, forecast, percentage change and weather figure in the original brief is reproduced exactly and no new figure appears; otherwise the unedited brief is used. If a weather or news service is unavailable, the pipeline records this in the brief and still delivers the price forecasts. Both components are implemented; their run against the live services is pending and is listed as a limitation in Section 5.5. Even when they are run, all signals will remain ABSTAIN_STALE_DATA until the statewide price data are refreshed, because weather and news do not update prices.'),
     H3('4.12.4 Dashboard'),
-    P('The Streamlit dashboard presents the outputs on nine pages: Agent Recommendations, Price Forecast, Model Trust, Price Movers, Market Trends and Seasonality, SHAP Explainability, Research and Scenario Validation, Dataset Snapshot and Data Quality. All nine pages were tested automatically and render without errors. Figures 4.14 and 4.15 show two pages; further screenshots are in Appendix E.'),
+    P('The Streamlit dashboard presents the outputs on nine pages: Agent Recommendations, Price Forecast, Model Trust, Price Movers, Market Trends and Seasonality, SHAP Explainability, Research and Scenario Validation, Dataset Snapshot and Data Quality. All nine pages were tested automatically and render without errors. Figures 4.17 and 4.18 show two pages; further screenshots are in Appendix E.'),
     ...figure('dashboard/dash_recommendations.png', 'Dashboard: Agent Recommendations page', { width: .95, source: 'Screenshot of the AgriSight dashboard.' }),
     ...figure('dashboard/dash_research.png', 'Dashboard: Koyambedu Research and Procurement Backtest page', { width: .95, source: 'Screenshot of the AgriSight dashboard.' }),
 
@@ -197,21 +224,31 @@ function ch4() {
       { widths: [1.1, 0.9, 0.9, 0.9, 1.7, 0.8, 1.0], size: 17, source: 'Author’s analysis. Negative = advice more expensive than buying at the origin.' }),
     ...figure('report/fig_4_11_tomato_2023.png', 'Tomato 2023: rule-based advice at weekly origins against observed Koyambedu prices', { source: 'Author’s analysis.' }),
     P(`**Interpretation.** This is the most consequential finding for procurement. From April to May, when prices were low, the advice made only small differences (between −₹7 and +₹11/kg per decision, mostly ±₹1.50). As the shock began, the model forecast **falling** prices on 10, 17 and 24 June 2023 (₹24.59, ₹29.85 and ₹43.84 against origin prices of ₹27, ₹38 and ₹70) and advised DELAY three weeks in a row. Actual day-14 prices were ₹70, ₹80 and ₹97/kg, so the delays cost ₹43, ₹42 and ₹27/kg relative to buying immediately. Over the 13 origins the cumulative result is **−₹${Math.abs(crTot).toFixed(0)}/kg** for a one-kilogram-per-week buyer: the advice would have increased cost.`),
-    P('The mechanism is clear. Models trained on mean-reverting history forecast reversion after a rise, and that is usually correct (Section 4.11). In a sustained supply shock it is exactly wrong. No model trained only on past prices can anticipate such a shock. Arrival volumes, producer-region rainfall or news signals would be required, and these were the inputs the agent design intended to add through the News Reader. **Objective S04 is therefore answered negatively**: on this evidence, forecast-informed timing would not have saved money during the 2023 episode, and the decision layer needs a shock override (for example, never delay when price is rising week-on-week and arrivals are falling).'),
+    P('The mechanism is clear. Models trained on mean-reverting history forecast reversion after a rise, and that is usually correct (Section 4.11). In a sustained supply shock it is exactly wrong. The 14-day model did not anticipate the shock; Section 4.14.1 shows that the 30-day horizon specified in the proposal behaved differently.'),
+    H3('4.14.1 The 30-day forecast specified in the proposal'),
+    P('The proposal asked for the economic value of the **30-day** forecast in the three months before July 2023. The scenario was therefore rerun with a 30-day direct XGBoost model at the same 13 weekly origins (protocol C2), together with a 14-day model on the same feature set for comparison.'),
+    ...table('Tomato 2023: advice from 30-day forecasts at weekly origins (₹/kg)', ['Origin', 'Price', 'Forecast day 30', 'Actual day 30', 'Forecast change', 'Risk', 'Action', 'Result vs buy-now'], c30,
+      { widths: [1.0, 0.7, 0.9, 0.9, 0.9, 0.8, 1.6, 0.9], size: 16, source: 'Author’s analysis (protocol C2). Negative = advice more expensive than buying at the origin.' }),
+    ...figure('report/fig_pa_tomato_30day.png', 'Tomato 2023: advice from 30-day forecasts at weekly origins', { source: 'Author’s analysis.' }),
+    ...table('Economic value of the forecast signal in the three months before July 2023 (₹/kg, one unit per signal)', ['Horizon', 'Rise signals correct', 'Forward-buying value', 'Fall signals correct', 'Deferral value', 'Net signal value', 'Rules as designed', 'Direction-only rule'], pv,
+      { widths: [0.8, 0.9, 1.0, 0.9, 0.9, 0.9, 0.9, 0.9], size: 16, source: 'Author’s analysis. Forward-buying value = price at the target date minus price at the origin when a rise above 5% is forecast; deferral value = price at the origin minus price at the target date when a fall below −5% is forecast. Rule results are relative to buying immediately.' }),
+    P('**Interpretation.** The 30-day forecast **did carry an early warning**. From 29 April 2023 it forecast rises of more than 100%, two months before the crisis, and 7 of its 9 rise signals were correct. A buyer who used each rise signal to lock in the next month’s price, for example through a supplier contract (tomatoes cannot be stored for 30 days), would have avoided about ₹259/kg of cost over the period; net of the two wrong late-June fall signals, the signal was worth about **₹170/kg**. The 14-day signal had no net value (−₹27/kg). The model learned the seasonal mid-year rise from the 2022 history, which explains why the longer horizon saw it.'),
+    P('The decision rules, however, destroyed this value. Because the risk score adds 1.2 × the forecast change, every large forecast rise produced a HIGH risk rating, and the rules then chose PARTIAL PROCUREMENT instead of PROCURE NOW; two late-June fall forecasts then triggered DELAY just before the peak. The result was −₹219/kg relative to buying immediately. A rule that simply bought on any forecast rise and deferred only on a forecast fall would have reduced the loss to −₹89/kg. **Objective S04 is therefore answered with a qualified result**: the 30-day forecast had economic value as an early-warning signal in this episode, but the rule design turned it into a loss. The decision layer must separate forecast direction from risk and add a shock override (for example, never delay when price has risen for two consecutive weeks). This is one episode, and forward-contract costs are not included, so the value is indicative rather than a savings estimate.'),
 
     H2('4.15 Summary of Hypothesis Testing'),
     ...table('Results of hypothesis testing', ['Hypothesis', 'Evidence', 'Result'], [
       ['H1: RF or XGBoost has lower walk-forward error than SARIMA', 'Statewide: SARIMA 7-day WF 10.46% vs RF 11.32% and XGBoost 13.98% (RF better for 4 of 8). Koyambedu: SARIMA WAPE 12.28% vs XGBoost 15.36% and RF 16.63%', 'Not supported'],
-      ['H2: NE Monsoon rainfall anomaly significantly predicts price movement', 'No β₁ significant; p = 0.262–0.921 across 8 series', 'Not supported (inconclusive; short weather record)'],
+      ['H2: NE Monsoon rainfall anomaly significantly predicts price movement', 'No β₁ significant (p = 0.262–0.921); SHAP rank of the NE Monsoon deviation index 12th–15th of 16; weather context gives no significant gain (DM p = 0.10–0.98)', 'Not supported (short weather record)'],
       ['H0: No model beats the last observed price', 'Statewide naive 4.20% vs best model 11.32%; Koyambedu naive WAPE 11.88% lowest; B2 naive lowest at all horizons', 'Not rejected'],
     ], { widths: [2.2, 3.4, 1.3], size: 18, align: [L, L, L], source: 'Sections 4.5–4.11.' }),
 
     H2('4.16 Status of Study Objectives'),
     ...table('Objective-by-objective status', ['Objective', 'What was done', 'Status'], [
       ['S01 Model comparison at 7/14/30 days', 'Protocols B1 (7 origins) and B2 (4 origins) on Koyambedu with naive benchmarks; statewide holdout plus horizon check', 'Achieved; result negative for complex models'],
-      ['S02 NE Monsoon significance', 'Rainfall-anomaly index; HAC regressions for 8 series', 'Achieved as a test; effect not detected'],
+      ['S02 NE Monsoon significance', 'HAC regressions for 8 series; SHAP ranking of the NE Monsoon deviation index with beeswarm and dependence plots', 'Achieved; effect not detected'],
       ['S03 Four-agent AgriSight pipeline', 'Deterministic agent pipeline and four-role pipeline with freshness gate; nine-page dashboard; live news, weather and local language-model writer implemented', 'Achieved as prototype; live run pending'],
-      ['S04 2023 tomato procurement case', '13-origin retrospective scenario on Koyambedu series', 'Achieved; advice would have raised cost'],
+      ['S04 2023 tomato procurement case', '13-origin scenario with the 30-day forecast specified in the proposal, and a 14-day comparison', 'Achieved; 30-day signal worth ₹170/kg net, but the rules turned it into a ₹219/kg loss'],
+      ['Deliverable: delta-accuracy test', 'XGBoost with vs without weather context, six-month holdout, DM tests', 'Achieved; no significant gain'],
       ['Primary: useful procurement decision support', 'Backtest: 30.4% of cases better than buy-now; unstable thresholds; no shock override', 'Not yet established'],
     ], { widths: [1.9, 3.3, 1.6], size: 18, align: [L, L, L], source: 'Chapter 4.' }),
   ];

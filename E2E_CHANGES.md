@@ -31,3 +31,9 @@ xgboost 3.4.1, shap 0.54.1, matplotlib 3.10.8, streamlit 1.66.0. Pin these in re
 - Endpoints configurable via AGRI_WEATHER_URL, AGRI_PIB_RSS, AGRI_OLLAMA_URL, AGRI_OLLAMA_MODEL, AGRI_OLLAMA_TIMEOUT, AGRI_MAX_NEWS.
 - tests/fixture_server.py + tests/test_live_paths.py: 4/4 scenarios pass. Offline output unchanged.
 - RUN_LIVE.md: steps for the real live run on Windows.
+
+## Proposal alignment (script 18)
+- SHAP ranking of a Northeast Monsoon deviation index against price features (Koyambedu, 7-day XGBoost), with beeswarm and dependence plots.
+- Delta-accuracy test: XGBoost with vs without weather context, 27 weekly origins Apr–Sep 2026, Diebold–Mariano tests.
+- Tomato 2023 scenario with the 30-day forecast specified in the proposal, plus signal-value and rule comparison.
+- Report: approved proposal title restored; deviations table (Section 3.12); new Sections 4.11.2, 4.11.3 and 4.14.1.
