@@ -24,7 +24,7 @@ function ch4() {
   const sar = Object.fromEntries(F.sarima.map(r => [r.commodity, r]));
   const pro = Object.fromEntries(F.prophet.map(r => [r.commodity, r]));
   const ml = {}; F.ml.forEach(r => { ml[r.commodity] = ml[r.commodity] || {}; ml[r.commodity][r.model] = r; });
-  const sw = ORDER8.map(c => [c, sar[c].order.replace(/[()]/g, '').replace(/, 7$/, ',7').replace(/(\d), (\d), (\d), (\d), (\d), (\d), 7/, '($1,$2,$3)($4,$5,$6)₇'),
+  const sw = ORDER8.map(c => [c, (n => `(${n[0]},${n[1]},${n[2]})(${n[3]},${n[4]},${n[5]})₇`)(sar[c].order.match(/\d+/g)),
     n2(sar[c].mape), n2(sar[c].walk_forward_mape), n2(pro[c].mape), n2(ml[c].RF.mape), n2(ml[c].XGBoost.mape), n2(sar[c].naive_mape)]);
   const mean = k => (ORDER8.reduce((a, c) => a + k(c), 0) / 8);
   sw.push(['Mean', '', n2(mean(c => sar[c].mape)), n2(mean(c => sar[c].walk_forward_mape)), n2(mean(c => pro[c].mape)), n2(mean(c => ml[c].RF.mape)), n2(mean(c => ml[c].XGBoost.mape)), n2(mean(c => sar[c].naive_mape))]);
