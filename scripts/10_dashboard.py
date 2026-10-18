@@ -393,98 +393,93 @@ elif page == 'trust':
             st.caption('Run scripts 05–07 to generate model summary tables.')
 
 elif page == 'research':
-    st.markdown('<div class="section-head">Research Analysis & Procurement Advice Backtest</div>', unsafe_allow_html=True)
-    st.warning('Illustrative scenario only — displayed prices, forecasts, model scores, and simulated savings are not validated Koyambedu observations or realized procurement outcomes.')
-    metric_path = REPORT / 'mock_model_metrics.csv'
-    backtest_path = REPORT / 'mock_procurement_advice_backtest.csv'
-    monsoon_path = REPORT / 'mock_monsoon_descriptive.csv'
-    prices_path = ROOT / 'data' / 'mock' / 'koyambedu_mock_prices_daily.csv'
-    tomato_path = REPORT / 'mock_tomato_event_summary.json'
+    st.markdown('<div class="section-head">Koyambedu Research & Procurement Backtest</div>', unsafe_allow_html=True)
+    st.warning('Exploratory secondary-data analysis. Prices are daily Koyambedu history-page values (₹/kg, attributed to the Koyambedu Vegetable Merchants\' Council); wholesale basis is not independently audited. Cost differences are counterfactuals, not realized savings.')
+    ROOT = PROC.parent.parent
+    metric_path = REPORT / 'koyambedu_model_metrics.csv'
+    backtest_path = REPORT / 'koyambedu_procurement_advice_backtest.csv'
+    monsoon_path = REPORT / 'koyambedu_monsoon_descriptive.csv'
+    prices_path = ROOT / 'data' / 'secondary' / 'koyambedu_prices_daily.csv'
+    tomato_path = REPORT / 'koyambedu_tomato_event_summary.json'
 
     if metric_path.exists():
         metrics = csv(str(metric_path)).copy()
         metrics['wape_pct'] = pd.to_numeric(metrics['wape_pct'], errors='coerce')
-        if 'status' in metrics.columns:
-            metrics['status'] = 'Illustrative scenario only'
         metrics = metrics.sort_values('wape_pct')
         cards = st.columns(3)
         with cards[0]: feature_card('Evaluation scope', '8 commodities · 3 horizons')
-        with cards[1]: feature_card('Forecast origins', '7 dates')
+        with cards[1]: feature_card('Forecast origins', f"{int(metrics.origins.max())} dates")
         with cards[2]: feature_card('Scored predictions', f"{int(pd.to_numeric(metrics.n_predictions, errors='coerce').max()):,} per model")
-        st.markdown('<div class="section-head">Scenario Model Comparison</div>', unsafe_allow_html=True)
-        st.caption('Lower WAPE indicates smaller aggregate forecast error on this generated test panel; it does not establish real-market model performance.')
-        chart = metrics.set_index('model')[['wape_pct']].rename(columns={'wape_pct': 'WAPE (%)'})
-        st.bar_chart(chart)
+        st.markdown('<div class="section-head">Model Comparison (WAPE, lower is better)</div>', unsafe_allow_html=True)
+        st.caption('Common expanding-window origins; 7-, 14- and 30-day direct horizons on the Koyambedu history-page series.')
+        st.bar_chart(metrics.set_index('model')[['wape_pct']].rename(columns={'wape_pct': 'WAPE (%)'}))
         st.dataframe(metrics, use_container_width=True, hide_index=True)
     else:
-        st.info('Scenario model metrics are not available. Run the research analysis script first.')
+        st.info('Model metrics are not available. Run scripts/12_koyambedu_research_analysis.py first.')
 
     if backtest_path.exists():
         advice = csv(str(backtest_path)).copy()
-        advice['simulated_savings_vs_buy_now_inr'] = pd.to_numeric(advice['simulated_savings_vs_buy_now_inr'], errors='coerce')
-        advice['advice_action'] = advice['advice_action'].astype(str)
-        positive_rate = (advice.simulated_savings_vs_buy_now_inr > 0).mean() * 100
+        diff = 'counterfactual_difference_vs_buy_now_inr'
+        advice[diff] = pd.to_numeric(advice[diff], errors='coerce')
+        positive_rate = (advice[diff] > 0).mean() * 100
         c1, c2, c3 = st.columns(3)
         with c1: feature_card('Backtest cases', f'{len(advice)}')
-        with c2: feature_card('Positive simulated cases', f'{positive_rate:.1f}%')
-        with c3: feature_card('Mean simulated result', f"₹{advice.simulated_savings_vs_buy_now_inr.mean():,.2f} / 100 kg lot")
-        st.markdown('<div class="section-head">Procurement Advice Simulation</div>', unsafe_allow_html=True)
-        st.caption('Fixed-lot convention: buy now = 100 kg at origin; delay = buy at day 14; hedge/partial = split 50/50. Costs exclude spoilage, storage, transport, inventory and stockout effects. DELAY is scored at day 14 although the advice wording says reassess in 7 days.')
-        grouped = advice.groupby('advice_action').simulated_savings_vs_buy_now_inr.agg(['count','mean','median']).reset_index()
-        grouped.columns = ['Action', 'Cases', 'Mean simulated INR per lot', 'Median simulated INR per lot']
+        with c2: feature_card('Cases better than buy-now', f'{positive_rate:.1f}%')
+        with c3: feature_card('Mean difference', f"₹{advice[diff].mean():,.2f} / 100 kg lot")
+        st.markdown('<div class="section-head">Procurement Advice Backtest</div>', unsafe_allow_html=True)
+        st.caption('Fixed-lot convention: buy now = 100 kg at origin; delay = buy at day 14; hedge/partial = split 50/50. Excludes spoilage, storage, transport, inventory and stockout effects.')
+        grouped = advice.groupby('advice_action')[diff].agg(['count', 'mean', 'median']).reset_index()
+        grouped.columns = ['Action', 'Cases', 'Mean ₹ per lot vs buy-now', 'Median ₹ per lot vs buy-now']
         st.dataframe(grouped, use_container_width=True, hide_index=True)
-        action_filter = st.multiselect('Filter advice cases', sorted(advice.advice_action.unique()), default=sorted(advice.advice_action.unique()))
-        view = advice[advice.advice_action.isin(action_filter)]
-        display_cols = ['commodity','origin_date','advice_action','risk_level','forecast_change_pct','current_mock_inr_per_kg','predicted_14d_mock_inr_per_kg','actual_14d_mock_inr_per_kg','simulated_savings_vs_buy_now_inr']
-        st.dataframe(view[display_cols].rename(columns={
-            'commodity':'Commodity','origin_date':'Forecast origin','advice_action':'Advice','risk_level':'Risk',
-            'forecast_change_pct':'Forecast change (%)','current_mock_inr_per_kg':'Current scenario ₹/kg',
-            'predicted_14d_mock_inr_per_kg':'Predicted day-14 scenario ₹/kg','actual_14d_mock_inr_per_kg':'Observed scenario day-14 ₹/kg',
-            'simulated_savings_vs_buy_now_inr':'Simulated INR vs buy-now'}), use_container_width=True, hide_index=True)
-        st.download_button('Download procurement backtest CSV', advice.rename(columns={'current_mock_inr_per_kg':'current_scenario_inr_per_kg','predicted_14d_mock_inr_per_kg':'predicted_14d_scenario_inr_per_kg','actual_14d_mock_inr_per_kg':'actual_14d_scenario_inr_per_kg'}).to_csv(index=False).encode('utf-8'), 'procurement_advice_scenario_backtest.csv', 'text/csv')
+        actions = sorted(advice.advice_action.astype(str).unique())
+        view = advice[advice.advice_action.isin(st.multiselect('Filter advice cases', actions, default=actions))]
+        cols = {'commodity': 'Commodity', 'origin_date': 'Forecast origin', 'advice_action': 'Advice', 'risk_level': 'Risk',
+                'forecast_change_pct': 'Forecast change (%)', 'current_observed_inr_per_kg': 'Origin ₹/kg',
+                'predicted_14d_observed_inr_per_kg': 'Predicted day-14 ₹/kg', 'actual_14d_observed_inr_per_kg': 'Observed day-14 ₹/kg',
+                diff: '₹ vs buy-now (100 kg)'}
+        st.dataframe(view[list(cols)].rename(columns=cols), use_container_width=True, hide_index=True)
+        st.download_button('Download procurement backtest CSV', advice.to_csv(index=False).encode('utf-8'), 'koyambedu_procurement_advice_backtest.csv', 'text/csv')
     else:
-        st.info('Procurement backtest is not available. Generate the procurement advice evaluation first.')
+        st.info('Procurement backtest is not available. Run scripts/13_procurement_validation.py first.')
 
-    tab_prices, tab_monsoon, tab_tomato, tab_report = st.tabs(['Illustrative Price Panel','Monsoon Description','Tomato Scenario','Research Notes'])
+    tab_prices, tab_monsoon, tab_tomato, tab_report = st.tabs(['Koyambedu Price Panel', 'Monsoon Description', 'Tomato 2023 Episode', 'Research Notes'])
     with tab_prices:
         if prices_path.exists():
-            mock_prices = csv(str(prices_path))
-            mock_prices['date'] = pd.to_datetime(mock_prices['date'])
-            commodities = sorted(mock_prices.project_commodity_candidate.dropna().unique())
-            selected = st.selectbox('Scenario commodity', commodities, key='mock_research_commodity')
-            series = mock_prices[mock_prices.project_commodity_candidate == selected].sort_values('date')
-            st.line_chart(series.set_index('date')['mock_price_inr_per_kg'].rename('Illustrative price (₹/kg)'))
-            st.caption('Illustrative proxy data for workflow demonstration; these are not validated Koyambedu market observations.')
+            panel = csv(str(prices_path)); panel['date'] = pd.to_datetime(panel['date'])
+            selected = st.selectbox('Commodity', sorted(panel.commodity.dropna().unique()), key='koy_research_commodity')
+            series = panel[panel.commodity == selected].sort_values('date')
+            st.line_chart(series.set_index('date')['observed_price_inr_per_kg'].rename('Observed price (₹/kg)'))
+            st.caption('Daily values copied unchanged from the published history API; no interpolation.')
         else:
-            st.info('Illustrative price panel is missing. Generate the scenario price data first.')
+            st.info('Koyambedu price panel is missing. Run scripts/11_build_koyambedu_dataset.py first.')
     with tab_monsoon:
         if monsoon_path.exists():
-            monsoon = csv(str(monsoon_path))
-            st.caption('Descriptive monthly comparison only. The available seasons do not support a causal or significance claim.')
-            monsoon = monsoon.rename(columns=lambda name: re.sub(r'(?i)mock', 'illustrative', str(name)))
-            st.dataframe(monsoon, use_container_width=True, hide_index=True)
+            st.caption('Descriptive October–December comparison for 2024 and 2025 only; no causal or significance claim.')
+            st.dataframe(csv(str(monsoon_path)), use_container_width=True, hide_index=True)
         else:
-            st.info('Monsoon descriptive output is unavailable. Generate the research analysis outputs first.')
+            st.info('Monsoon descriptive output is unavailable.')
     with tab_tomato:
         if tomato_path.exists():
-            tomato = load_report(tomato_path)
-            st.caption('Illustrative tomato price scenario; it is not a validated observation series.')
-            st.write({'Period': str(tomato.get('period_start')) + ' to ' + str(tomato.get('period_end')), 'Starting scenario price (₹/kg)': tomato.get('start_mock_price_inr_per_kg'), 'Scenario peak (₹/kg)': tomato.get('peak_mock_price_inr_per_kg'), 'Peak date': tomato.get('peak_date'), 'Ending scenario price (₹/kg)': tomato.get('end_mock_price_inr_per_kg'), 'Procurement savings estimate': 'Not calculated'})
+            t = load_report(tomato_path)
+            st.write({'Period': f"{t.get('period_start')} to {t.get('period_end')}",
+                      'Start price (₹/kg)': t.get('start_observed_price_inr_per_kg'),
+                      'Peak price (₹/kg)': t.get('peak_observed_price_inr_per_kg'), 'Peak date': t.get('peak_date'),
+                      'End price (₹/kg)': t.get('end_observed_price_inr_per_kg'),
+                      'Start-to-peak change (%)': t.get('start_to_peak_change_pct'),
+                      'Procurement savings estimate': 'Not calculated (no buyer transactions)'})
         else:
-            st.info('Tomato scenario summary is unavailable. Generate the research analysis outputs first.')
+            st.info('Tomato episode summary is unavailable.')
     with tab_report:
-        report_path = REPORT / 'mock_research_analysis.md'
-        if report_path.exists():
-            research_text = report_path.read_text(encoding='utf-8')
-            research_text = re.sub(r'(?i)mock(?:-only|-scenario-only)?', 'illustrative scenario', research_text)
-            st.markdown(research_text)
-        advice_report = REPORT / 'mock_procurement_advice_validation.md'
-        if advice_report.exists():
-            with st.expander('Procurement backtest assumptions and interpretation'):
-                advice_text = advice_report.read_text(encoding='utf-8')
-                advice_text = re.sub(r'(?i)mock(?:-only|-scenario-only)?', 'illustrative scenario', advice_text)
-                st.markdown(advice_text)
-        if not report_path.exists() and not advice_report.exists():
+        shown = False
+        for name, label in (('koyambedu_research_analysis.md', None), ('koyambedu_procurement_counterfactual.md', 'Procurement backtest assumptions')):
+            path = REPORT / name
+            if path.exists():
+                shown = True
+                if label:
+                    with st.expander(label): st.markdown(path.read_text(encoding='utf-8'))
+                else:
+                    st.markdown(path.read_text(encoding='utf-8'))
+        if not shown:
             st.info('Research reports are not available yet.')
 elif page == 'movers':
     st.markdown('<div class="section-head">7-Day Price Movers</div>', unsafe_allow_html=True)

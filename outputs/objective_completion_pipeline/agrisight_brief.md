@@ -6,14 +6,14 @@ This brief is decision support. It does not establish realized procurement savin
 
 ## Price outlook
 
-- **Beans**: current 7600.00; 7-day 7198.55; 14-day 7210.40 (-5.1%); signal ABSTAIN_STALE_DATA.
-- **Brinjal**: current 3500.00; 7-day 3399.67; 14-day 3389.63 (-3.2%); signal ABSTAIN_STALE_DATA.
-- **Cabbage**: current 2250.00; 7-day 2243.80; 14-day 2322.79 (+3.2%); signal ABSTAIN_STALE_DATA.
-- **Carrot**: current 3750.00; 7-day 3739.05; 14-day 3761.67 (+0.3%); signal ABSTAIN_STALE_DATA.
-- **Drumstick**: current 3750.00; 7-day 3931.23; 14-day 3905.17 (+4.1%); signal ABSTAIN_STALE_DATA.
-- **Onion**: current 2500.00; 7-day 2487.16; 14-day 2483.69 (-0.7%); signal ABSTAIN_STALE_DATA.
-- **Potato**: current 2800.00; 7-day 2807.61; 14-day 2847.50 (+1.7%); signal ABSTAIN_STALE_DATA.
-- **Tomato**: current 2750.00; 7-day 2749.20; 14-day 2765.07 (+0.5%); signal ABSTAIN_STALE_DATA.
+- **Beans**: current 7600.00; 7-day 7333.24; 14-day 7335.78 (-3.5%); signal ABSTAIN_STALE_DATA.
+- **Brinjal**: current 3500.00; 7-day 3374.34; 14-day 3373.28 (-3.6%); signal ABSTAIN_STALE_DATA.
+- **Cabbage**: current 2250.00; 7-day 2235.24; 14-day 2236.23 (-0.6%); signal ABSTAIN_STALE_DATA.
+- **Carrot**: current 3750.00; 7-day 3882.24; 14-day 3951.14 (+5.4%); signal ABSTAIN_STALE_DATA.
+- **Drumstick**: current 3750.00; 7-day 3834.56; 14-day 3818.21 (+1.8%); signal ABSTAIN_STALE_DATA.
+- **Onion**: current 2500.00; 7-day 2492.01; 14-day 2486.42 (-0.5%); signal ABSTAIN_STALE_DATA.
+- **Potato**: current 2800.00; 7-day 2861.93; 14-day 2854.27 (+1.9%); signal ABSTAIN_STALE_DATA.
+- **Tomato**: current 2750.00; 7-day 2601.73; 14-day 2467.49 (-10.3%); signal ABSTAIN_STALE_DATA.
 
 ## Weather outlook
 

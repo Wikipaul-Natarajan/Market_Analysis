@@ -16,19 +16,19 @@ Price source citation: Vegetable Market Price, "Koyambedu Market Price History,"
 ## Results
 
 - Evaluated cases: 56 (commodity × forecast origin).
-- Cases with positive counterfactual cost difference vs buying immediately: 28.6%.
-- Mean counterfactual cost difference per fixed lot: INR 46.43.
-- Total counterfactual cost difference across these non-independent test cases: INR 2600.00.
+- Cases with positive counterfactual cost difference vs buying immediately: 30.4%.
+- Mean counterfactual cost difference per fixed lot: INR 66.07.
+- Total counterfactual cost difference across these non-independent test cases: INR 3700.00.
 - Review action-level counts and means in `koyambedu_procurement_advice_summary.csv`; case-level calculations are in `koyambedu_procurement_advice_backtest.csv`.
 
 ## Action breakdown
 
 | advice_action       |   cases |   mean_counterfactual_difference_inr |   median_counterfactual_difference_inr |
 |:--------------------|--------:|-------------------------------------:|---------------------------------------:|
-| DELAY PROCUREMENT   |      15 |                             266.667  |                                    100 |
-| HEDGE               |      11 |                            -113.636  |                                   -100 |
-| HOLD                |       8 |                               0      |                                      0 |
+| DELAY PROCUREMENT   |      14 |                             278.571  |                                    100 |
+| HEDGE               |      10 |                              -5      |                                     25 |
+| HOLD                |       9 |                               0      |                                      0 |
 | PARTIAL PROCUREMENT |       9 |                             -16.6667 |                                      0 |
-| PROCURE NOW         |      13 |                               0      |                                      0 |
+| PROCURE NOW         |      14 |                               0      |                                      0 |
 
 These calculations are fixed-lot counterfactuals. Realized procurement outcomes require buyer transactions, stock and operating costs, and operational constraints.

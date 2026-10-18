@@ -17,6 +17,7 @@ from prophet import Prophet
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'data/external/koyambedu_vegetablemarketprice_history.csv'
+PANEL = ROOT / 'data/secondary/koyambedu_prices_daily.csv'
 WEATHER = ROOT / 'data/external/weather_chennai.csv'
 OUT = ROOT / 'outputs/proposal_objective_evaluation'
 SOURCE_STATUS = 'SECONDARY_DATA_KOYAMBEDU_MERCHANTS_COUNCIL'
@@ -27,8 +28,19 @@ FEATURES = ('lag_1','lag_7','lag_14','lag_30','mean_7','mean_30','std_30','dow',
 
 
 def load_series():
-    if not SOURCE.exists(): raise FileNotFoundError(f'Missing local source: {SOURCE}')
-    d = pd.read_csv(SOURCE, parse_dates=['date'])
+    """Read the raw 15-series extract; fall back to the committed 8-series panel.
+
+    The panel (data/secondary/koyambedu_prices_daily.csv) copies the same API values
+    for exactly the eight veg_ids this script uses, so results are equivalent.
+    """
+    if SOURCE.exists():
+        d = pd.read_csv(SOURCE, parse_dates=['date'])
+    elif PANEL.exists():
+        d = pd.read_csv(PANEL, parse_dates=['date'])
+        d = d.rename(columns={'observed_price_inr_per_kg': 'price_value'})
+        print(f'Raw extract not found; using committed panel {PANEL.name}')
+    else:
+        raise FileNotFoundError(f'Missing local source: {SOURCE} (and fallback {PANEL})')
     d['price_value'] = pd.to_numeric(d['price_value'], errors='coerce')
     return d
 
@@ -140,9 +152,10 @@ def evaluate_models(data):
 
 
 def monsoon_analysis(data):
-    if not WEATHER.exists():
-        return pd.DataFrame(), 'Local Chennai weather file is missing; monsoon analysis not run.'
-    w=pd.read_csv(WEATHER,parse_dates=['arrival_date'])
+    if WEATHER.exists(): w=pd.read_csv(WEATHER,parse_dates=['arrival_date'])
+    elif WEATHER.with_suffix('.parquet').exists(): w=pd.read_parquet(WEATHER.with_suffix('.parquet'))
+    else: return pd.DataFrame(), 'Local Chennai weather file is missing; monsoon analysis not run.'
+    w['arrival_date']=pd.to_datetime(w['arrival_date'])
     rain_col='precipitation' if 'precipitation' in w else 'rain'
     w[rain_col]=pd.to_numeric(w[rain_col],errors='coerce')
     # Within-available-period month anomaly, explicitly not a long-run climatological deviation.
@@ -211,7 +224,7 @@ def crisis_scenario(data):
         return result, 'No eligible historical origins were available for the specified backtest window.'
     note=('A rule-based 14-day XGBoost counterfactual was run on the local Tomato candidate series. It assumes a normalized one-quote-unit purchase, '
           'compares the advice timing with buying entirely at the origin, and omits storage, transport, spoilage, quality, stockouts and inventory constraints. '
-          'The observations are attributed to the Koyambedu Vegetable Merchants' Council. The API unit is 1kg; this analysis does not independently establish wholesale transaction basis or realized economic value/savings.')
+          "The observations are attributed to the Koyambedu Vegetable Merchants' Council. The API unit is 1kg; this analysis does not independently establish wholesale transaction basis or realized economic value/savings.")
     (OUT/'crisis_period_procurement_note.txt').write_text(note+'\n',encoding='utf-8')
     return result,note
 

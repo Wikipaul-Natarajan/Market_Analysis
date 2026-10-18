@@ -24,7 +24,7 @@ def main():
  adfs=[]
  for c,g in d.groupby('commodity'):
   s=g.groupby('arrival_date').modal_price.median().asfreq('D').interpolate().ffill().bfill()
-  try: stat,p=adfuller(s); adfs.append(dict(commodity=c,adf=stat,p_value=p,stationary=p<.05))
+  try: res=adfuller(s); stat,p=res[0],res[1]; adfs.append(dict(commodity=c,adf=stat,p_value=p,lags=res[2],nobs=res[3],stationary=p<.05))
   except Exception as e: adfs.append(dict(commodity=c,error=str(e)))
  lines.append('ADF tests:\n'+pd.DataFrame(adfs).to_string(index=False))
  crisis=d[d.commodity.eq('Tomato')&d.arrival_date.dt.year.between(2022,2024)].groupby('arrival_date').agg(median=('modal_price','median'),peak=('modal_price','max'),markets=('market','nunique'))

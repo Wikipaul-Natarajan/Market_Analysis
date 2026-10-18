@@ -19,9 +19,9 @@ Models were evaluated on common expanding-window origins (2025-01-01, 2025-04-01
 | NaiveLast      |             168 |              9.99 |             4.89 |      12.28 |       11.57 |      11.88 |         7 |             8 | 7,14,30    |
 | SARIMA         |             168 |              9.83 |             5.05 |      12.81 |       12.01 |      12.28 |         7 |             8 | 7,14,30    |
 | SeasonalNaive7 |             168 |             10.07 |             5.25 |      13.40 |       12.47 |      12.76 |         7 |             8 | 7,14,30    |
-| XGBoost        |             168 |             10.69 |             6.32 |      14.45 |       13.73 |      15.37 |         7 |             8 | 7,14,30    |
+| XGBoost        |             168 |             10.82 |             6.32 |      14.35 |       13.66 |      15.36 |         7 |             8 | 7,14,30    |
 | RandomForest   |             168 |             11.95 |             6.84 |      15.39 |       14.62 |      16.63 |         7 |             8 | 7,14,30    |
-| Prophet        |             168 |             15.64 |             9.79 |      23.44 |       22.53 |      23.79 |         7 |             8 | 7,14,30    |
+| Prophet        |             168 |             15.64 |             9.80 |      23.46 |       22.56 |      23.82 |         7 |             8 | 7,14,30    |
 
 The lowest-WAPE method on this selected website panel is **NaiveLast** (11.88% WAPE), with **168** scored predictions. This ranks methods only on the selected published site series; it does not establish out-of-source market accuracy. Per-series/per-horizon predictions are in `koyambedu_model_predictions.csv`; per-commodity metrics are in `koyambedu_model_metrics_by_commodity.csv`.
 

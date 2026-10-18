@@ -1,7 +1,7 @@
 {
   "market_scope": "Tamil Nadu aggregate; the model input is not Koyambedu-specific",
   "price_as_of": "2026-04-20",
-  "data_age_days": 180,
+  "data_age_days": 181,
   "freshness_status": "STALE_ABSTAIN",
   "commodities": [
     "Beans",
@@ -527,16 +527,16 @@
       "cold_day": 0
     }
   ],
-  "weather_history_path": "C:\\Users\\Freeware Sys\\Documents\\ChatGPT\\New project\\data\\external\\weather_chennai.parquet",
+  "weather_history_path": "/home/claude/Market_Analysis/data/external/weather_chennai.parquet",
   "weather_forecast": null,
   "live_context_requested": false,
   "forecasts": [
     {
       "commodity": "Beans",
       "current_price": 7600.0,
-      "forecast_7d": 7198.5538779793915,
-      "forecast_14d": 7210.399958981722,
-      "forecast_14d_change_pct": -5.126316329187864,
+      "forecast_7d": 7333.24293794727,
+      "forecast_14d": 7335.778432864578,
+      "forecast_14d_change_pct": -3.476599567571348,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -544,9 +544,9 @@
     {
       "commodity": "Brinjal",
       "current_price": 3500.0,
-      "forecast_7d": 3399.668701171875,
-      "forecast_14d": 3389.62646484375,
-      "forecast_14d_change_pct": -3.153529575892855,
+      "forecast_7d": 3374.3351434649203,
+      "forecast_14d": 3373.278850316348,
+      "forecast_14d_change_pct": -3.6206042766757762,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -554,9 +554,9 @@
     {
       "commodity": "Cabbage",
       "current_price": 2250.0,
-      "forecast_7d": 2243.8046875,
-      "forecast_14d": 2322.791015625,
-      "forecast_14d_change_pct": 3.235156249999993,
+      "forecast_7d": 2235.236371322032,
+      "forecast_14d": 2236.225801605299,
+      "forecast_14d_change_pct": -0.6121865953200523,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -564,9 +564,9 @@
     {
       "commodity": "Carrot",
       "current_price": 3750.0,
-      "forecast_7d": 3739.048583984375,
-      "forecast_14d": 3761.665283203125,
-      "forecast_14d_change_pct": 0.31107421875000707,
+      "forecast_7d": 3882.2385926240536,
+      "forecast_14d": 3951.1445846296965,
+      "forecast_14d_change_pct": 5.363855590125244,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -574,9 +574,9 @@
     {
       "commodity": "Drumstick",
       "current_price": 3750.0,
-      "forecast_7d": 3931.225830078125,
-      "forecast_14d": 3905.173583984375,
-      "forecast_14d_change_pct": 4.137962239583337,
+      "forecast_7d": 3834.5648472990265,
+      "forecast_14d": 3818.2060718288544,
+      "forecast_14d_change_pct": 1.8188285821027828,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -584,9 +584,9 @@
     {
       "commodity": "Onion",
       "current_price": 2500.0,
-      "forecast_7d": 2487.155893209531,
-      "forecast_14d": 2483.6883468669844,
-      "forecast_14d_change_pct": -0.6524661253206276,
+      "forecast_7d": 2492.0081076875185,
+      "forecast_14d": 2486.4216355539884,
+      "forecast_14d_change_pct": -0.543134577840465,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -594,9 +594,9 @@
     {
       "commodity": "Potato",
       "current_price": 2800.0,
-      "forecast_7d": 2807.607666015625,
-      "forecast_14d": 2847.503662109375,
-      "forecast_14d_change_pct": 1.6965593610491103,
+      "forecast_7d": 2861.9332213194434,
+      "forecast_14d": 2854.266446774543,
+      "forecast_14d_change_pct": 1.9380873848050983,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
@@ -604,9 +604,9 @@
     {
       "commodity": "Tomato",
       "current_price": 2750.0,
-      "forecast_7d": 2749.202392578125,
-      "forecast_14d": 2765.07080078125,
-      "forecast_14d_change_pct": 0.5480291193181719,
+      "forecast_7d": 2601.733699232413,
+      "forecast_14d": 2467.4892908375887,
+      "forecast_14d_change_pct": -10.273116696814954,
       "signal": "ABSTAIN_STALE_DATA",
       "freshness_status": "STALE_ABSTAIN",
       "weather_feature_assumption": "last recorded weather values held constant; no weather forecast applied"
