@@ -28,32 +28,41 @@ function runs(text, base = {}) {
   return out;
 }
 
-const P = (text, opts = {}) => new Paragraph({
-  children: runs(text, opts.run || {}), alignment: opts.align || AlignmentType.JUSTIFIED,
-  spacing: { line: opts.line || 360, after: opts.after ?? 120, before: opts.before || 0 },
-  indent: opts.indent, keepNext: opts.keepNext,
-});
+// Body paragraph: justified text gets the prescribed 20 mm first-line offset (1134 twips)
+const P = (text, opts = {}) => {
+  const align = opts.align || AlignmentType.JUSTIFIED;
+  const indent = opts.indent !== undefined ? opts.indent : (align === AlignmentType.JUSTIFIED && !opts.noIndent ? { firstLine: 1134 } : undefined);
+  return new Paragraph({ children: runs(text, opts.run || {}), alignment: align,
+    spacing: { line: opts.line || 360, after: opts.after ?? 120, before: opts.before || 0 }, indent, keepNext: opts.keepNext });
+};
 const C = (text, opts = {}) => P(text, { ...opts, align: AlignmentType.CENTER });
 const blank = (n = 1) => Array.from({ length: n }, () => new Paragraph({ children: [new TextRun({ text: '', font: FONT })] }));
 const pageBreak = () => new Paragraph({ children: [new PageBreak()] });
 
+// Headings are placed 50 mm from the top edge: 32 mm top margin + 18 mm (1020 twips) spacing before.
+const TOP_GAP = 1020;
 function chapter(num, title) {
   setChapter(num);
   return [
-    new Paragraph({ pageBreakBefore: true, alignment: AlignmentType.CENTER, spacing: { before: 240, after: 0 },
+    new Paragraph({ pageBreakBefore: true, alignment: AlignmentType.CENTER, spacing: { before: TOP_GAP, after: 0 },
       children: [new TextRun({ text: `CHAPTER ${num}`, bold: true, font: FONT, size: 28 })] }),
-    new Paragraph({ heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER, spacing: { before: 120, after: 360 },
+    new Paragraph({ heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER, spacing: { before: 480, after: 720 },
       children: [new TextRun({ text: title.toUpperCase(), bold: true, font: FONT, size: 28 })] }),
   ];
 }
-// Unnumbered front/back-matter heading that still appears in the TOC
+// Front/back-matter heading listed in the Table of Contents
 const H1u = (title, pageBreakBefore = true) => new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore,
-  alignment: AlignmentType.CENTER, spacing: { before: 240, after: 360 },
+  alignment: AlignmentType.CENTER, spacing: { before: TOP_GAP, after: 720 },
   children: [new TextRun({ text: title.toUpperCase(), bold: true, font: FONT, size: 28 })] });
-const H2 = (title) => new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 280, after: 120 },
-  children: [new TextRun({ text: title, bold: true, font: FONT, size: 26 })] });
-const H3 = (title) => new Paragraph({ heading: HeadingLevel.HEADING_3, keepNext: true, spacing: { before: 200, after: 100 },
-  children: [new TextRun({ text: title, bold: true, italics: true, font: FONT, size: 24 })] });
+// Same appearance but NOT listed in the Table of Contents (title page, Bonafide, Acknowledgement, viva certificate)
+const H1x = (title, pageBreakBefore = true) => new Paragraph({ pageBreakBefore,
+  alignment: AlignmentType.CENTER, spacing: { before: TOP_GAP, after: 720 },
+  children: [new TextRun({ text: title.toUpperCase(), bold: true, font: FONT, size: 28 })] });
+// Division headings in capitals (e.g. 1.1 OUTLINE OF PROJECT WORK); sub-divisions in sentence case
+const H2 = (title) => new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 360, after: 240 },
+  children: [new TextRun({ text: title.toUpperCase(), bold: true, font: FONT, size: 24 })] });
+const H3 = (title) => new Paragraph({ heading: HeadingLevel.HEADING_3, keepNext: true, spacing: { before: 240, after: 120 },
+  children: [new TextRun({ text: title, bold: true, font: FONT, size: 24 })] });
 
 const bullets = (items, ref = 'bul') => items.map(t => new Paragraph({ numbering: { reference: ref, level: 0 },
   alignment: AlignmentType.JUSTIFIED, spacing: { line: 360, after: 60 }, children: runs(t) }));
@@ -104,4 +113,4 @@ function figure(rel, caption, opts = {}) {
     ...(opts.source ? [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 220, line: 240 }, children: runs(`Source: ${opts.source}`, { size: 18, italics: true }) })] : [])];
 }
 
-module.exports = { d, P, C, blank, pageBreak, chapter, H1u, H2, H3, bullets, numbered, table, figure, reg, runs, FONT, TEXT_W, setChapter };
+module.exports = { d, P, C, blank, pageBreak, chapter, H1u, H1x, H2, H3, bullets, numbered, table, figure, reg, runs, FONT, TEXT_W, setChapter };

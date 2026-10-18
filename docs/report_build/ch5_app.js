@@ -17,7 +17,7 @@ function ch5() {
     '**Validate the Koyambedu price basis.** Obtain documentation from the Koyambedu Vegetable Merchants’ Council on grade, quote type (wholesale or retail) and collection time, and compare prospectively with invoices.',
     '**Run a prospective buyer pilot before claiming savings.** Record purchase date, quantity, grade, invoice price, spoilage and stockouts for a defined comparison period, with a pre-registered baseline, and evaluate delivered cost per usable kilogram.']);
   return [
-    ...chapter(5, 'Findings, Suggestions and Conclusion'),
+    ...chapter(5, 'Conclusions'),
     H2('5.1 Summary of Findings'),
     H3('5.1.1 Data and price behaviour'),
     ...bullets([
@@ -119,25 +119,25 @@ const REFS = [
   'Zhang, Z., Zhang, J., Liu, H., Lv, Q., Yang, J., Cai, K., & Wang, K. (2026). AgriWorld: A World Tools Protocol framework for verifiable agricultural reasoning with code-executing LLM agents. *arXiv:2602.15325*. https://doi.org/10.48550/arXiv.2602.15325',
 ];
 function references() {
-  return [H1u('References'), ...REFS.map(r => P(r, { align: AlignmentType.LEFT, indent: { left: 567, hanging: 567 }, line: 276, after: 140 }))];
+  return [H1u('References'), ...REFS.map(r => P(r, { align: AlignmentType.LEFT, indent: { left: 567, hanging: 567 }, line: 240, after: 160 }))];
 }
 
 function appendices() {
-  const app = (letter, title) => { setChapter(letter); return H1u(`Appendix ${letter} – ${title}`); };
+  const app = (n, title) => { setChapter(`A ${n}`); return H1u(`Appendix ${n} ${title}`); };
   const S = AlignmentType.CENTER;
   return [
-    app('A', 'Data Dictionary'),
+    app('1', 'Data Dictionary'),
     ...table('Fields of the processed price data', ['Field', 'Source', 'Meaning', 'Caution'], [
       ['arrival_date', 'Statewide', 'Reported trading date', 'Daily calendar; missing days forward-filled up to 3'],
       ['market / district', 'Statewide', 'Reporting market and district (451 / 36)', '90.7% Uzhavar Sandhai'],
-      ['commodity', 'Both', 'One of 8 study vegetables', 'Variety names mapped (Appendix B)'],
+      ['commodity', 'Both', 'One of 8 study vegetables', 'Variety names mapped (Appendix 2)'],
       ['min / max / modal_price', 'Statewide', 'Reported prices, ₹/quintal', '~2.7% values look per-kg'],
       ['market_count', 'Statewide', 'Markets reporting the commodity on the previous day', 'Breadth, not arrival volume'],
       ['observed_price_inr_per_kg', 'Koyambedu', 'API yValue, copied unchanged', 'Wholesale/retail basis not stated'],
       ['veg_id / mapping_note', 'Koyambedu', 'Source series and mapping rule', 'French Beans, Big Onion proxies'],
       ['precipitation, temp_max, temp_avg', 'Weather', 'Daily Chennai observations', 'Point location; lagged 1 day in features'],
     ], { widths: [1.6, 0.9, 2.2, 2.0], size: 18, align: [L, L, L, L], source: 'Project data files.' }),
-    app('B', 'Model Features, Settings and Mappings'),
+    app('2', 'Model Features and Settings'),
     P('**Features used by the statewide tree models (38):** lag_7, lag_14, lag_21, lag_30; rolling_mean_7, rolling_mean_14; rolling_std_7, rolling_std_14; rolling_min_7, rolling_max_7; ema_7, ema_14; momentum_7, momentum_14, momentum_30; price_acceleration; position_52w; month, week_of_year, day_of_week; sw_monsoon, ne_monsoon; pongal, tamil_new_year, diwali, navratri; market_count; rain_7d_sum, rain_30d_sum, temp_max; and cross_<commodity>_lag1 for each of the eight vegetables (including the model’s own commodity).'),
     ...table('Commodity name mappings', ['Study commodity', 'Statewide names mapped', 'Koyambedu series'], [
       ['Beans', 'Beans, French Beans, Indian Beans (Seam), Seam', 'French Beans (provisional)'], ['Brinjal', 'Brinjal, Eggplant', 'Brinjal (not Big Brinjal)'],
@@ -148,12 +148,12 @@ function appendices() {
       ['Pongal', '13–17 January'], ['Tamil New Year', '13–15 April'], ['Diwali', 'October–November, ISO weeks 40–46 (broad; about 7 weeks)'],
       ['Navratri', 'September–October, ISO weeks 38–42'], ['SW monsoon', 'June–September'], ['NE monsoon', 'October–December'],
     ], { widths: [1.5, 4.5], align: [L, L], source: 'Author’s analysis. Prophet uses exact dated holidays for 2024–2026.' }),
-    app('C', 'Pipeline Stages and Report Mapping'),
-    P('The analysis is implemented as numbered Python scripts in the project repository. Table C.1 maps each stage to the results it produces in this report.'),
+    app('3', 'Pipeline Stages and Report Mapping'),
+    P('The analysis is implemented as numbered Python scripts in the project repository. Table A 3.1 maps each stage to the results it produces in this report.'),
     ...table('Pipeline stages and where their results appear', ['Stage (scripts)', 'Purpose', 'Results in this report'], [
       ['Data acquisition (00, 01, 11)', 'Download weather, statewide prices and Koyambedu series', 'Tables 3.1, 4.1, 4.8'],
       ['Cleaning and EDA (02, 03)', 'Normalise records; descriptive statistics, anomalies, ADF tests', 'Tables 4.2, 4.3; Figures 4.1–4.5'],
-      ['Feature engineering (04)', 'Daily statewide median and 62-column feature table', 'Table 3.2; Appendix B'],
+      ['Feature engineering (04)', 'Daily statewide median and 62-column feature table', 'Table 3.2; Appendix 2'],
       ['Forecasting (05, 06, 07)', 'SARIMA, Prophet, Random Forest, XGBoost (protocols A1, A2)', 'Tables 4.4, 4.5; Figure 4.6'],
       ['Horizon check (16)', 'Naive benchmarks and strict seven-day models (protocol A3)', 'Table 4.6; Figures 4.7, 4.8'],
       ['Explanation (08)', 'SHAP attribution', 'Table 4.7; Figure 4.9'],
@@ -161,18 +161,18 @@ function appendices() {
       ['Decision layer (09, 15)', 'Deterministic agent pipeline; four-role pipeline with freshness gate', 'Tables 4.16, 4.17; Figure 4.16'],
       ['Proposal alignment (18)', 'SHAP monsoon ranking; delta-accuracy test; 30-day tomato scenario', 'Tables 4.14, 4.15, 4.20, 4.21; Figures 4.13–4.15, 4.21'],
       ['Procurement backtest (13)', 'Fixed-lot counterfactual of advice actions', 'Table 4.18; Figure 4.19'],
-      ['Dashboard (10)', 'Nine-page Streamlit application', 'Figures 4.17, 4.18; Appendix E'],
+      ['Dashboard (10)', 'Nine-page Streamlit application', 'Figures 4.17, 4.18; Appendix 5'],
     ], { widths: [1.7, 2.8, 1.9], size: 17, align: [L, L, L], source: 'Project repository.' }),
-    app('D', 'Reproducibility Record'),
+    app('4', 'Reproducibility Record'),
     P('**Environment.** Python 3.12.3 with pandas 3.0.2, NumPy 2.4.4, statsmodels 0.15.0, Prophet 1.5.0, scikit-learn 1.8.0, XGBoost 3.4.1, SHAP 0.54.1, Matplotlib 3.10.8 and Streamlit 1.66.0. Random seeds are fixed at 42 for all tree models.'),
-    P('**Run.** All results in this report come from a single end-to-end run of the pipeline on 18 October 2026, in the order shown in Table C.1, using the data files listed in Table 3.1. The source data, code, intermediate outputs and figures are retained in the project repository so that every table and figure can be regenerated.'),
+    P('**Run.** All results in this report come from a single end-to-end run of the pipeline on 18 October 2026, in the order shown in Table A 3.1, using the data files listed in Table 3.1. The source data, code, intermediate outputs and figures are retained in the project repository so that every table and figure can be regenerated.'),
     P('**Quality checks.** Every stage was rerun from the processed data; the nine dashboard pages were tested automatically; and the Koyambedu results were confirmed by rerunning the evaluation, which reproduced the model rankings exactly.'),
     P('**Sensitivity to software versions.** Tree-model forecasts, and therefore some advice actions, changed slightly between library versions (Section 4.13). Library versions should be fixed in the project’s requirements file for any future rerun. Design weaknesses that affect interpretation are discussed in Sections 4.5–4.7 and 4.12, and their recommended corrections in Section 5.3.'),
-    app('E', 'Dashboard Pages'),
+    app('5', 'Dashboard Pages'),
     P('Navigation is grouped into Core Decisions (Agent Recommendations, Price Forecast, Model Trust), More Insights (Price Movers, Market Trends and Seasonality, SHAP Explainability, Research and Scenario Validation) and Diagnostics (Dataset Snapshot, Data Quality).'),
     ...figure('dashboard/dash_forecast.png', 'Dashboard: Price Forecast page', { width: .95 }),
     ...figure('dashboard/dash_model_trust.png', 'Dashboard: Model Trust page', { width: .95 }),
-    app('F', 'Prospective Buyer Pilot Design'),
+    app('6', 'Prospective Buyer Pilot Design'),
     P('To establish whether forecast-informed purchasing reduces cost, a prospective pilot should be designed before any savings are estimated. The essential elements are as follows.'),
     ...table('Pilot design elements', ['Element', 'Specification'], [
       ['Participants', 'One or more institutional buyers purchasing at Koyambedu at least weekly'],
@@ -184,10 +184,6 @@ function appendices() {
       ['Duration', 'At least one full year, to include a monsoon season and price shocks'],
       ['Governance', 'Consent, anonymised identifiers, restricted access to commercial data; buyer retains decision authority'],
     ], { widths: [1.6, 4.6], align: [L, L], source: 'Author’s design.' }),
-    app('G', 'Viva Voce Examination Certificate'),
-    P('This project report submitted by **Vignesh Natarajan** (Roll No. 2406OBA0046; Registration No. 69124100162) has been examined on ____________________. The project is approved / not approved for the award of the MBA degree of Anna University.'),
-    P(' '), P('Internal Examiner: Name ____________________  Signature ______________  Date __________', { align: AlignmentType.LEFT }),
-    P(' '), P('External Examiner: Name ____________________  Signature ______________  Date __________', { align: AlignmentType.LEFT }),
   ];
 }
 module.exports = { ch5, references, appendices };

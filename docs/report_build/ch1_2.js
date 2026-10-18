@@ -1,67 +1,83 @@
-const { d, P, C, blank, chapter, H1u, H2, H3, bullets, numbered, table, FONT } = require('./lib');
-const { Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = d;
+const { d, P, C, blank, chapter, H1u, H1x, H2, H3, bullets, numbered, table, FONT } = require('./lib');
+const { Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } = d;
 
-const big = (t, size, bold = true, after = 120) => new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after, line: 300 },
-  children: [new TextRun({ text: t, bold, font: FONT, size })] });
+const fs = require('fs'); const path = require('path');
+const TITLE_UP = 'A STUDY ON SHORT-TERM VEGETABLE PRICE FORECASTING AT KOYAMBEDU WHOLESALE MARKET: A MACHINE LEARNING AND MULTI-AGENT AI APPROACH FOR SUPPLY CHAIN PROCUREMENT DECISION-MAKING';
+const TITLE = 'A Study on Short-Term Vegetable Price Forecasting at Koyambedu Wholesale Market: A Machine Learning and Multi-Agent AI Approach for Supply Chain Procurement Decision-Making';
+const NAME = 'VIGNESH NATARAJAN', ROLL = '2406OBA0046', REG = '69124100162', MONTH_YEAR = 'OCTOBER 2026';
+// Annexure I: every line Times New Roman 12 pt, centred
+const line = (t, o = {}) => new Paragraph({ alignment: AlignmentType.CENTER, spacing: { line: o.line || 276, after: o.after ?? 120, before: o.before || 0 },
+  children: [new TextRun({ text: t, font: FONT, size: 24, bold: !!o.bold, italics: !!o.italics })] });
 
 function titlePage() {
+  const logo = fs.readFileSync(path.join(__dirname, 'au_logo.png'));
   return [
-    big('ANNA UNIVERSITY', 32), big('CENTRE FOR DISTANCE AND ONLINE EDUCATION', 26), big('ONLINE MBA – BUSINESS ANALYTICS', 24, true, 600),
-    big('A STUDY ON SHORT-TERM VEGETABLE PRICE FORECASTING AT KOYAMBEDU WHOLESALE MARKET: A MACHINE LEARNING AND MULTI-AGENT AI APPROACH FOR SUPPLY CHAIN PROCUREMENT DECISION-MAKING', 28, true, 240),
-    big('A Secondary-Data Study of the Koyambedu Market Price Series with a Statewide Tamil Nadu Comparison', 24, false, 600),
-    big('PROJECT REPORT', 26, true, 240),
-    big('Submitted in partial fulfilment of the requirements for the award of the degree of', 22, false, 120),
-    big('MASTER OF BUSINESS ADMINISTRATION', 26, true, 600),
-    big('Submitted by', 22, false, 80), big('VIGNESH NATARAJAN', 26),
-    big('Roll No. 2406OBA0046  |  Registration No. 69124100162', 22, false, 600),
-    big('BATCH CY24  |  2026', 24),
+    line(TITLE_UP, { bold: true, line: 360, before: 600, after: 480 }),
+    line('By', { after: 240 }),
+    line(NAME, { bold: true, after: 120 }),
+    line(`Roll No. ${ROLL}`, { after: 0 }), line(`Reg. No. ${REG}`, { after: 480 }),
+    line('A PROJECT REPORT', { after: 240 }),
+    line('Submitted to the', { after: 120 }),
+    line('FACULTY OF MANAGEMENT SCIENCES', { bold: true, after: 240 }),
+    line('in partial fulfillment for the award of the degree', { italics: true, after: 0 }), line('of', { italics: true, after: 120 }),
+    line('MASTER OF BUSINESS ADMINISTRATION', { bold: true, after: 360 }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 360 },
+      children: [new ImageRun({ type: 'png', data: logo, transformation: { width: 90, height: 89 }, altText: { title: 'Anna University logo', description: 'Anna University logo', name: 'logo' } })] }),
+    line('CENTRE FOR DISTANCE AND ONLINE EDUCATION', { bold: true, after: 0 }), line('ANNA UNIVERSITY', { bold: true, after: 0 }),
+    line('CHENNAI 600 025', { bold: true, after: 480 }),
+    line(MONTH_YEAR),
   ];
 }
 
+const NB = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
 const sigTable = (rows) => new Table({ width: { size: 8448, type: WidthType.DXA }, columnWidths: [4224, 4224],
-  borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE }, insideHorizontal: { style: BorderStyle.NONE }, insideVertical: { style: BorderStyle.NONE } },
+  borders: { top: NB, bottom: NB, left: NB, right: NB, insideHorizontal: NB, insideVertical: NB },
   rows: rows.map(r => new TableRow({ children: r.map(t => new TableCell({ width: { size: 4224, type: WidthType.DXA },
-    borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE } },
-    children: [new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: t, font: FONT, size: 24, bold: /Guide|Head|Examiner/.test(t) && !/:/.test(t) })] })] })) })) });
+    borders: { top: NB, bottom: NB, left: NB, right: NB },
+    children: [new Paragraph({ spacing: { after: 80, line: 276 }, children: [new TextRun({ text: t, font: FONT, size: 24, bold: /^Signature of/.test(t) })] })] })) })) });
+const dbl = (t) => P(t, { line: 480, after: 240 });   // double line spacing
 
+// Annexure II, with the additional signatures required by guideline 6.2
 function bonafide() {
-  return [H1u('Bonafide Certificate'),
-    P('This is to certify that the project report entitled “A Study on Short-Term Vegetable Price Forecasting at Koyambedu Wholesale Market: A Machine Learning and Multi-Agent AI Approach for Supply Chain Procurement Decision-Making” is a bonafide record of the project work carried out by **Vignesh Natarajan** (Roll No. 2406OBA0046; Registration No. 69124100162), in partial fulfilment of the requirements for the award of the degree of Master of Business Administration (Business Analytics) of Anna University, Centre for Distance and Online Education.'),
-    P('The project was completed under my guidance during the academic year 2025–2026. To the best of my knowledge, the work has not been submitted for the award of any other degree or diploma.'),
+  return [H1x('Bonafide Certificate'),
+    dbl(`Certified that the Project report titled “${TITLE}” is the bonafide work of Mr. ${NAME} who carried out the work under my supervision. Certified further that to the best of my knowledge the work reported herein does not form part of any other project report or dissertation on the basis of which a degree or award was conferred on an earlier occasion on this or any other candidate.`),
     ...blank(2),
-    sigTable([['Project Guide', 'Head of Department / Programme Coordinator'], ['Name: ____________________', 'Name: ____________________'], ['Signature: ________________', 'Signature: ________________'], ['Date: _____________________', 'Seal:']]),
-    ...blank(1),
-    P('Submitted for the University project viva voce examination held on ________________ at ________________.'),
-    ...blank(1),
-    sigTable([['Internal Examiner', 'External Examiner'], ['Name: ____________________', 'Name: ____________________'], ['Signature: ________________', 'Signature: ________________']]),
+    sigTable([['Signature of Student', 'Signature of Project supervisor / Guide'], [`Name: ${NAME}`, 'Name:'], ['(in capital letters)', '(in capital letters)'],
+      [`Roll No.: ${ROLL}`, 'Designation:'], [`Reg. No.: ${REG}`, 'Address:']]),
+    ...blank(2),
+    sigTable([['Signature of Project In-charge', 'Signature of External Examiner'], ['Name:', 'Name:'], ['(in capital letters)', '(in capital letters)'], ['Study Centre:', 'Date of Viva-voce:']]),
   ];
 }
 
-function declaration() {
-  return [H1u('Declaration'),
-    P('I, **Vignesh Natarajan** (Roll No. 2406OBA0046; Registration No. 69124100162), hereby declare that the project report entitled “A Study on Short-Term Vegetable Price Forecasting at Koyambedu Wholesale Market: A Machine Learning and Multi-Agent AI Approach for Supply Chain Procurement Decision-Making”, submitted in partial fulfilment of the requirements for the degree of Master of Business Administration (Business Analytics), Anna University, Centre for Distance and Online Education, is a record of original work carried out by me under the guidance of my project guide.'),
-    P('I further declare that the analysis is based on publicly available secondary data and on software written for this project; that all sources used have been acknowledged in the references; that the results reported are those produced by the code and data identified in Appendix D; and that this report has not been submitted, in whole or in part, for any other degree, diploma or similar title.'),
+// Annexure III
+function vivaCertificate() {
+  return [H1x('Certificate of Viva-voce-Examination'),
+    dbl(`This is to certify that Thiru ${NAME} (Roll No. ${ROLL} & Register No. ${REG}) has been subjected to Viva-voce-Examination on ……………………… (Date) at ……………… (Time).`),
     ...blank(3),
-    sigTable([['Place: Chennai', 'Signature of the Candidate'], ['Date: ________________', '(VIGNESH NATARAJAN)']]),
+    sigTable([['Internal Examiner', 'External Examiner'], ['Name:', 'Name:'], ['(in capital letters)', '(in capital letters)'], ['Designation:', 'Designation:'], ['Address:', 'Address:']]),
+    ...blank(2), P('Date:', { align: AlignmentType.LEFT }),
   ];
 }
+
+const signature = () => [...blank(1), new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { before: 480, after: 0 }, children: [new TextRun({ text: 'Signature of the Candidate', font: FONT, size: 24 })] }),
+  new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { after: 0 }, children: [new TextRun({ text: `(${NAME})`, font: FONT, size: 24, bold: true })] })];
 
 function acknowledgement() {
-  return [H1u('Acknowledgement'),
-    P('This project was carried out as part of the Online MBA (Business Analytics) programme, and I thank Anna University and its Centre for Distance and Online Education for making it possible.'),
-    P('I am grateful to my project guide for academic direction, for the questions raised at the first and second reviews, and for constructive feedback that shaped the evaluation design of this study. I thank the faculty of the programme for the grounding in statistics, analytics and supply chain management on which this work draws.'),
-    P('I acknowledge the maintainers of the public data sources used: the Agricultural Marketing Information Network (Agmarknet) of the Directorate of Marketing and Inspection, the Kaggle contributor who compiled the daily commodity price dataset, the Vegetable Market Price website for the Koyambedu history series attributed to the Koyambedu Vegetable Merchants’ Council, and Open-Meteo for historical weather data. I also acknowledge the open-source communities behind Python, pandas, statsmodels, Prophet, scikit-learn, XGBoost, SHAP and Streamlit.'),
-    P('My family and colleagues supported me with patience and encouragement throughout, and I am grateful to them. Any errors of analysis or interpretation that remain are my own.'),
+  return [H1x('Acknowledgement'),
+    dbl('This project was carried out as part of the Online MBA (Business Analytics) programme, and I thank Anna University and its Centre for Distance and Online Education for making it possible. I am grateful to my project guide for academic direction, for the questions raised at the first and second reviews, and for feedback that shaped the evaluation design of this study.'),
+    dbl('I acknowledge the maintainers of the public data sources used: Agmarknet, the Kaggle daily commodity price compilation, the Vegetable Market Price history series attributed to the Koyambedu Vegetable Merchants’ Council, and Open-Meteo. My family and colleagues supported me throughout, and I am grateful to them. Any errors that remain are my own.'),
+    ...signature(),
   ];
 }
 
 function abstract() {
   return [H1u('Abstract'),
-    P('Vegetable prices in India are volatile because supply is seasonal, perishable and weather-sensitive. For an institutional buyer, the cost of a poorly timed purchase is direct. This study asks whether short-term price forecasts, and a rule-based multi-agent decision layer built on them, can support procurement timing for eight vegetables traded at Koyambedu Wholesale Market, Chennai: Tomato, Onion, Potato, Cabbage, Carrot, Beans, Brinjal and Drumstick. A statewide Tamil Nadu series is analysed alongside as a comparison.'),
-    P('Two secondary datasets were analysed separately. The first is a Kaggle-hosted Agmarknet extract of 414,388 market-level records from 451 Tamil Nadu markets (24 January 2024 to 20 April 2026), aggregated to a daily statewide median. The second is a Koyambedu history-page series of 14,472 daily ₹/kg observations (4 November 2021 to 17 October 2026) attributed to the Koyambedu Vegetable Merchants’ Council. SARIMA, Prophet, Random Forest and XGBoost were compared with naive baselines under chronological validation; SHAP was used for interpretation; HAC regressions tested a Northeast Monsoon rainfall effect; and the procurement rules were backtested.'),
-    P('The central finding is that simple baselines were not beaten. On the statewide 90-day holdout, Random Forest recorded 11.32% mean MAPE and XGBoost 13.98%, but yesterday’s price alone gave 4.20%; a strictly seven-day-ahead XGBoost gave 27.09%. On Koyambedu data across seven origins and 7-, 14- and 30-day horizons, the last observed price had the lowest WAPE (11.88%), followed by SARIMA (12.28%), while XGBoost (15.36%), Random Forest (16.63%) and Prophet (23.82%) were worse. No rainfall-anomaly coefficient was significant (p = 0.26–0.92); SHAP ranked a Northeast Monsoon deviation index 12th to 15th of 16 features; and adding weather context to XGBoost did not significantly improve accuracy on a six-month holdout (Diebold–Mariano p = 0.10–0.98). Prior seven-day momentum was significantly negative for all eight vegetables, indicating short-run mean reversion. The procurement rules beat an immediate purchase in only 30.4% of 56 backtest cases. In the 2023 tomato episode the 30-day forecast gave an early warning, signalling a rise of more than 100% from 29 April, and correctly anticipated the rise at 7 of 9 dates (worth about ₹170/kg net to a forward buyer). The decision rules, however, rated these large forecast rises as high-risk, downgraded them to partial purchases and then advised delay in late June, producing a cumulative ₹219/kg loss relative to buying immediately.'),
-    P('All four objectives were tested and answered. The study contributes a reproducible end-to-end pipeline with a nine-page dashboard; a horizon-sensitivity check that exposes next-day persistence masquerading as forecast skill; evidence of short-run mean reversion; a documented failure case for automated advice during a supply shock; and safeguards designed to stop a local AI writer from altering prices. For these series and horizons, naive benchmarks should be the procurement baseline for routine purchases, the 30-day forecast is worth monitoring as an early-warning signal, and the decision rules require redesign (separating forecast direction from risk), a supply-shock override, uncertainty-scaled thresholds and a buyer pilot before operational use. No realized savings are claimed.'),
-    P('**Keywords:** vegetable price forecasting; procurement; Agmarknet; Koyambedu; SARIMA; XGBoost; SHAP; naive benchmark; multi-agent decision support; Tamil Nadu'),
+    dbl('Vegetable prices in India are volatile because supply is seasonal, perishable and weather-sensitive. For an institutional buyer, the cost of a poorly timed purchase is direct. This study asks whether short-term price forecasts, and a rule-based multi-agent decision layer built on them, can support procurement timing for eight vegetables traded at Koyambedu Wholesale Market, Chennai: Tomato, Onion, Potato, Cabbage, Carrot, Beans, Brinjal and Drumstick. A statewide Tamil Nadu series is analysed alongside as a comparison.'),
+    dbl('Two secondary datasets were analysed separately. The first is a Kaggle-hosted Agmarknet extract of 414,388 market-level records from 451 Tamil Nadu markets (24 January 2024 to 20 April 2026), aggregated to a daily statewide median. The second is a Koyambedu history-page series of 14,472 daily ₹/kg observations (4 November 2021 to 17 October 2026) attributed to the Koyambedu Vegetable Merchants’ Council. SARIMA, Prophet, Random Forest and XGBoost were compared with naive baselines under chronological validation; SHAP was used for interpretation; HAC regressions tested a Northeast Monsoon rainfall effect; and the procurement rules were backtested.'),
+    dbl('The central finding is that simple baselines were not beaten. On the statewide 90-day holdout, Random Forest recorded 11.32% mean MAPE and XGBoost 13.98%, but yesterday’s price alone gave 4.20%; a strictly seven-day-ahead XGBoost gave 27.09%. On Koyambedu data across seven origins and 7-, 14- and 30-day horizons, the last observed price had the lowest WAPE (11.88%), followed by SARIMA (12.28%), while XGBoost (15.36%), Random Forest (16.63%) and Prophet (23.82%) were worse. No rainfall-anomaly coefficient was significant (p = 0.26–0.92); SHAP ranked a Northeast Monsoon deviation index 12th to 15th of 16 features; and adding weather context to XGBoost did not significantly improve accuracy on a six-month holdout (Diebold–Mariano p = 0.10–0.98). Prior seven-day momentum was significantly negative for all eight vegetables, indicating short-run mean reversion. The procurement rules beat an immediate purchase in only 30.4% of 56 backtest cases. In the 2023 tomato episode the 30-day forecast gave an early warning, signalling a rise of more than 100% from 29 April, and correctly anticipated the rise at 7 of 9 dates (worth about ₹170/kg net to a forward buyer). The decision rules, however, rated these large forecast rises as high-risk, downgraded them to partial purchases and then advised delay in late June, producing a cumulative ₹219/kg loss relative to buying immediately.'),
+    dbl('All four objectives were tested and answered. The study contributes a reproducible end-to-end pipeline with a nine-page dashboard; a horizon-sensitivity check that exposes next-day persistence masquerading as forecast skill; evidence of short-run mean reversion; a documented failure case for automated advice during a supply shock; and safeguards designed to stop a local AI writer from altering prices. For these series and horizons, naive benchmarks should be the procurement baseline for routine purchases, the 30-day forecast is worth monitoring as an early-warning signal, and the decision rules require redesign (separating forecast direction from risk), a supply-shock override, uncertainty-scaled thresholds and a buyer pilot before operational use. No realized savings are claimed.'),
+    dbl('**Keywords:** vegetable price forecasting; procurement; Agmarknet; Koyambedu; SARIMA; XGBoost; SHAP; naive benchmark; multi-agent decision support; Tamil Nadu'),
+    ...signature(),
   ];
 }
 
@@ -101,31 +117,34 @@ function ch1() {
     P('Tamil Nadu has two distinct channels that appear in the data used here. The first is the network of regulated markets and Uzhavar Sandhai (farmers’ markets), the latter established by the Government of Tamil Nadu so that farmers can sell directly to consumers. In the statewide extract used in this study, Uzhavar Sandhai account for 90.7 per cent of all records, which is important for interpretation because their prices are closer to retail than to bulk wholesale. The second is the Koyambedu Wholesale Market Complex in Chennai, one of the largest wholesale markets for perishables in South India and the reference market for buyers in the Chennai region. Its daily prices are published by the Koyambedu Vegetable Merchants’ Council and redistributed by public websites.'),
     H3('1.2.3 Who uses short-term price forecasts'),
     P('The intended users of this study are procurement managers who buy in recurring cycles and can shift purchases by days or weeks: institutional caterers, hotel and restaurant groups, food processors, retail chains and aggregators. Their decision variables are timing, quantity and supplier; their constraints are shelf life, storage, cash flow and service level. A forecast is useful to them only if it improves on what they already know, which at minimum is today’s price.'),
-    H2('1.3 Statement of the Problem'),
+    H2('1.3 Identified Problem'),
     P('Buyers have to decide when to purchase without knowing which way prices will move over the coming days and weeks. Machine-learning forecasts and AI-agent pipelines promise better information, but agricultural price series are short, noisy and subject to sudden supply shocks, and published forecast accuracy figures are often not compared with naive benchmarks or are computed in ways that leak future information. The problem addressed is therefore twofold: (a) to determine whether statistical and machine-learning models forecast Tamil Nadu vegetable prices better than naive benchmarks at procurement-relevant horizons; and (b) to determine whether a transparent rule-based decision layer built on those forecasts would have improved purchase outcomes.'),
-    H2('1.4 Objectives of the Study'),
+    H2('1.4 Need for the Study'),
+    P('Koyambedu Wholesale Market sets reference prices for vegetables bought across Chennai and much of Tamil Nadu, so price swings there pass quickly to hotels, canteens, caterers and retailers. Published forecasting work on this market is limited to monthly SARIMA modelling, and it has not been tested whether machine-learning methods, weather signals or an AI agent layer improve on that work for daily, procurement-relevant horizons in a region whose rainfall is dominated by the Northeast Monsoon. Buyers considering such tools need evidence of whether they beat the simple rules of thumb already in use before relying on them.'),
+    P('For practitioners, the study shows how to test a forecasting tool before trusting it, and identifies the benchmark a vendor or in-house model must beat. For the academic programme, it demonstrates a full analytics life cycle on real data: acquisition, cleaning, feature engineering, modelling, explanation, decision rules, backtesting and a deployable dashboard. Its methodological contribution is a horizon-sensitivity check that exposes how next-day information can make a model look far more accurate than it is at the horizon a buyer needs. Because the study reports results whether or not they support the original hypotheses, its negative findings are as informative as its positive ones: they tell buyers which tools not to rely on and which information to acquire instead.'),
+    H2('1.5 Objectives of the Study'),
     P('**Primary objective.** To predict near-term vegetable prices at Koyambedu Wholesale Market, with a statewide Tamil Nadu comparison, using four model families (SARIMA, Prophet, Random Forest and XGBoost) and to assess whether AgriSight, a four-agent pipeline that turns these forecasts into advice, gives procurement buyers useful decision support.'),
     P('**Secondary objectives.** The four secondary objectives of the approved proposal are retained; differences in data and method from the proposal, and their reasons, are set out in Section 3.12:'),
     ...obj.paras,
-    H2('1.5 Research Questions and Hypotheses'),
+    H2('1.6 Research Questions and Hypotheses'),
     ...rq.paras,
     P('Two hypotheses were stated in the second review:'),
     ...bullets(['**H1:** Random Forest or XGBoost achieves lower walk-forward forecast error than SARIMA.',
       '**H2:** Abnormal Northeast Monsoon rainfall has a statistically significant effect on subsequent vegetable price changes.']),
     P('In the course of the study a third, implicit hypothesis became central and is tested explicitly: **H0 (benchmark):** none of the fitted models outperforms the last observed price at the evaluated horizons.'),
-    H2('1.6 Scope of the Study'),
+    H2('1.7 Scope of the Study'),
     bullets([
       '**Commodities:** Tomato, Onion, Potato, Cabbage, Carrot, Beans, Brinjal and Drumstick.',
       '**Geography:** Tamil Nadu statewide (451 markets, 36 districts) and, separately, the Koyambedu market in Chennai.',
       '**Period:** statewide prices from 24 January 2024 to 20 April 2026; Koyambedu prices from 4 November 2021 to 17 October 2026; Chennai weather from 1 January 2024 to 30 September 2026.',
       '**Horizons:** next-day (statewide holdout), and 7, 14 and 30 days (Koyambedu common-origin evaluation).',
       '**Decision layer:** deterministic, rule-based agents; an optional local language model and live news feed were implemented but not exercised in the reported runs.']).flat(),
-    H2('1.7 Significance of the Study'),
-    P('For practitioners, the study shows how to test a forecasting tool before trusting it, and identifies the benchmark a vendor or in-house model must beat. For the academic programme, it demonstrates a full analytics life cycle on real data: acquisition, cleaning, feature engineering, modelling, explanation, decision rules, backtesting and a deployable dashboard. Its methodological contribution is a horizon-sensitivity check that exposes how next-day information can make a model look far more accurate than it is at the horizon a buyer needs. Because the study reports results whether or not they support the original hypotheses, its negative findings are as informative as its positive ones: they tell buyers which tools not to rely on and which information to acquire instead.'),
-    H2('1.8 Limitations of the Study (Summary)'),
-    P('The data are secondary and their upstream collection was not audited. The statewide series mixes farmers’ markets and wholesale markets and contains a small number of apparent unit errors. The Koyambedu series does not state whether quotes are wholesale or retail. The weather record spans just two full monsoon seasons, and market-arrival volumes could not be obtained. Procurement results are counterfactual, not realized savings. These limitations are discussed in full in Section 5.5.'),
-    H2('1.9 Chapter Scheme'),
-    P('**Chapter 1** introduces the problem, industry context, objectives and scope. **Chapter 2** reviews the literature on vegetable price volatility, forecasting methods, forecast evaluation, explainability, AI agents and procurement decisions, and identifies the research gap. **Chapter 3** describes the research design, data, variables, models, evaluation protocols, statistical tools and decision rules. **Chapter 4** presents the analysis and interpretation. **Chapter 5** summarises findings, offers suggestions, discusses limitations and concludes. Appendices document the data dictionary, model settings, reproducibility record, code corrections and the dashboard.'),
+    H2('1.8 Deliverables'),
+    P('The study delivers: (i) a comparison of SARIMA, Prophet, Random Forest and XGBoost against naive benchmarks at 7-, 14- and 30-day horizons on Koyambedu prices, with a statewide comparison; (ii) SHAP feature-importance outputs, including beeswarm and dependence plots, and a significance test of the Northeast Monsoon effect; (iii) the AgriSight pipeline with a nine-page dashboard that produces a buyer brief; (iv) a delta-accuracy test of weather context on a six-month held-out period; (v) a procurement backtest and a 2023 tomato case study using the 30-day forecast; and (vi) this report with recommendations for buyers.'),
+    H2('1.9 Limitations of the Study (Summary)'),
+    P('The data are secondary and their upstream collection was not audited. The statewide series mixes farmers’ markets and wholesale markets and contains a small number of apparent unit errors. The Koyambedu series does not state whether quotes are wholesale or retail. The weather record spans just two full monsoon seasons, and market-arrival volumes could not be obtained. Procurement results are counterfactual, not realized savings. These limitations are discussed in full in Section 5.5 and the assumptions behind the analysis in Section 3.13.'),
+    H2('1.10 Chapter Scheme'),
+    P('**Chapter 1** introduces the problem, industry context, need, objectives, scope and deliverables. **Chapter 2**, the literature survey, reviews work on vegetable price volatility, forecasting methods, forecast evaluation, explainability, AI agents and procurement decisions, and identifies the research gap. **Chapter 3** sets out the methodology: design, data, processing, models, evaluation protocols, statistical tools, decision rules, deviations from the approved proposal, and assumptions and constraints. **Chapter 4** presents the data analysis and interpretation. **Chapter 5** gives the conclusions: findings, suggestions, limitations and directions for future research. Appendices and references follow.'),
   ];
 }
 
@@ -141,7 +160,7 @@ function ch2() {
     ['This study', 'TN statewide + Koyambedu, daily', 'SARIMA, Prophet, RF, XGBoost, naive; SHAP; HAC; backtest', 'Naive benchmarks unbeaten; rules need recalibration', 'Secondary data; short weather window'],
   ];
   return [
-    ...chapter(2, 'Review of Literature'),
+    ...chapter(2, 'Literature Survey'),
     P('This chapter reviews five bodies of work relevant to the study: the economics of vegetable price volatility in India; statistical and machine-learning forecasting methods; principles of forecast evaluation; model explanation and AI agents; and procurement decision-making under price uncertainty. It closes by identifying the research gap.'),
     H2('2.1 Vegetable Price Volatility in India'),
     P('Roy et al. (2024), in a Reserve Bank of India working paper, analyse tomato, onion and potato (TOP) prices using a monthly supply–demand balance sheet. They show that availability, or the availability-to-usage ratio, is significantly and negatively related to the CPI of all three vegetables after controlling for input costs, rainfall and wages, and that SARIMA-X models including balance-sheet variables forecast TOP inflation better than univariate SARIMA over 2- to 12-month horizons. Their value-chain analysis estimates farmers’ share of the consumer rupee at roughly one-third. The implication for this study is that supply volume, which is not available in either of the datasets used here, is likely the most informative missing predictor.'),
@@ -173,4 +192,4 @@ function ch2() {
   ];
 }
 
-module.exports = { titlePage, bonafide, declaration, acknowledgement, abstract, abbreviations, ch1, ch2, obj: null };
+module.exports = { titlePage, bonafide, vivaCertificate, acknowledgement, abstract, abbreviations, ch1, ch2 };
